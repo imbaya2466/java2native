@@ -5,21 +5,23 @@
 //lex return的类型进入分析栈--lex返回终结符一步步语法分析。yylval进入内容栈。$$访问的是内容栈,其类型为YYSTYPE。正是属性文法的属性（需要看一下第6章再定义）
 //分析栈就是编译原理中LR用的符号栈，做出语法动作也是依据这个栈。状态栈由yacc自动维护
 %{
+	
     #include <stdio.h>
     #include <string.h>
-	
-	
-	
+	#include "tool/tree.h"	
 	
 	//extern是指定义(分配空间)在其它地方，函数声明与定义是分开的通过声明使用因此都不用加extren，变量为声明并定义因此要加。
 	int yylex(void);
 	extern FILE * yyin;
 	extern int line;
-	extern char SymbolTable[10000][100];//符号表	
-	extern float FloatTable[10000];			//float 4byte
-	extern int IntTable[10000];				//int 4byte
-	extern char StringTable[10000][100];	//string常量
-	extern int CharTable[10000];			//char 2byteUnicode
+
+	extern int symbolnum;
+	extern int floatnum;
+	extern int intnum;
+	extern int stringnum;
+	extern int charnum;
+	
+	
 	
 	int yyerror(char *s);
 	
@@ -27,8 +29,10 @@
 %}
 //--------------------------------------------------------------------------------------
 //定义YYSTYPE内容的属性
-
-
+//每个YYSTYPE代表一个节点
+%union{
+	pNode pnode;
+}
 
 
 
@@ -40,36 +44,49 @@
 //因为大多名字比较敏感因此采用_开头
 
 //类相关
-%token  _PRIVATE _PROTECTED _PUBLIC _ABSTRACT _EXTENDS _FINAL _IMPLEMENTS _NATIVE _NEW _STATIC _STRICTFP _TRANSIENT  _VOLATILE
+%token <pnode> _PRIVATE _PROTECTED _PUBLIC _ABSTRACT _EXTENDS _FINAL _IMPLEMENTS _NATIVE _NEW _STATIC _STRICTFP _TRANSIENT  _VOLATILE
 //程序控制
-%token 	_BREAK _CONTINUE _RETURN _DO _WHILE _IF _ELSE _FOR _INSTANCEOF _SWITCH _CASE _DEFAULT _TRY _CATCH _FINALLY _THROW _THROWS _ASSERT _SYNCHRONIZED
+%token <pnode> 	_BREAK _CONTINUE _RETURN _DO _WHILE _IF _ELSE _FOR _INSTANCEOF _SWITCH _CASE _DEFAULT _TRY _CATCH _FINALLY _THROW _THROWS _ASSERT _SYNCHRONIZED
 //包
-%token 	_IMPORT _PACKAGE 
+%token <pnode> 	_IMPORT _PACKAGE 
 //类型 String不是关键字，但java有其语法糖于是提出
-%token  _BOOLEAN _BYTE _CHAR _DOUBLE _FLOAT _INT _LONG _SHORT _VOID _STRING _ENUM _CLASS _INTERFACE
+%token <pnode>  _BOOLEAN _BYTE _CHAR _DOUBLE _FLOAT _INT _LONG _SHORT _VOID _STRING _ENUM _CLASS _INTERFACE
 //特殊值
-%token 	_TRUE _FALSE _NUL _SUPER _THIS
+%token <pnode> 	_TRUE _FALSE _NUL _SUPER _THIS
 //运算符 界符 放弃三元
 //+ - * / % ++ --
-%token	_ADD _SUB _MUL _DIV _MOD _ADD2 _SUB2
+%token <pnode>	_ADD _SUB _MUL _DIV _MOD _ADD2 _SUB2
 //== != > < >= <=
-%token	_CMP _NCMP _MORE _LESS _MCMP _LCMP
+%token <pnode>	_CMP _NCMP _MORE _LESS _MCMP _LCMP
 //& | ^ ~ << >> >>>
-%token	_AND _OR _XOR _NOT _SHL _SHR _SAR
+%token <pnode>	_AND _OR _XOR _NOT _SHL _SHR _SAR
 //&& || !
-%token	_BAND _BOR _BNOT
+%token <pnode>	_BAND _BOR _BNOT
 //= += -= *= /= %= <<= >>= &= ^= |=
-%token	_MOV _ADDMOV _SUBMOV _MULMOV _DIVMOV _MODMOV _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
+%token <pnode>	_MOV _ADDMOV _SUBMOV _MULMOV _DIVMOV _MODMOV _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
 //界符   {} [] ()  ;  ,  .
-%token	_LBRACE _RBRACE _LBRACKET _RBRACKET _LPARENTHESE _RPARENTHESE _SEMICOLON _COMMA _POINT
+%token <pnode>	_LBRACE _RBRACE _LBRACKET _RBRACKET _LPARENTHESE _RPARENTHESE _SEMICOLON _COMMA _POINT
 
 //标识符  内码值指向符号表
-%token  _SYMBOL
+%token <pnode>  _SYMBOL
 //常数类型  分别归表   不判断数字大小，全部按4位整形处理  浮点全部按float处理
-%token  _CUSTCHAR  //' '
-%token	_CUSTSTRING//字符串
-%token	_CUSTINT   //整形
-%token	_CUSTFLOAT //浮点型
+%token <pnode>  _CUSTCHAR  //' '
+%token <pnode>	_CUSTSTRING//字符串
+%token <pnode>	_CUSTINT   //整形
+%token <pnode>	_CUSTFLOAT //浮点型
+
+
+//非终结符定义
+%type <pnode>  CLASSFILE
+
+
+
+
+
+
+
+
+
 
 
 
@@ -92,8 +109,9 @@
 //--------------------------------------------------------------------------------------
 
 %%
+//bnf文法定义
 CLASSFILE
-	: _NUL{}
+	: _CUSTINT {printf("%s\n",$<pnode>1->leafstring);}
 
 
 
@@ -107,6 +125,7 @@ CLASSFILE
 %%
 
 int yyerror(char *s) {
+	printf("Gramma analysis error %s  on %d\n",s,line);
     return 0;
 }
 
@@ -123,7 +142,9 @@ int main(int argc, char** argv)
 	   printf("filename!\n");
 	   return 0;
    }
-  // yyparse();
+   yyparse();
+  
+  /*
   int a;
   int sum=0;
    while(1)
@@ -134,12 +155,12 @@ int main(int argc, char** argv)
 	   if(a==0)
 		   break;
 	   
-	   printf("%d %d \n",a,yylval);
+	   printf("%d  %s\n",a,yylval.pnode->leafstring);
 	   sum++;
    }
-   printf("sum:%d\n",sum);
+   printf("sum:%d   \n",sum);
 
-   
+   */
    return 0;
 
 }

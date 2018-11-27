@@ -1,20 +1,27 @@
 
+FRONT = front/
+TOOL = tool/
+HEARD = .
+#注意用-I指定编译要包含头文件的位置
 
-COMPILER_BUILD = lex.yy.c java.tab.c 
-COMPILER_CLEAN = lex.yy.c java.tab.c java2native java.tab.h
+COMPILER_CLEAN = $(FRONT)lex.yy.c $(FRONT)java.tab.c $(FRONT)java.tab.h java2native
 
-LEX_SRC = java.l
-YACC_SRC = java.y
+#注意编译顺序，需要先java.tab.c定义好宏
+FRONT_BUILD =  $(FRONT)java.tab.c $(FRONT)lex.yy.c
+TOOL_BUILD = $(TOOL)tree.c  
+
+LEX_SRC = $(FRONT)java.l
+YACC_SRC = $(FRONT)java.y
 
 
-java2native: $(COMPILER_BUILD)
-	gcc -o $@ $(COMPILER_BUILD)
+java2native: $(FRONT_BUILD)
+	gcc -o $@ $(TOOL_BUILD) $(FRONT_BUILD)  -I $(HEARD)
 	
-lex.yy.c: $(LEX_SRC)
-	flex $(LEX_SRC)
+$(FRONT)lex.yy.c: $(LEX_SRC)
+	flex -o $@ $(LEX_SRC)
 	
-java.tab.c: $(YACC_SRC)
-	bison -d $(YACC_SRC)
+$(FRONT)java.tab.c: $(YACC_SRC)
+	bison -o $@ -d $(YACC_SRC)
 
 clean:
 	rm -f $(COMPILER_CLEAN)
