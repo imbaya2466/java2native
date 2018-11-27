@@ -6,7 +6,7 @@
 	#include "java.tab.h"//这里的yylval类型定义很不稳定...在java.y中未定义时这里就可能先定义成int了。因此直接定义为union
 	
 	
-    int line = 1;
+    int line = 1;//lex其实有自己的行号。需要时改用
 
 	
 
@@ -52,7 +52,7 @@ string						\".*\"
 
 %%
 {paragraphComments} {/* skip */}
-{lineComments}      {/* skip */}
+{lineComments}      {/* skip */line++;}
 {space}             {/* skip */}
 {enter}				{line++;}
 "private"			{yylval.pnode = doyylval(_PRIVATE);  return _PRIVATE;}
@@ -178,7 +178,6 @@ string						\".*\"
 pNode doyylval(int type){
 	
 	pNode ls=MakeNodeNoAttSub(type,strdup(yytext));
-		printf("  %p  ;",ls);
 	return ls;
 	
 }

@@ -1,0 +1,187 @@
+
+//终结符
+
+//类相关
+%token <pnode> _PRIVATE _PROTECTED _PUBLIC _ABSTRACT _EXTENDS _FINAL _IMPLEMENTS _NATIVE _NEW _STATIC _STRICTFP _TRANSIENT  _VOLATILE
+//程序控制
+%token <pnode> 	_BREAK _CONTINUE _RETURN _DO _WHILE _IF _ELSE _FOR _INSTANCEOF _SWITCH _CASE _DEFAULT _TRY _CATCH _FINALLY _THROW _THROWS _ASSERT _SYNCHRONIZED
+//包
+%token <pnode> 	_IMPORT _PACKAGE 
+//类型 String不是关键字，但java有其语法糖于是提出
+%token <pnode>  _BOOLEAN _BYTE _CHAR _DOUBLE _FLOAT _INT _LONG _SHORT _VOID _STRING _ENUM _CLASS _INTERFACE
+//特殊值
+%token <pnode> 	_TRUE _FALSE _NUL _SUPER _THIS
+//运算符 界符 放弃三元
+//+ - * / % ++ --
+%token <pnode>	_ADD _SUB _MUL _DIV _MOD _ADD2 _SUB2
+//== != > < >= <=
+%token <pnode>	_CMP _NCMP _MORE _LESS _MCMP _LCMP
+//& | ^ ~ << >> >>>
+%token <pnode>	_AND _OR _XOR _NOT _SHL _SHR _SAR
+//&& || !
+%token <pnode>	_BAND _BOR _BNOT
+//= += -= *= /= %= <<= >>= &= ^= |=
+%token <pnode>	_MOV _ADDMOV _SUBMOV _MULMOV _DIVMOV _MODMOV _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
+//界符   {} [] ()  ;  ,  .
+%token <pnode>	_LBRACE _RBRACE _LBRACKET _RBRACKET _LPARENTHESE _RPARENTHESE _SEMICOLON _COMMA _POINT
+
+//标识符  内码值指向符号表
+%token <pnode>  _SYMBOL
+//常数类型  分别归表   不判断数字大小，全部按4位整形处理  浮点全部按float处理
+%token <pnode>  _CUSTCHAR  //' '
+%token <pnode>	_CUSTSTRING//字符串
+%token <pnode>	_CUSTINT   //整形
+%token <pnode>	_CUSTFLOAT //浮点型
+-----------------------------------------------------------
+//非终结符
+//虽然包名、类名表示法一样，但是解析时含义不同，需要分开时分开试试
+//注释在词法分析阶段就去掉了
+compilation_unit :编译单位
+package_statement :包声明
+package_name :包名
+import_statement :导入声明
+class_name :类名
+type_declaration :类型声明
+class_declaration :类声明
+modifiers :前缀关键字s
+modifier :前缀关键字
+implements :类名，多个，逗号分隔
+field_declarations :领域声明多个
+field_declaration :领域声明
+method_declaration :方法声明定义
+type :类型
+type_specifier :类型非数组
+brackets : []多个
+----------2018.11.27上部分以入enum
+
+
+-------------------------------------------------------------------------
+// 包  导入  类型声明 | 导入 类型声明
+//native代码注册其实不需要类名包名...留做后用吧
+compilation_unit 	
+			: package_statement import_statement type_declaration  
+			| import_statement type_declaration 
+			;
+//包: package 包名 ;
+package_statement 
+			: _PACKAGE package_name _SEMICOLON
+			;
+//包名: 标识符 | 包名 . 标识符
+package_name
+			: _SYMBOL
+			| package_name _POINT _SYMBOL
+			;
+//导入声明 : import 包名 . * ; | import 类名 ; | import 接口名 ;			
+import_statement
+			: _IMPORT package_name _POINT _MUL _SEMICOLON
+			| _IMPORT class_name _SEMICOLON
+			;
+//类名 : 标识符 | 包名.标识符
+class_name 		
+			: _SYMBOL
+			| package_name _POINT _SYMBOL
+			;
+
+			
+			
+//-----------------------------------------以上为文件头解析部分			
+			
+//类型声明定义  这里一个文件中只定义一个类或接口
+type_declaration
+			: class_declaration
+			| interface_declaration
+			;
+//类声明: 	{modifier}	class 标识符 [extends 类名] [implements 接口名] {领域}
+class_declaration
+			: modifiers _CLASS _SYMBOL _EXTENDS class_name _IMPLEMENTS implements _LBRACE field_declarations _RBRACE
+			| modifiers _CLASS _SYMBOL  _IMPLEMENTS implements _LBRACE field_declarations _RBRACE
+			| modifiers _CLASS _SYMBOL  _LBRACE field_declarations _RBRACE
+			;
+//前缀可多个
+modifiers
+			: modifiers modifier
+			|
+			;
+modifier
+			: _PRIVATE 
+			| _PROTECTED 
+			| _PUBLIC 
+			| _ABSTRACT 
+			| _FINAL 
+			| _NATIVE
+			| _STATIC
+			| _TRANSIENT 
+			| _SYNCHRONIZED
+			;
+//接口多个
+implements	
+			:  implements _COMMA class_name
+			| class_name
+			;
+//领域声明多个			
+field_declarations
+			: field_declarations field_declaration
+			|
+			;
+//领域: 			
+field_declaration		
+			: method_declaration
+			| constructor_declaration
+			| variable_declaration
+			| static_initializer 
+			| _SEMICOLON
+			;
+//方法声明		虽然java可以 int a()[] {}写返回数组...但是基本没人这么用就按正常写法	
+// 前缀 类型 标识符 ( [参数] )  ;或者 定义块
+method_declaration			
+			: modifiers type _SYMBOL _LPARENTHESE parameter_list _RPARENTHESE statement_block 
+			| modifiers type _SYMBOL _LPARENTHESE  _RPARENTHESE statement_block 
+			| modifiers type _SYMBOL _LPARENTHESE parameter_list _RPARENTHESE _SEMICOLON
+			| modifiers type _SYMBOL _LPARENTHESE  _RPARENTHESE _SEMICOLON 
+			;
+//类型 含数组			
+type
+			: type_specifier 
+			| type_specifier  brackets
+			;
+//[]多个
+brackets   
+			: brackets _LBRACKET _RBRACKET
+			| _LBRACKET _RBRACKET
+			;
+//类型
+type_specifier
+			: _BOOLEAN 
+			| _BYTE 
+			| _CHAR 
+			| _DOUBLE 
+			| _FLOAT 
+			| _INT 
+			| _LONG 
+			| _SHORT 
+			| _VOID 
+			| _STRING
+			| class_name 
+			;
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

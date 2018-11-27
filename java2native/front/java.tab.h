@@ -153,7 +153,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 33 "front/java.y" /* yacc.c:1909  */
+#line 34 "front/java.y" /* yacc.c:1909  */
 
 	pNode pnode;
 

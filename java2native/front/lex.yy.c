@@ -945,7 +945,7 @@ case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
 #line 55 "front/java.l"
-{/* skip */}
+{/* skip */line++;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -2479,7 +2479,6 @@ void yyfree (void * ptr )
 pNode doyylval(int type){
 	
 	pNode ls=MakeNodeNoAttSub(type,strdup(yytext));
-		printf("  %p  ;",ls);
 	return ls;
 	
 }
