@@ -11,7 +11,7 @@
 %token <pnode>  _BOOLEAN _BYTE _CHAR _DOUBLE _FLOAT _INT _LONG _SHORT _VOID _STRING _ENUM _CLASS _INTERFACE
 //特殊值
 %token <pnode> 	_TRUE _FALSE _NUL _SUPER _THIS
-//运算符 界符 放弃三元
+//运算符 界符 
 //+ - * / % ++ --
 %token <pnode>	_ADD _SUB _MUL _DIV _MOD _ADD2 _SUB2
 //== != > < >= <=
@@ -24,7 +24,8 @@
 %token <pnode>	_MOV _ADDMOV _SUBMOV _MULMOV _DIVMOV _MODMOV _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
 //界符   {} [] ()  ;  ,  .
 %token <pnode>	_LBRACE _RBRACE _LBRACKET _RBRACKET _LPARENTHESE _RPARENTHESE _SEMICOLON _COMMA _POINT
-
+//其它  ?  :
+%token <pnode>  _DOUBT _COLON
 //标识符  内码值指向符号表
 %token <pnode>  _SYMBOL
 //常数类型  分别归表   不判断数字大小，全部按4位整形处理  浮点全部按float处理
@@ -37,6 +38,8 @@
 //虽然包名、类名表示法一样，但是解析时含义不同，需要分开时分开试试
 //注释在词法分析阶段就去掉了
 compilation_unit :编译单位
+import_statements :导入声明0-n
+type_declarations :类型声明0-n
 package_statement :包声明
 package_name :包名
 import_statement :导入声明
@@ -45,22 +48,53 @@ type_declaration :类型声明
 class_declaration :类声明
 modifiers :前缀关键字s
 modifier :前缀关键字
-implements :类名，多个，逗号分隔
-field_declarations :领域声明多个
+implements :类名，1-n，逗号分隔
+field_declarations :领域声明多个0-n
 field_declaration :领域声明
 method_declaration :方法声明定义
 type :类型
 type_specifier :类型非数组
-brackets : []多个
-----------2018.11.27上部分以入enum
+brackets : []多个0-n
+
+parameter_list :参数列表
+parameter :参数
+statement_block :声明块
+statements :声明多个0-n
+statement :声明
+variable_declaration :变量声明
+variable_declarators :变量式 1-n以,分割
+variable_declarator :变量式
+variable_initializer :变量初始化器
+variable_initializers :变量初始化器 1-n ,分割
+
+
+
+
+
+
+
+
+
+
+
 
 
 -------------------------------------------------------------------------
 // 包  导入  类型声明 | 导入 类型声明
 //native代码注册其实不需要类名包名...留做后用吧
 compilation_unit 	
-			: package_statement import_statement type_declaration  
-			| import_statement type_declaration 
+			: package_statement import_statements type_declarations  
+			| import_statements type_declarations 
+			;
+//导入声明0-n
+import_statements
+			: import_statements import_statement
+			|
+			;
+//类型声明0-n
+type_declarations
+			: type_declarations type_declaration
+			|
 			;
 //包: package 包名 ;
 package_statement 
@@ -97,7 +131,7 @@ class_declaration
 			| modifiers _CLASS _SYMBOL  _IMPLEMENTS implements _LBRACE field_declarations _RBRACE
 			| modifiers _CLASS _SYMBOL  _LBRACE field_declarations _RBRACE
 			;
-//前缀可多个
+//前缀0-多个
 modifiers
 			: modifiers modifier
 			|
@@ -123,7 +157,7 @@ field_declarations
 			: field_declarations field_declaration
 			|
 			;
-//领域: 			
+//领域: 	方法 |		
 field_declaration		
 			: method_declaration
 			| constructor_declaration
@@ -141,13 +175,12 @@ method_declaration
 			;
 //类型 含数组			
 type
-			: type_specifier 
-			| type_specifier  brackets
+			: type_specifier brackets
 			;
 //[]多个
 brackets   
 			: brackets _LBRACKET _RBRACKET
-			| _LBRACKET _RBRACKET
+			| 
 			;
 //类型
 type_specifier
@@ -163,23 +196,74 @@ type_specifier
 			| _STRING
 			| class_name 
 			;
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+//参数列表	:参数 	{,参数}	
+parameter_list
+			: parameter
+			| parameter_list _COMMA parameter
+			;
+
+//参数		: 类型 标识符  | 类型 标识符 []	
+parameter
+			: type _SYMBOL
+			| type _SYMBOL brackets
+			;
+//声明块   :  { 声明多个 }			
+statement_block
+			: _LBRACE statements _RBRACE
+			;
+//声明 0-n			
+statements	: statements statement
+			|
+			;
+//声明	这个词在这里叫陈述好点	
+//	变量声明|表达式|声明块|if句|do句|while句|for句|try句|switch句|synchronized块|return|throw|标记|break|continue|;
+statement
+			: variable_declaration 
+			| expression _SEMICOLON
+			| statement_block
+			| if_statement
+			| do_statement 
+			| while_statement
+			| for_statement
+			| try_statement
+			| switch_statement
+			| _SYNCHRONIZED _LPARENTHESE expression _RPARENTHESE statement_block
+			| _RETURN expression _SEMICOLON
+			| _RETURN  _SEMICOLON
+			| _THROW expression _SEMICOLON
+			| _SYMBOL _COLON statement
+			| _BREAK _SYMBOL _SEMICOLON
+			| _BREAK  _SEMICOLON
+			| _CONTINUE _SEMICOLON
+			| _CONTINUE _SYMBOL _SEMICOLON
+			| _SEMICOLON
+			;
+//变量声明	: 前缀 种类 变量式1-n	;	
+variable_declaration
+			: modifiers type variable_declarators _SEMICOLON
+			;
+//变量式 1-n以,分割			
+variable_declarators
+			: variable_declarator 
+			| variable_declarators _COMMA variable_declarator
+			;
+//变量式	符号 []0-n | 符号 []0-n = 变量初始化器
+variable_declarator
+			: _SYMBOL brackets _MOV variable_initializer
+			| _SYMBOL brackets
+			;
+//变量初始化器
+variable_initializer
+			: expression 
+			| _LBRACE  _RBRACE
+			| _LBRACE variable_initializers _COMMA _RBRACE
+			| _LBRACE variable_initializers  _RBRACE
+			;
+//变量初始化器 1-n ,分割
+variable_initializers
+			: variable_initializer
+			| variable_initializers , variable_initializer
+			;
 			
 			
 			

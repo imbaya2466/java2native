@@ -160,6 +160,8 @@ string						\".*\"
 ";"					{yylval.pnode = doyylval(_SEMICOLON);  return _SEMICOLON;}
 ","					{yylval.pnode = doyylval(_COMMA);  return _COMMA;}
 "."					{yylval.pnode = doyylval(_POINT);  return _POINT;}
+"?"					{yylval.pnode = doyylval(_DOUBT);  return _DOUBT;}
+":"					{yylval.pnode = doyylval(_COLON);  return _COLON;}
 
 {chars}				{yylval.pnode = savechars();  return _CUSTCHAR;}
 {string}			{yylval.pnode = savestrings();  return _CUSTSTRING;}

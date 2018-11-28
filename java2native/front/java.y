@@ -54,7 +54,7 @@
 %token <pnode>  _BOOLEAN _BYTE _CHAR _DOUBLE _FLOAT _INT _LONG _SHORT _VOID _STRING _ENUM _CLASS _INTERFACE
 //特殊值
 %token <pnode> 	_TRUE _FALSE _NUL _SUPER _THIS
-//运算符 界符 放弃三元
+//运算符 界符 
 //+ - * / % ++ --
 %token <pnode>	_ADD _SUB _MUL _DIV _MOD _ADD2 _SUB2
 //== != > < >= <=
@@ -67,7 +67,8 @@
 %token <pnode>	_MOV _ADDMOV _SUBMOV _MULMOV _DIVMOV _MODMOV _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
 //界符   {} [] ()  ;  ,  .
 %token <pnode>	_LBRACE _RBRACE _LBRACKET _RBRACKET _LPARENTHESE _RPARENTHESE _SEMICOLON _COMMA _POINT
-
+//其它  ?  :
+%token <pnode>  _DOUBT _COLON
 //标识符  内码值指向符号表
 %token <pnode>  _SYMBOL
 //常数类型  分别归表   不判断数字大小，全部按4位整形处理  浮点全部按float处理
