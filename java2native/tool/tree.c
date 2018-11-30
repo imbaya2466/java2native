@@ -6,12 +6,12 @@
 /*
 
 struct _Node{
-	int nodenum;//×Ó½ÚµãÊýÁ¿
-	struct _Node *node[NODENUM_MAX];//×Ó½Úµã
-	int type;//½áµãÀàÐÍÖµ
-	Attributes attributes;//ÊôÐÔ
+	int nodenum;//å­èŠ‚ç‚¹æ•°é‡
+	struct _Node *node[NODENUM_MAX];//å­èŠ‚ç‚¹
+	int type;//ç»“ç‚¹ç±»åž‹å€¼
+	Attributes attributes;//å±žæ€§
 	
-	char *leafstring;//ÓÃÓÚ±£´æÖÕ½á·ûµÄ×Ö´®£¬¹¹½¨Ê÷Ê±ÓÃÓÚÏÔÊ¾£¬¹¹½¨·ûºÅ±íÊ±ÓÃÓÚ·ÖÅä¿Õ¼äÌîÐ´ÆäÄÚÈÝ
+	char *leafstring;//ç”¨äºŽä¿å­˜ç»ˆç»“ç¬¦çš„å­—ä¸²ï¼Œæž„å»ºæ ‘æ—¶ç”¨äºŽæ˜¾ç¤ºï¼Œæž„å»ºç¬¦å·è¡¨æ—¶ç”¨äºŽåˆ†é…ç©ºé—´å¡«å†™å…¶å†…å®¹
 	
 };
 typedef struct _Node * pNode;
@@ -19,9 +19,9 @@ typedef struct _Node Node;
 
 */
 
-//######×¢ÒâÒ»ÏÂ£¬n²æÊ÷ÏÖÔÚ»¹Ã»ÓÐÒ»¸öÂúÒâµÄ´¦Àí·½°¸£¬ÓÐ¿ÉÄÜ»á°×°×ÀË·ÑÁËÓï·¨·ÖÎöµÄ½á¹û¡£Ä¿Ç°ÄÜÏëµ½±È½ÏÓÐÐ§µÄ±éÀú·½Ê½¾ÍÊÇºóÐò±éÀú¡£¡£¡£
-//Ä¿Ç°ÏÈÒÔn²æÐÎÊ½´æ´¢£¬ÓÃÓÚÊä³ö²é¿´¡£ÖÐ¼ä´úÂëÉú³É¿´ÍêºóÔÙÏë°ì·¨¾ö¶¨Ê÷»¹ÊÇÓï·¨·ÖÎöÀ´Éú³ÉÈýµØÖ·´úÂë£¡£¡£¡£¡ÔÙÊµÔÚ²»ÐÐ»¹ÓÐ¶à²æÊ÷×ª¶þ²æÊ÷
-//ÏÈ²»Òª¹ý¶àµÄ´¦ÀíÕâ¸ön²æ........ÏëÇå³þÔÙÓÃ£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡
+//######æ³¨æ„ä¸€ä¸‹ï¼Œnå‰æ ‘çŽ°åœ¨è¿˜æ²¡æœ‰ä¸€ä¸ªæ»¡æ„çš„å¤„ç†æ–¹æ¡ˆï¼Œæœ‰å¯èƒ½ä¼šç™½ç™½æµªè´¹äº†è¯­æ³•åˆ†æžçš„ç»“æžœã€‚ç›®å‰èƒ½æƒ³åˆ°æ¯”è¾ƒæœ‰æ•ˆçš„éåŽ†æ–¹å¼å°±æ˜¯åŽåºéåŽ†ã€‚ã€‚ã€‚
+//ç›®å‰å…ˆä»¥nå‰å½¢å¼å­˜å‚¨ï¼Œç”¨äºŽè¾“å‡ºæŸ¥çœ‹ã€‚ä¸­é—´ä»£ç ç”Ÿæˆçœ‹å®ŒåŽå†æƒ³åŠžæ³•å†³å®šæ ‘è¿˜æ˜¯è¯­æ³•åˆ†æžæ¥ç”Ÿæˆä¸‰åœ°å€ä»£ç ï¼ï¼ï¼ï¼å†å®žåœ¨ä¸è¡Œè¿˜æœ‰å¤šå‰æ ‘è½¬äºŒå‰æ ‘
+//å…ˆä¸è¦è¿‡å¤šçš„å¤„ç†è¿™ä¸ªnå‰........æƒ³æ¸…æ¥šå†ç”¨ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼
 pNode makenode(int nodenum,pNode node[],int type,Attributes attributes,char *leafstring){
 	if(nodenum>NODENUM_MAX)
 		return NULL;
@@ -61,31 +61,35 @@ pNode MakeNodeNoAttSubString(int type)
 
 
 
-void showtree(pNode node)
+void showtree(pNode node ,int dp)
 {
+	int i=0;
 	if(node==NULL)
 		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
 	
 	shownode(node);
 	
 	if(node->nodenum==0)
 		return;
 	
-	int i=0;
+	int nextdp=++dp;
 	for(i=0;i<node->nodenum;i++)
 	{
-		showtree(node->node[i]);
+		showtree(node->node[i],nextdp);
 	}
 	
 	
 }
 void shownode(pNode node)
 {
-	printf ("add:%p  val:%d  str:%s  sub:(%d):",node ,node->type,node->leafstring,node->nodenum);
+//	printf ("add:%p  val:%d  str:%s  sub:(%d):",node ,node->type,node->leafstring,node->nodenum);
+	printf ("str:%s ",node->leafstring);
 	int i=0;
 	for(i=0;i<node->nodenum;i++)
 	{
-		printf(" %p",node->node[i]);
+//		printf(" %p",node->node[i]);
 	}
 	printf("\n");
 }

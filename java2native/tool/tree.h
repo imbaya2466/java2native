@@ -3,19 +3,19 @@
 
 #define NODENUM_MAX 10
 
-//ÊôĞÔ½á¹¹Ìå´óÁ¿ÓÃÓÚ¸³Öµ¿½±´£¬²»ÒªÓĞÖ¸Õë
+//å±æ€§ç»“æ„ä½“å¤§é‡ç”¨äºèµ‹å€¼æ‹·è´ï¼Œä¸è¦æœ‰æŒ‡é’ˆ
 typedef struct _Attributes{
 	
 }Attributes;
 
 
 typedef struct _Node{
-	int nodenum;//×Ó½ÚµãÊıÁ¿
-	struct _Node *node[NODENUM_MAX];//×Ó½Úµã
-	int type;//½áµãÀàĞÍÖµ
-	Attributes attributes;//ÊôĞÔ
+	int nodenum;//å­èŠ‚ç‚¹æ•°é‡
+	struct _Node *node[NODENUM_MAX];//å­èŠ‚ç‚¹
+	int type;//ç»“ç‚¹ç±»å‹å€¼
+	Attributes attributes;//å±æ€§
 	
-	char *leafstring;//ÓÃÓÚ±£´æÖÕ½á·ûµÄ×Ö´®£¬¹¹½¨Ê÷Ê±ÓÃÓÚÏÔÊ¾£¬¹¹½¨·ûºÅ±íÊ±ÓÃÓÚ·ÖÅä¿Õ¼äÌîĞ´ÆäÄÚÈİ
+	char *leafstring;//ç”¨äºä¿å­˜ç»ˆç»“ç¬¦çš„å­—ä¸²ï¼Œæ„å»ºæ ‘æ—¶ç”¨äºæ˜¾ç¤ºï¼Œæ„å»ºç¬¦å·è¡¨æ—¶ç”¨äºåˆ†é…ç©ºé—´å¡«å†™å…¶å†…å®¹
 	
 }Node;
 typedef Node* pNode;
@@ -25,13 +25,15 @@ pNode MakeNode(int nodenum,pNode node[],int type,Attributes attributes,char *lea
 pNode MakeNodeNoAtt(int nodenum,pNode node[],int type,char *leafstring);
 pNode MakeNodeNoAttSub(int type,char *leafstring);
 pNode MakeNodeNoAttSubString(int type);
-void showtree(pNode node);
+void showtree(pNode node,int dp);
 void shownode(pNode node);
 
 
 typedef enum id_
 {
    compilation_unit  
+,  import_statements 
+,  type_declarations 
 ,  package_statement  
 ,  package_name  
 ,  import_statement  
@@ -47,7 +49,39 @@ typedef enum id_
 ,  type  
 ,  type_specifier  
 ,  brackets  
-
+,  parameter_list 
+,  parameter 
+,  statement_block 
+,  statements 
+,  statement 
+,  variable_declaration 
+,  variable_declarators 
+,  variable_declarator 
+,  variable_initializer 
+,  variable_initializers 
+,  expression 
+,  numeric_expression 
+,  testing_expression 
+,  logical_expression 
+,  bit_expression     
+,  string_expression  
+,  casting_expression 
+,  creating_expression 
+,  arglist 
+,  literal_expression 
+,  if_statement 
+,  elseifs 
+,  do_statement 
+,  while_statement 
+,  for_statement 
+,  expression01 
+,  try_statement 
+,  catchs 
+,  switch_statement 
+,  cases 
+,  constructor_declaration 
+,  static_initializer 
+,  interface_declaration 
 }id;
 
 

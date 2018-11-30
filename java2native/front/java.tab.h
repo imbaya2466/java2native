@@ -140,11 +140,13 @@ extern int yydebug;
     _SEMICOLON = 350,
     _COMMA = 351,
     _POINT = 352,
-    _SYMBOL = 353,
-    _CUSTCHAR = 354,
-    _CUSTSTRING = 355,
-    _CUSTINT = 356,
-    _CUSTFLOAT = 357
+    _DOUBT = 353,
+    _COLON = 354,
+    _SYMBOL = 355,
+    _CUSTCHAR = 356,
+    _CUSTSTRING = 357,
+    _CUSTINT = 358,
+    _CUSTFLOAT = 359
   };
 #endif
 
@@ -153,11 +155,11 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 34 "front/java.y" /* yacc.c:1909  */
+#line 37 "front/java.y" /* yacc.c:1909  */
 
 	pNode pnode;
 
-#line 161 "front/java.tab.h" /* yacc.c:1909  */
+#line 163 "front/java.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

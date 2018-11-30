@@ -27,6 +27,7 @@
 
 /*正则优先级：()[] >  *+?  个数 >  字符连接  >  |
 转义有俩种方式："xxx"或者\x  ""内的内容作为字符匹配*/
+/*数字的正负不能在这里匹配，最长匹配原则会使 3-2匹配为 3  -2   一元还是二元的分析在语法分析*/
 
 letter                      [a-zA-Z]
 digit                       [0-9]
@@ -35,12 +36,11 @@ space                       [ \t\r]+
 enter						\n
 paragraphComments           "/*"(.|\n)*"*/"
 lineComments                "//".*\n
-negativeint					"-"{digit}+
 
 
 symbol						({letter}|"_"){anychar}*
 
-Integers					{negativeint}|{digit}+				
+Integers					{digit}+				
 floats						{digit}+"."{digit}*|"."{digit}+
 chars						\'.\'
 string						\".*\"

@@ -66,18 +66,29 @@ variable_declarators :变量式 1-n以,分割
 variable_declarator :变量式
 variable_initializer :变量初始化器
 variable_initializers :变量初始化器 1-n ,分割
-
-
-
-
-
-
-
-
-
-
-
-
+expression :表达式
+numeric_expression :数字表达式
+testing_expression :判断表达式
+logical_expression :逻辑表达式
+bit_expression     :位表达式
+string_expression  :字串表达式
+casting_expression :类型转化
+creating_expression :new 表达式
+arglist :传入参数列表
+literal_expression :常量表达式
+if_statement :if句
+elseifs :elseif句
+do_statement :dowhile句
+while_statement :while句
+for_statement :for句
+expression01 :0或1个expression
+try_statement :try句
+catchs :catchs句
+switch_statement :switch句
+cases :case0-n
+constructor_declaration :构造函数
+static_initializer :静态初始化器
+interface_declaration :接口声明
 
 -------------------------------------------------------------------------
 // 包  导入  类型声明 | 导入 类型声明
@@ -120,7 +131,7 @@ class_name
 			
 //-----------------------------------------以上为文件头解析部分			
 			
-//类型声明定义  这里一个文件中只定义一个类或接口
+//类型声明定义  
 type_declaration
 			: class_declaration
 			| interface_declaration
@@ -157,7 +168,7 @@ field_declarations
 			: field_declarations field_declaration
 			|
 			;
-//领域: 	方法 |		
+//领域: 	方法 |构造函数
 field_declaration		
 			: method_declaration
 			| constructor_declaration
@@ -264,7 +275,753 @@ variable_initializers
 			: variable_initializer
 			| variable_initializers , variable_initializer
 			;
+//表达式 :数字表达式 |判断表达式 |字串表达式|位表达式|转化式|new式|常量式| null super this 标识符 (表达式)
+// 	函数调用 | 数组 | 对象使用 |,|三元式
+expression 
+			: numeric_expression 
+			| testing_expression 
+			| logical_expression 
+			| string_expression 
+			| bit_expression 
+			| casting_expression 
+			| creating_expression 
+			| literal_expression 
+			| _NUL
+			| _SUPER
+			| _THIS
+			| _SYMBOL
+			| _LPARENTHESE expression _RPARENTHESE
+			| expression _LPARENTHESE arglist _RPARENTHESE
+			| expression _LPARENTHESE  _RPARENTHESE
+			| expression _LBRACKET expression _RBRACKET
+			| expression _POINT expression
+			| expression _COMMA expression
+			| expression _INSTANCEOF class_name
+			| expression _DOUBT expression _COLON expression
+			;
+//数字表达式	一元+-在此判断	
+numeric_expression
+			: _SUB expression 
+			| _ADD2 expression
+			| _SUB2 expression
+			| expression _ADD2
+			| expression _SUB2
+			| expression _ADD expression
+			| expression _SUB expression
+			| expression _MUL expression
+			| expression _DIV expression
+			| expression _MOD expression
+			| expression _ADDMOV expression
+			| expression _SUBMOV expression
+			| expression _MULMOV expression
+			| expression _DIVMOV expression
+			| expression _MODMOV expression
+			| expression _MOV expression
+			;
 			
+//判断表达式	_CMP _NCMP _MORE _LESS _MCMP _LCMP		
+testing_expression
+			: expression _CMP expression
+			| expression _NCMP expression
+			| expression _MORE expression
+			| expression _LESS expression
+			| expression _MCMP expression
+			| expression _LCMP expression
+			;
+//逻辑表达式	一般的位操作符也可以作用于逻辑操作  文档中对此描述不是很好
+//这里我将常见作用于逻辑操作的识别出  其它的在位操作时判断
+logical_expression		
+			: _BNOT expression
+			| expression _BAND  expression
+			| expression _BOR expression
+			| _TRUE 
+			| _FALSE
+			;
+//位表达式   & | ^ ~ << >> >>>
+// _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
+bit_expression
+			: _NOT expression 
+			| expression _AND expression
+			| expression _OR expression
+			| expression _XOR expression
+			| expression _SHL expression
+			| expression _SHR expression
+			| expression _SAR expression
+			| expression _SHLMOV expression
+			| expression _SHRMOV expression
+			| expression _ANDMOV expression
+			| expression _XORMOV expression
+			| expression _ORMOV expression
+			;
+
+//字串表达式
+string_expression
+			: expression _ADD expression
+			| expression _ADDMOV expression
+			;
+
+//类型转化			
+casting_expression
+			: _LPARENTHESE type _RPARENTHESE expression 
+			;
+//new 表达式
+creating_expression	
+			: _NEW class_name _LPARENTHESE _RPARENTHESE
+			| _NEW class_name _LPARENTHESE arglist _RPARENTHESE
+			| _NEW type_specifier _LBRACKET expression _RBRACKET brackets
+			| _NEW type_specifier brackets
+			;
+//参数1-n个
+arglist
+			: expression
+			| arglist _COMMA expression
+			;
+//常量表达式  字符 字符串 整数 浮点数
+literal_expression
+			: _CUSTCHAR
+			| _CUSTSTRING
+			| _CUSTINT
+			| _CUSTFLOAT
+			;
+//if句
+if_statement
+			: _IF _LPARENTHESE expression _RPARENTHESE statement elseifs
+			| _IF _LPARENTHESE expression _RPARENTHESE statement elseifs _ELSE statement
+			| 
+			;
+//else if 0-n
+elseifs
+			: elseifs _ELSE _IF _LPARENTHESE expression _RPARENTHESE statement
+			|  
+			;
+//do while 句
+do_statement
+			: _DO statement _WHILE _LPARENTHESE expression _RPARENTHESE _SEMICOLON
+			;
+//while句
+while_statement
+			: _WHILE _LPARENTHESE expression _RPARENTHESE statement
+			;
+//for语句  迭代器就不实现了...
+for_statement
+			: _FOR _LPARENTHESE expression01 _SEMICOLON expression01 _SEMICOLON expression01 _RPARENTHESE statement
+			| _FOR _LPARENTHESE variable_declaration expression01 _SEMICOLON expression01 _RPARENTHESE statement
+			;
+expression01
+			: expression
+			|
+			;
+//try语句
+try_statement
+			: _TRY statement catchs _FINALLY statement
+			| _TRY statement catchs
+			;
+//catch0-n
+catchs
+			: catchs _CATCH _LPARENTHESE parameter _RPARENTHESE statement
+			|
+			;
+//switch语句
+switch_statement
+			: _SWITCH _LPARENTHESE expression _RPARENTHESE _LBRACE cases _RBRACE
+			;
+cases
+			: cases _CASE expression _COLON
+			| cases _DEFAULT _COLON
+			| cases statement
+			| 
+			;
+//构造函数
+constructor_declaration
+			: modifiers _SYMBOL _LPARENTHESE parameter_list _RPARENTHESE statement_block 
+			| modifiers _SYMBOL _LPARENTHESE _RPARENTHESE statement_block 
+			;
+//静态初始化器
+static_initializer
+			: _STATIC statement_block 
+			;
+//接口声明  这里没写错，就用extends
+interface_declaration
+			: modifiers _INTERFACE _SYMBOL _EXTENDS implements _LBRACE field_declarations _RBRACE
+			| modifiers _INTERFACE _SYMBOL _LBRACE field_declarations _RBRACE
+			;
+
+
+			
+
+
+----------------------------------------------------
+实际使用：
+//bnf文法定义 这部分重复代码较多其实宏定义省事，但是为了方便调试语法树好看还是先这样，最后成功后改用宏！！！！重复量太大了
+//需了解LR分析表的构造  先产出整体的语法树，再分析出函数部分的抽象语法树，为了做函数的native其它部分可以都不考虑
+//0: { pNode ls=NULL;  $<pnode>$=MNNA(0,compilation_unit);}
+//1: { pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,compilation_unit);}
+//2: { pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,compilation_unit);}
+//3: { pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,compilation_unit);}
+//4: { pNode ls[4]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4};  $<pnode>$=MNNA(4,compilation_unit);}
+//5: { pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,compilation_unit);}
+//6: { pNode ls[6]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6};  $<pnode>$=MNNA(6,compilation_unit);}
+//7: { pNode ls[7]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7};  $<pnode>$=MNNA(7,compilation_unit);}
+//8: { pNode ls[8]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7,$<pnode>8};  $<pnode>$=MNNA(8,compilation_unit);}
+//9: { pNode ls[9]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7,$<pnode>8,$<pnode>9};  $<pnode>$=MNNA(9,compilation_unit);}
+//10:
+
+
+// 包  导入  类型声明 | 导入 类型声明
+//native代码注册其实不需要类名包名...留做后用吧
+compilation_unit 	
+			: package_statement import_statements type_declarations  
+				{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  root=MNNA(3,compilation_unit);}
+			| import_statements type_declarations 
+				{ pNode ls[2]={$<pnode>1,$<pnode>2};  root=MNNA(2,compilation_unit);}
+			;
+//导入声明0-n
+import_statements
+			: import_statements import_statement
+				
+			| 
+				
+			;
+//类型声明0-n
+type_declarations
+			: type_declarations type_declaration
+				
+			|
+			
+			;
+//包: package 包名 ;
+package_statement 
+			: _PACKAGE package_name _SEMICOLON
+			
+			;
+//包名: 标识符 | 包名 . 标识符
+package_name
+			: _SYMBOL
+			@1
+			| package_name _POINT _SYMBOL
+			@3
+			;
+//导入声明 : import 包名 . * ; | import 类名 ; | import 接口名 ;			
+import_statement
+			: _IMPORT package_name _POINT _MUL _SEMICOLON
+			@5
+			| _IMPORT class_name _SEMICOLON
+			@3
+			;
+//类名 : 标识符 | 包名.标识符
+class_name 		
+			: _SYMBOL
+			@1
+			| package_name _POINT _SYMBOL
+			@3
+			;
+
+			
+			
+//-----------------------------------------以上为文件头解析部分			
+			
+//类型声明定义  
+type_declaration
+			: class_declaration
+			@1
+			| interface_declaration
+			@1
+			;
+//类声明: 	{modifier}	class 标识符 [extends 类名] [implements 接口名] {领域}
+class_declaration
+			: modifiers _CLASS _SYMBOL _EXTENDS class_name _IMPLEMENTS implements _LBRACE field_declarations _RBRACE
+			@10
+			| modifiers _CLASS _SYMBOL  _IMPLEMENTS implements _LBRACE field_declarations _RBRACE
+			@8
+			| modifiers _CLASS _SYMBOL  _LBRACE field_declarations _RBRACE
+			@6
+			;
+//前缀0-多个
+modifiers
+			: modifiers modifier
+			@2
+			|
+			@0
+			;
+modifier
+			: _PRIVATE 
+			@1
+			| _PROTECTED 
+			@1
+			| _PUBLIC 
+			@1
+			| _ABSTRACT 
+			@1
+			| _FINAL 
+			@1
+			| _NATIVE
+			@1
+			| _STATIC
+			@1
+			| _TRANSIENT 
+			@1
+			| _SYNCHRONIZED
+			@1
+			;
+//接口多个
+implements	
+			:  implements _COMMA class_name
+			@3
+			| class_name
+			@1
+			;
+//领域声明多个			
+field_declarations
+			: field_declarations field_declaration
+			@2
+			|
+			@0
+			;
+//领域: 	方法 |构造函数
+field_declaration		
+			: method_declaration
+			@1
+			| constructor_declaration
+			@1
+			| variable_declaration
+			@1
+			| static_initializer 
+			@1
+			| _SEMICOLON
+			@1
+			;
+//方法声明		虽然java可以 int a()[] {}写返回数组...但是基本没人这么用就按正常写法	
+// 前缀 类型 标识符 ( [参数] )  ;或者 定义块
+method_declaration			
+			: modifiers type _SYMBOL _LPARENTHESE parameter_list _RPARENTHESE statement_block 
+			@7
+			| modifiers type _SYMBOL _LPARENTHESE  _RPARENTHESE statement_block 
+			@6
+			| modifiers type _SYMBOL _LPARENTHESE parameter_list _RPARENTHESE _SEMICOLON
+			@7
+			| modifiers type _SYMBOL _LPARENTHESE  _RPARENTHESE _SEMICOLON 
+			@6
+			;
+//类型 含数组			
+type
+			: type_specifier brackets
+			@2
+			;
+//[]多个
+brackets   
+			: brackets _LBRACKET _RBRACKET
+			@3
+			| 
+			@0
+			;
+//类型
+type_specifier
+			: _BOOLEAN 
+			@1
+			| _BYTE 
+			@1
+			| _CHAR 
+			@1
+			| _DOUBLE 
+			@1
+			| _FLOAT 
+			@1
+			| _INT 
+			@1
+			| _LONG 
+			@1
+			| _SHORT 
+			@1
+			| _VOID 
+			@1
+			| _STRING
+			@1
+			| class_name 
+			@1
+			;
+//参数列表	:参数 	{,参数}	
+parameter_list
+			: parameter
+			@1
+			| parameter_list _COMMA parameter
+			@3
+			;
+
+//参数		: 类型 标识符  | 类型 标识符 []	
+parameter
+			: type _SYMBOL brackets
+			@3
+			;
+//声明块   :  { 声明多个 }			
+statement_block
+			: _LBRACE statements _RBRACE
+			@3
+			;
+//声明 0-n			
+statements	: statements statement
+			@2
+			|
+			@0
+			;
+//声明	这个词在这里叫陈述好点	
+//	变量声明|表达式|声明块|if句|do句|while句|for句|try句|switch句|synchronized块|return|throw|标记|break|continue|;
+statement
+			: variable_declaration 
+			@1
+			| expression _SEMICOLON
+			@2
+			| statement_block
+			@1
+			| if_statement
+			@1
+			| do_statement 
+			@1
+			| while_statement
+			@1
+			| for_statement
+			@1
+			| try_statement
+			@1
+			| switch_statement
+			@1
+			| _SYNCHRONIZED _LPARENTHESE expression _RPARENTHESE statement_block
+			@5
+			| _RETURN expression _SEMICOLON
+			@3
+			| _RETURN  _SEMICOLON
+			@2
+			| _THROW expression _SEMICOLON
+			@3
+			| _SYMBOL _COLON statement
+			@3
+			| _BREAK _SYMBOL _SEMICOLON
+			@3
+			| _BREAK  _SEMICOLON
+			@2
+			| _CONTINUE _SEMICOLON
+			@2
+			| _CONTINUE _SYMBOL _SEMICOLON
+			@3
+			| _SEMICOLON
+			@1
+			;
+//变量声明	: 前缀 种类 变量式1-n	;	
+variable_declaration
+			: modifiers type variable_declarators _SEMICOLON
+			@4
+			;
+//变量式 1-n以,分割			
+variable_declarators
+			: variable_declarator 
+			@1
+			| variable_declarators _COMMA variable_declarator
+			@3
+			;
+//变量式	符号 []0-n | 符号 []0-n = 变量初始化器
+variable_declarator
+			: _SYMBOL brackets _MOV variable_initializer
+			@4
+			| _SYMBOL brackets
+			@2
+			;
+//变量初始化器
+variable_initializer
+			: expression 
+			@1
+			| _LBRACE  _RBRACE
+			@2
+			| _LBRACE variable_initializers _COMMA _RBRACE
+			@4
+			| _LBRACE variable_initializers  _RBRACE
+			@3
+			;
+//变量初始化器 1-n ,分割
+variable_initializers
+			: variable_initializer
+			@1
+			| variable_initializers _COMMA variable_initializer
+			@3
+			;
+//表达式 :数字表达式 |判断表达式 |字串表达式|位表达式|转化式|new式|常量式| null super this 标识符 (表达式)
+// 	函数调用 | 数组 | 对象使用 |,|三元式
+expression 
+			: numeric_expression 
+			@1
+			| testing_expression 
+			@1
+			| logical_expression 
+			@1
+			| string_expression 
+			@1
+			| bit_expression 
+			@1
+			| casting_expression 
+			@1
+			| creating_expression 
+			@1
+			| literal_expression 
+			@1
+			| _NUL
+			@1
+			| _SUPER
+			@1
+			| _THIS
+			@1
+			| _SYMBOL
+			@1
+			| _LPARENTHESE expression _RPARENTHESE
+			@3
+			| expression _LPARENTHESE arglist _RPARENTHESE
+			@4
+			| expression _LPARENTHESE  _RPARENTHESE
+			@3
+			| expression _LBRACKET expression _RBRACKET
+			@4
+			| expression _POINT expression
+			@3
+			| expression _COMMA expression
+			@3
+			| expression _INSTANCEOF class_name
+			@3
+			| expression _DOUBT expression _COLON expression
+			@5
+			;
+//数字表达式	一元+-在此判断	
+numeric_expression
+			: _SUB expression 
+			@2
+			| _ADD2 expression
+			@2
+			| _SUB2 expression
+			@2
+			| expression _ADD2
+			@2
+			| expression _SUB2
+			@2
+			| expression _ADD expression
+			@3
+			| expression _SUB expression
+			@3
+			| expression _MUL expression
+			@3
+			| expression _DIV expression
+			@3
+			| expression _MOD expression
+			@3
+			| expression _ADDMOV expression
+			@3
+			| expression _SUBMOV expression
+			@3
+			| expression _MULMOV expression
+			@3
+			| expression _DIVMOV expression
+			@3
+			| expression _MODMOV expression
+			@3
+			| expression _MOV expression
+			@3
+			;
+			
+//判断表达式	_CMP _NCMP _MORE _LESS _MCMP _LCMP		
+testing_expression
+			: expression _CMP expression
+			@3
+			| expression _NCMP expression
+			@3
+			| expression _MORE expression
+			@3
+			| expression _LESS expression
+			@3
+			| expression _MCMP expression
+			@3
+			| expression _LCMP expression
+			@3
+			;
+//逻辑表达式	一般的位操作符也可以作用于逻辑操作  文档中对此描述不是很好
+//这里我将常见作用于逻辑操作的识别出  其它的在位操作时判断
+logical_expression		
+			: _BNOT expression
+			@2
+			| expression _BAND  expression
+			@3
+			| expression _BOR expression
+			@3
+			| _TRUE 
+			@1
+			| _FALSE
+			@1
+			;
+//位表达式   & | ^ ~ << >> >>>
+// _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
+bit_expression
+			: _NOT expression 
+			@2
+			| expression _AND expression
+			@3
+			| expression _OR expression
+			@3
+			| expression _XOR expression
+			@3
+			| expression _SHL expression
+			@3
+			| expression _SHR expression
+			@3
+			| expression _SAR expression
+			@3
+			| expression _SHLMOV expression
+			@3
+			| expression _SHRMOV expression
+			@3
+			| expression _ANDMOV expression
+			@3
+			| expression _XORMOV expression
+			@3
+			| expression _ORMOV expression
+			@3
+			;
+
+//字串表达式
+string_expression
+			: expression _ADD expression
+			@3
+			| expression _ADDMOV expression
+			@3
+			;
+
+//类型转化			
+casting_expression
+			: _LPARENTHESE type _RPARENTHESE expression 
+			@4
+			;
+//new 表达式
+creating_expression	
+			: _NEW class_name _LPARENTHESE _RPARENTHESE
+			@4
+			| _NEW class_name _LPARENTHESE arglist _RPARENTHESE
+			@5
+			| _NEW type_specifier _LBRACKET expression _RBRACKET brackets
+			@6
+			| _NEW type_specifier brackets
+			@3
+			;
+//参数1-n个
+arglist
+			: expression
+			@1
+			| arglist _COMMA expression
+			@3
+			;
+//常量表达式  字符 字符串 整数 浮点数
+literal_expression
+			: _CUSTCHAR
+			@1
+			| _CUSTSTRING
+			@1
+			| _CUSTINT
+			@1
+			| _CUSTFLOAT
+			@1
+			;
+//if句
+if_statement
+			: _IF _LPARENTHESE expression _RPARENTHESE statement elseifs
+			@6
+			| _IF _LPARENTHESE expression _RPARENTHESE statement elseifs _ELSE statement
+			@8
+			;
+//else if 0-n
+elseifs
+			: elseifs _ELSE _IF _LPARENTHESE expression _RPARENTHESE statement
+			@7
+			|  
+			@0
+			;
+//do while 句
+do_statement
+			: _DO statement _WHILE _LPARENTHESE expression _RPARENTHESE _SEMICOLON
+			@7
+			;
+//while句
+while_statement
+			: _WHILE _LPARENTHESE expression _RPARENTHESE statement
+			@5
+			;
+//for语句  迭代器就不实现了...
+for_statement
+			: _FOR _LPARENTHESE expression01 _SEMICOLON expression01 _SEMICOLON expression01 _RPARENTHESE statement
+			@9
+			| _FOR _LPARENTHESE variable_declaration expression01 _SEMICOLON expression01 _RPARENTHESE statement
+			@8
+			;
+expression01
+			: expression
+			@1
+			|
+			@0
+			;
+//try语句
+try_statement
+			: _TRY statement catchs _FINALLY statement
+			@5
+			| _TRY statement catchs
+			@3
+			;
+//catch0-n
+catchs
+			: catchs _CATCH _LPARENTHESE parameter _RPARENTHESE statement
+			@6
+			|
+			@0
+			;
+//switch语句
+switch_statement
+			: _SWITCH _LPARENTHESE expression _RPARENTHESE _LBRACE cases _RBRACE
+			@7
+			;
+cases
+			: cases _CASE expression _COLON
+			@4
+			| cases _DEFAULT _COLON
+			@3
+			| cases statement
+			@2
+			| 
+			@0
+			;
+//构造函数
+constructor_declaration
+			: modifiers _SYMBOL _LPARENTHESE parameter_list _RPARENTHESE statement_block 
+			@6
+			| modifiers _SYMBOL _LPARENTHESE _RPARENTHESE statement_block 
+			@5
+			;
+//静态初始化器
+static_initializer
+			: _STATIC statement_block 
+			@2
+			;
+//接口声明  这里没写错，就用extends
+interface_declaration
+			: modifiers _INTERFACE _SYMBOL _EXTENDS implements _LBRACE field_declarations _RBRACE
+			@8
+			| modifiers _INTERFACE _SYMBOL _LBRACE field_declarations _RBRACE
+			@6
+			;
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+
+
 			
 			
 			
