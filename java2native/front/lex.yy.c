@@ -662,7 +662,8 @@ char *yytext;
 /*正则优先级：()[] >  *+?  个数 >  字符连接  >  |
 转义有俩种方式："xxx"或者\x  ""内的内容作为字符匹配*/
 /*数字的正负不能在这里匹配，最长匹配原则会使 3-2匹配为 3  -2   一元还是二元的分析在语法分析*/
-#line 666 "front/lex.yy.c"
+/*嵌套的注释java语法中也是不允许的,况且嵌套在这里会因为最长匹配而匹配到头,因此处理行数问题其它没事*/
+#line 667 "front/lex.yy.c"
 
 #define INITIAL 0
 
@@ -881,7 +882,7 @@ YY_DECL
 	{
 #line 53 "front/java.l"
 
-#line 885 "front/lex.yy.c"
+#line 886 "front/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1481,7 +1482,7 @@ YY_RULE_SETUP
 #line 178 "front/java.l"
 ECHO;
 	YY_BREAK
-#line 1485 "front/lex.yy.c"
+#line 1486 "front/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

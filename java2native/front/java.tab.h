@@ -146,7 +146,8 @@ extern int yydebug;
     _CUSTCHAR = 356,
     _CUSTSTRING = 357,
     _CUSTINT = 358,
-    _CUSTFLOAT = 359
+    _CUSTFLOAT = 359,
+    UMINUS = 360
   };
 #endif
 
@@ -159,7 +160,7 @@ union YYSTYPE
 
 	pNode pnode;
 
-#line 163 "front/java.tab.h" /* yacc.c:1909  */
+#line 164 "front/java.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

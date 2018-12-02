@@ -79,6 +79,8 @@
 %token <pnode>	_CUSTSTRING//字符串
 %token <pnode>	_CUSTINT   //整形
 %token <pnode>	_CUSTFLOAT //浮点型
+//lex不会返回的，用于负数优先级指定
+%token UMINUS
 
 
 //非终结符定义
@@ -87,7 +89,6 @@
 %type <pnode>  import_statements 
 %type <pnode>  type_declarations 
 %type <pnode>  package_statement  
-%type <pnode>  package_name  
 %type <pnode>  import_statement  
 %type <pnode>  class_name  
 %type <pnode>  type_declaration  
@@ -122,7 +123,6 @@
 %type <pnode>  arglist 
 %type <pnode>  literal_expression 
 %type <pnode>  if_statement 
-%type <pnode>  elseifs 
 %type <pnode>  do_statement 
 %type <pnode>  while_statement 
 %type <pnode>  for_statement 
@@ -157,15 +157,17 @@
 %left	_MORE _LESS _MCMP _LCMP
 %left	_SHL _SHR _SAR
 %left	_ADD _SUB
-%left	_MUL _DIV _MOD
-%right	_ADD2 _SUB2 _BNOT _NOT  
+%left	_MUL _DIV _MOD 
+%right	_ADD2 _SUB2 _BNOT _NOT  UMINUS
 %left	_POINT _RBRACE _LBRACKET _RBRACKET _LPARENTHESE
+
 
 //--------------------------------------------------------------------------------------
 
 %%
 //bnf文法定义 这部分重复代码较多其实宏定义省事，但是为了方便调试语法树好看还是先这样，最后成功后改用宏！！！！重复量太大了
 //需了解LR分析表的构造  先产出整体的语法树，再分析出函数部分的抽象语法树，为了做函数的native其它部分可以都不考虑
+//以进归约冲突默认以进，归约归约冲突按先出现的   改变默认方式为按优先级高(同优先级看方向)的先归约
 //0: { pNode ls=NULL;  $<pnode>$=MNNA(0,compilation_unit);}
 //1: { pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,compilation_unit);}
 //2: { pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,compilation_unit);}
@@ -203,19 +205,13 @@ type_declarations
 			;
 //包: package 包名 ;
 package_statement 
-			: _PACKAGE package_name _SEMICOLON
+			: _PACKAGE class_name _SEMICOLON
 				{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,package_statement);}
 			;
-//包名: 标识符 | 包名 . 标识符
-package_name
-			: _SYMBOL
-			{ pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,package_name);}
-			| package_name _POINT _SYMBOL
-			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,package_name);}
-			;
+
 //导入声明 : import 包名 . * ; | import 类名 ; | import 接口名 ;			
 import_statement
-			: _IMPORT package_name _POINT _MUL _SEMICOLON
+			: _IMPORT class_name _POINT _MUL _SEMICOLON
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,import_statement);}
 			| _IMPORT class_name _SEMICOLON
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,import_statement);}
@@ -224,7 +220,7 @@ import_statement
 class_name 		
 			: _SYMBOL
 			{ pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,class_name);}
-			| package_name _POINT _SYMBOL
+			| class_name _POINT _SYMBOL
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,class_name);}
 			;
 
@@ -454,8 +450,9 @@ variable_initializers
 			| variable_initializers _COMMA variable_initializer
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,variable_initializers);}
 			;
-//表达式 :数字表达式 |判断表达式 |字串表达式|位表达式|转化式|new式|常量式| null super this 标识符 (表达式)
-// 	函数调用 | 数组 | 对象使用 |,|三元式
+//表达式 :数字表达式 |判断表达式| 逻辑表达式|位表达式|转化式|new式|常量式| null super this 标识符 (表达式)
+// 	函数调用 | 数组 | 对象使用 |,|三元式    前面的什么什么式只是为了细分表达式而写的，也可以写在表达式里不过会显得太长
+// 目前建议是按返回类型分组且不可以操作重复。具体的类型推断是在语义分析时
 expression 
 			: numeric_expression 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
@@ -479,7 +476,7 @@ expression
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
 			| _THIS
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
-			| _SYMBOL
+			| _SYMBOL  
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
 			| _LPARENTHESE expression _RPARENTHESE
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,expression);}
@@ -498,9 +495,9 @@ expression
 			| expression _DOUBT expression _COLON expression
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,expression);}
 			;
-//数字表达式	一元+-在此判断	
+//数字表达式	一元-在此单独指定优先级
 numeric_expression
-			: _SUB expression 
+			: _SUB expression %prec UMINUS
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,numeric_expression);}
 			| _ADD2 expression
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,numeric_expression);}
@@ -601,7 +598,7 @@ string_expression
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,string_expression);}
 			;
 */
-//类型转化			
+//类型转化			//这里存在一个归约错误...因为无法区分单个的classname和标识符
 casting_expression
 			: _LPARENTHESE type _RPARENTHESE expression 
 			{ pNode ls[4]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4};  $<pnode>$=MNNA(4,casting_expression);}
@@ -635,19 +632,12 @@ literal_expression
 			| _CUSTFLOAT
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,literal_expression);}
 			;
-//if句
+//if句  这里就这么写，因为statement可以直接为if_statement，因此else后可直接识别出if形成else if
 if_statement
-			: _IF _LPARENTHESE expression _RPARENTHESE statement elseifs
-			{ pNode ls[6]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6};  $<pnode>$=MNNA(6,if_statement);}
-			| _IF _LPARENTHESE expression _RPARENTHESE statement elseifs _ELSE statement
-			{ pNode ls[8]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7,$<pnode>8};  $<pnode>$=MNNA(8,if_statement);}
-			;
-//else if 0-n
-elseifs
-			: elseifs _ELSE _IF _LPARENTHESE expression _RPARENTHESE statement
-			{ pNode ls[7]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7};  $<pnode>$=MNNA(7,elseifs);}
-			|  
-			 { pNode *ls=NULL;  $<pnode>$=MNNA(0,elseifs);}
+			: _IF _LPARENTHESE expression _RPARENTHESE statement 
+			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,if_statement);}
+			| _IF _LPARENTHESE expression _RPARENTHESE statement _ELSE statement
+			{ pNode ls[7]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7};  $<pnode>$=MNNA(7,if_statement);}
 			;
 //do while 句
 do_statement
