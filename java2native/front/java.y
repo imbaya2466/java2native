@@ -118,7 +118,7 @@
 %type <pnode>  logical_expression 
 %type <pnode>  bit_expression     
 //%type <pnode>  string_expression  
-%type <pnode>  casting_expression 
+//%type <pnode>  casting_expression 
 %type <pnode>  creating_expression 
 %type <pnode>  arglist 
 %type <pnode>  literal_expression 
@@ -464,8 +464,8 @@ expression
 //			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
 			| bit_expression 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
-			| casting_expression 
-			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
+//			| casting_expression 类型转化推到语义分析时做
+//			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
 			| creating_expression 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
 			| literal_expression 
@@ -598,11 +598,13 @@ string_expression
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,string_expression);}
 			;
 */
+/*
 //类型转化			//这里存在一个归约错误...因为无法区分单个的classname和标识符
 casting_expression
 			: _LPARENTHESE type _RPARENTHESE expression 
 			{ pNode ls[4]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4};  $<pnode>$=MNNA(4,casting_expression);}
 			;
+*/
 //new 表达式
 creating_expression	
 			: _NEW class_name _LPARENTHESE _RPARENTHESE

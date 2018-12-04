@@ -19,7 +19,7 @@ class C extends A.a implements D {
 	{
 		int a=(1+-1)*2;
 		int v=weq;
-		v=dsadsa;
+		v=(a+a.dsad)*8;
 	}
 	
 }

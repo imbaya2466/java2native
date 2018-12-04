@@ -1,0 +1,87 @@
+这是java编译器的抽象语法树结构说明。
+该抽象树经过了大量的语法删减....因为太多了..
+表示方式还是按标准的吧..不要那么暴力了
+
+要求该AST尽力简约、易懂
+
+表示方式使用一种节点定义一个typedef。每个节点的不同类型产生式用untion与enum表示
+通过构造函数返回节点类型
+
+通用属性
+
+
+S_method_declaration :  一个方法  
+	属性：
+	节点：名字-标识符(S_symbol)  参数(S_fieldList)   返回类型S_type   方法体S_statement_block
+
+S_symbol :标识符语义分析时进符号表
+	属性： S_name表示读入的标识符名字。可查到其类型
+	
+S_fieldList :	方法的参数  
+	属性：
+	节点： S_field参数 下一个S_fieldList   
+
+S_field : 参数
+	属性：
+	节点：   类型S_type 名子S_symbol
+	
+S_type :类型
+	属性：[]嵌套数与每个层级
+	节点：enum 几种类型可能为一个符号名。因为这个符号是不用分配空间的因此不放在符号表而是留在抽象语法树中
+
+S_statement_block :一个作用域
+	S_statements
+	
+	
+S_statements :多条陈述句
+	属性:
+	节点： S_statement陈述句   S_statements下一个方法体
+
+//语句作为每条陈述，其可以包含表达式。区别为表达式有值与类型，语句没有
+S_statement ：陈述句
+	| S_field变量   //暂不支持初始化...语法树里的东西留着先不用就好了..方便扩充
+	| exp  表达式        表达式exp
+	| S_statement_block作用域         作用域
+	| if_statement if语句       条件表达式exp true时执行的S_statement_block 非时执行的if_statement(如果else的话里面的判断为1)  
+	| do_statement do语句     //暂时不支持
+	| while_statement while语句   判断条件exp   S_statement_block
+	| for_statement for循环     三个表达式  一个S_statement_block
+	| 
+	| switch_statement switch语句  一个exp  一个特殊的case域-暂不支持
+	| return     //这些类型只用enum不用untion内的节点。untion内表示有子节点或者本身为值的
+	| break
+	| continue
+	| 
+	|
+	|
+	|
+
+//这是抽象树最精妙的部分	
+//每种对应一个联合中的结构体
+exp :  
+    属性： 每个表达式所代表的类型!语义分析时非常有用
+	|  exp op2 exp    二元  
+	|  op1 exp        一元  这俩个就可以涵盖位、数字表达式、判断表达式等   计算顺序全部按树表示
+	|  true
+	|  false
+	|  new_exp  new表达式
+	|  char  常量
+	|  string  常量
+	|  int   常量
+	|  float  常量
+	|  null   
+	|  super
+	|  this
+	|  S_symbol 标识符-表示变量
+	|  funcall  函数调用-   exp   参数
+	|  数组调用   exp  位置
+	|  访问对象    exp    符号名
+	|  
+	;
+	
+S_args :
+	
+	
+	
+	
+	
