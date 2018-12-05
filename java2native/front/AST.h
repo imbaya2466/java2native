@@ -1,20 +1,20 @@
-#ifndef TREE_H
-#define TREE_H
-//ÕâÊÇÓï·¨·ÖÎöÓëÓïÒå·ÖÎö¼äµÄ½Ó¿Ú¡£
-//Ó¦µ±¾¡Á¦±£Ö¤Õâ¸öÊ÷µÄ¼ò½à¡£²¢ÇÒÍ¨¹ı³éÏóÊ÷Ö»´¦Àí¹Ø×¢µÄÓï·¨------ÏñÒ»¸öÂ©¶·Ò»Ñù
+#ifndef AST_H
+#define AST_H
+//è¿™æ˜¯è¯­æ³•åˆ†æä¸è¯­ä¹‰åˆ†æé—´çš„æ¥å£ã€‚æ³¨æ„ç”ŸæˆæŠ½è±¡æ ‘æ—¶ä¸è¦å¸¦è¯­ä¹‰åˆ†æçš„äº§ç‰©
+//åº”å½“å°½åŠ›ä¿è¯è¿™ä¸ªæ ‘çš„ç®€æ´ã€‚å¹¶ä¸”é€šè¿‡æŠ½è±¡æ ‘åªå¤„ç†å…³æ³¨çš„è¯­æ³•------åƒä¸€ä¸ªæ¼æ–—ä¸€æ ·
 /*
-¸ñÊ½¹æ¶¨£º
-1. Ê÷¿ÉÒÔÓÃÎÄ·¨ÃèÊö
-2. Ã¿¸ötypedef¶ÔÓ¦ÎÄ·¨ÖĞµÄÒ»¸ö·ûºÅ
-3. typedef¶¨ÒåµÄÊÇÖ¸ÏòstructµÄÖ¸Õë£¬structµÄÃû×ÖÒÔÏÂ»®Ïß½áÊø£¬Ö»ÓÃÓÚtypedef
-4. ¶ÔÓÚ¶àÀàĞÍµÄ½Úµã£ºÒ»¸ökindÒ»¸öu£¬kind±íÊ¾ÆäÀàĞÍ£¬uÎªÒ»¸öÁªºÏ¡£»¹ÓĞÒ»¸öÍ³Ò»µÄ½á¹¹Ìåatt±íÊ¾½ÚµãÊôĞÔ
-5. ¶ÔÓÚĞ¯´øÖµ(±êÊ¶·û¡¢³£Êı)¡£ÒòÎªÆä±¾ÉíÓĞÊôĞÔËùÒÔ×÷Îª×Ó½Úµã
-6. untionÖĞÃ¿¸östruct±íÊ¾Ò»ÖÖÀàĞÍÏÂ×Ó½ÚµãµÄÖ¸Õë¡£¶ÔÓÚÖµ±êÊ¶ÀàĞÍµÄÖ»ÓĞenumÓëÊôĞÔ¼´¿É£¬¶ÔÓÚÖµÀàĞÍuntionÖĞº¬Öµ(Èô·ÅÔÚattÖĞ½«Ê¹ÆäËüÒ²´ø)
-7. Ã¿¸ö½ÚµãµÄÃ¿¸öÀàĞÍ¶¼ÓĞÆä¹¹Ôìº¯Êı
-8. Ö®ºó»áÌá¹©Ò»¸öÎÒÓÃµÄÍ¨ÓÃ¼òµ¥Ê÷ÊµÏÖ
+æ ¼å¼è§„å®šï¼š
+1. æ ‘å¯ä»¥ç”¨æ–‡æ³•æè¿°
+2. æ¯ä¸ªtypedefå¯¹åº”æ–‡æ³•ä¸­çš„ä¸€ä¸ªç¬¦å·
+3. typedefå®šä¹‰çš„æ˜¯æŒ‡å‘structçš„æŒ‡é’ˆï¼Œstructçš„åå­—ä»¥ä¸‹åˆ’çº¿ç»“æŸï¼Œåªç”¨äºtypedef
+4. å¯¹äºå¤šç±»å‹çš„èŠ‚ç‚¹ï¼šä¸€ä¸ªkindä¸€ä¸ªuï¼Œkindè¡¨ç¤ºå…¶ç±»å‹ï¼Œuä¸ºä¸€ä¸ªè”åˆã€‚è¿˜æœ‰ä¸€ä¸ªç»Ÿä¸€çš„ç»“æ„ä½“attè¡¨ç¤ºèŠ‚ç‚¹å±æ€§
+5. å¯¹äºæºå¸¦å€¼(æ ‡è¯†ç¬¦ã€å¸¸æ•°)ã€‚å› ä¸ºå…¶æœ¬èº«æœ‰å±æ€§æ‰€ä»¥ä½œä¸ºå­èŠ‚ç‚¹
+6. untionä¸­æ¯ä¸ªstructè¡¨ç¤ºä¸€ç§ç±»å‹ä¸‹å­èŠ‚ç‚¹çš„æŒ‡é’ˆã€‚å¯¹äºå€¼æ ‡è¯†ç±»å‹çš„åªæœ‰enumä¸å±æ€§å³å¯ï¼Œå¯¹äºå€¼ç±»å‹untionä¸­å«å€¼(è‹¥æ”¾åœ¨attä¸­å°†ä½¿å…¶å®ƒä¹Ÿå¸¦)
+7. æ¯ä¸ªèŠ‚ç‚¹çš„æ¯ä¸ªç±»å‹éƒ½æœ‰å…¶æ„é€ å‡½æ•°
+8. ä¹‹åä¼šæä¾›ä¸€ä¸ªæˆ‘ç”¨çš„é€šç”¨ç®€å•æ ‘å®ç°
 */
-//·ûºÅ±íÖ»·ÅĞèÒª·ÖÅä¿Õ¼äµÄ±äÁ¿ºÍÍâ²¿±äÁ¿
-//ÀàĞÍÃûÒ»ÂÉ´æ½øÊ÷ÖĞ
+//ç¬¦å·è¡¨åªæ”¾éœ€è¦åˆ†é…ç©ºé—´çš„å˜é‡å’Œå¤–éƒ¨å˜é‡
+//ç±»å‹åä¸€å¾‹å­˜è¿›æ ‘ä¸­
 
 
 typedef struct Att_ Att;
@@ -36,25 +36,25 @@ struct Att_{
 	int line;
 	char *name;
 };
-//º¯Êı¶¨Òå
+//å‡½æ•°å®šä¹‰
 struct S_method_declaration_{
-	enum {S_fun}kind;//Õë¶Ô½öÒ»ÖÖÊ±´ËÏîÔİÎŞÓÃ
+	enum {S_fun}kind;//é’ˆå¯¹ä»…ä¸€ç§æ—¶æ­¤é¡¹æš‚æ— ç”¨
 	Att att;
 	union{
 		struct{pS_symbol name;pS_fieldList fies;pS_type retype;pS_statement_block body;}decfun;
 	}u;
 };
 
-//±êÊ¶·û×¢ÒâÖ¸Ïò·ûºÅ±í
+//æ ‡è¯†ç¬¦æ³¨æ„æŠ½è±¡è¯­æ³•æ ‘ä¸­è¿˜æ˜¯å­˜æ ‡è¯†ç¬¦æœ¬ä½“ï¼Œç¬¦å·è¡¨æ˜¯åœ¨è¯­ä¹‰åˆ†ææ—¶ç”Ÿæˆçš„
 struct S_symbol_{
 	enum {S_sym}kind;
 	Att att;
 	union{
-		int symtab;
+		char *symbol;
 	}u;
 };
 
-//²ÎÊıÁĞ±í
+//å‚æ•°åˆ—è¡¨
 struct S_fieldList_{
 	enum {S_fiedlist}kind;
 	Att att;
@@ -62,7 +62,7 @@ struct S_fieldList_{
 		struct {pS_field field;pS_fieldList next;}fieldlist;
 	}u;
 };
-//²ÎÊı
+//å‚æ•°
 struct S_field_{
 	enum {S_fied}kind;
 	Att att;
@@ -71,16 +71,16 @@ struct S_field_{
 	}u;
 };
 
-//ÀàĞÍ
+//ç±»å‹
 struct S_type_{
 	enum enStype{type_boolean,type_byte,type_char,type_float,type_double,type_int,type_long,type_short,type_void,type_String,type_class}kind;
-	Att att;//type_classµÄ×Ö´®ÄÚÈİ·ÅÔÚÊôĞÔÀï,ÒòÎªÀàĞÍ²»ÊôÓÚ·ûºÅ±í£¬·ûºÅ±íÖ»´æ±äÁ¿Óëº¯Êı
+	Att att;//type_classçš„å­—ä¸²å†…å®¹æ”¾åœ¨å±æ€§é‡Œ,å› ä¸ºç±»å‹ä¸å±äºç¬¦å·è¡¨ï¼Œç¬¦å·è¡¨åªå­˜å˜é‡ä¸å‡½æ•°
 	union{
-		//ÕâÀï·ÅÌØÓĞĞÅÏ¢[]µÄÇ°Ì×ÊıÓëÃ¿¸ö²ã¼¶..5²ãÒÔÏÂ¡£±íÊ¾·½Ê½°´ÏÂ±ê0-5²ã
+		//è¿™é‡Œæ”¾ç‰¹æœ‰ä¿¡æ¯[]çš„å‰å¥—æ•°ä¸æ¯ä¸ªå±‚çº§..5å±‚ä»¥ä¸‹ã€‚è¡¨ç¤ºæ–¹å¼æŒ‰ä¸‹æ ‡0-5å±‚
 		int brackets[5];
 	}u;
 };
-//Óï¾ä¿éÓÃÓÚÇø·Ö×÷ÓÃÓò
+//è¯­å¥å—ç”¨äºåŒºåˆ†ä½œç”¨åŸŸ
 struct S_statement_block_{
 	enum {S_statement_block}kind;
 	Att att;
@@ -88,7 +88,7 @@ struct S_statement_block_{
 		struct {pS_statements states;}states;
 	}u;
 };
-//Óï¾äÁ´
+//è¯­å¥é“¾
 struct S_statements_{
 	enum {S_statements}kind;
 	Att att;
@@ -96,21 +96,21 @@ struct S_statements_{
 		struct {pS_statement state;pS_statements next;}states;
 	}u;
 };
-//Óï¾ä  breakÓÃÓÚÌø³ö¿é£¬continueÓÃÓÚ¼ÓËÙ
+//è¯­å¥  breakç”¨äºè·³å‡ºå—ï¼Œcontinueç”¨äºåŠ é€Ÿ
 struct S_statement_{
 	enum {sta_field,sta_exp,sta_block,sta_if,sta_while,sta_for,sta_return,sta_break,sta_continue}kind;
 	Att att;
 	union{
-		struct {pS_field field;}stafield;  //Á¬ĞøÉêÇë±»»¯Îª¶à¸östate..³õÊ¼»¯Ôİ²»Ö§³Ö
+		struct {pS_field field;}stafield;  //è¿ç»­ç”³è¯·è¢«åŒ–ä¸ºå¤šä¸ªstate..åˆå§‹åŒ–æš‚ä¸æ”¯æŒ
 		struct {pS_exp exp;}staexp;
 		struct {pS_statement_block block;}stablock;
-		struct {pS_exp exp ;pS_statement_block trueblock;pS_statement_block falseblock; }staif;//±¾ÖÊÉÏelse ifµÈ»¹ÊÇÔÚflaseÊ±ÅĞ¶ÏÏÂÒ»¾äµÄblockÄÚÈİ¡£ËùÓĞÓòµÄÇø·Ö¶¼¶ª¸øblock¡£block¿ÉÓÃÍâµÄ
+		struct {pS_exp exp ;pS_statement_block trueblock;pS_statement_block falseblock; }staif;//æœ¬è´¨ä¸Šelse ifç­‰è¿˜æ˜¯åœ¨flaseæ—¶åˆ¤æ–­ä¸‹ä¸€å¥çš„blockå†…å®¹ã€‚æ‰€æœ‰åŸŸçš„åŒºåˆ†éƒ½ä¸¢ç»™blockã€‚blockå¯ç”¨å¤–çš„
 		struct {pS_exp exp ;pS_statement_block block;}stawhile;
 		struct {pS_exp exp1  ;pS_exp exp2 ;pS_exp exp3 ;pS_statement_block block;}stafor;
-		//ÆäËûÈı¸öÎªenum¿É±íÊ¾µÄ±êÊ¶·û
+		//å…¶ä»–ä¸‰ä¸ªä¸ºenumå¯è¡¨ç¤ºçš„æ ‡è¯†ç¬¦
 	}u;
 };
-//±í´ïÊ½ ×¢ÒâÊôĞÔÖĞ´øÀàĞÍ  ³£Êı³ıÁËstring¶¼ÁôÔÚ³éÏóÊ÷ÖĞ
+//è¡¨è¾¾å¼ æ³¨æ„å±æ€§ä¸­å¸¦ç±»å‹  å¸¸æ•°é™¤äº†stringéƒ½ç•™åœ¨æŠ½è±¡æ ‘ä¸­
 enum S_op2_{
 	//+     -        *     /       %    ==    !=      >         <      >=       <=     &       |     ^      <<    >>      >>>     &&    ||
 	S_ADD ,S_SUB ,S_MUL ,S_DIV ,S_MOD ,S_CMP ,S_NCMP ,S_MORE ,S_LESS ,S_MCMP ,S_LCMP ,S_AND ,S_OR ,S_XOR ,S_SHL ,S_SHR ,S_SAR ,S_BAND ,S_BOR
@@ -127,20 +127,20 @@ struct S_exp_{
 	union{
 		struct {pS_exp exp1;S_op2 op;pS_exp exp2;}expop2;
 		struct {pS_exp exp1;S_op1 op;}expop1;
-		struct {pS_type type;pS_args args ;}expnew;//ÒòÎªÀàĞÍ²»´æÓÚ·ûºÅ±íÏîËùÒÔÓÃtype£¬Êµ¼ÊÉÏ×Ô¶¨ÒåµÄ½á¹¹ÀàĞÍÓ¦¸ÃÍ¬º¯Êı¶¼ÔÚ·ûºÅ±íµÄ£¬µ«ÊÇÕâÀï¼ò»¯¾Í²»·ÅÁË
+		struct {pS_type type;pS_args args ;}expnew;
 		struct {pS_exp exp;pS_args args;}expcall;
 		struct {pS_exp exp;int arry[5];}exparry;
 		struct {pS_exp exp1;pS_exp exp2;}expobject;
 		struct {pS_symbol sym;}expsym;
 		struct {char value;}expchar;
-		struct {int  stringid;}expstr;//Ö¸Ïò³£Á¿×Ö´®±í
+		struct {char  *value;}expstr;//å¸¸é‡è¡¨åœ¨æ„é€ ASTæ—¶ç»Ÿè®¡ï¼Œæ„é€ ASTåç»Ÿä¸€åˆ†é…
 		struct {int  value;}expint;
 		struct {float  value;}expfloat;
-		//null super this true flase enum×ãÒÔ
+		//null super this true flase enumè¶³ä»¥
 	}u;
 };
 
-//²ÎÊıÁ´
+//å‚æ•°é“¾
 struct S_args_{
 	enum {S_args}kind;
 	Att att;
@@ -149,17 +149,17 @@ struct S_args_{
 	}u;
 };
 
-//¹¹Ôìº¯Êı
+//æ„é€ å‡½æ•°
 
 pS_method_declaration MK_pS_method_declaration(Att att,pS_symbol name,pS_fieldList fies,pS_type retype,pS_statement_block body);
 
-pS_symbol MK_pS_symbol(Att att,int symtab);
+pS_symbol MK_pS_symbol(Att att,char* symbol);
 
 pS_fieldList MK_pS_fieldList(Att att,pS_field field,pS_fieldList next);
 
 pS_field MK_pS_field(Att att,pS_type type,pS_symbol name);
-//Õâ¸ö±È½ÏÌØÊâ£¬È«ÊÇ±êÊ¶ÀàĞÍ£¬Òò´Ë´«enumÇÒ×¢Òâ×Ô¶¨ÒåÀàĞÍÃûÖÃÓÚattÃûÖĞ
-pS_type MK_pS_type(Att att,enum enStype type,int brackets[5]);
+//è¿™ä¸ªæ¯”è¾ƒç‰¹æ®Šï¼Œå…¨æ˜¯æ ‡è¯†ç±»å‹ï¼Œå› æ­¤ä¼ enumä¸”æ³¨æ„è‡ªå®šä¹‰ç±»å‹åç½®äºattåä¸­
+pS_type MK_pS_type(Att att,enum enStype type,int *brackets);
 
 pS_statement_block MK_pS_statementblock(Att att,pS_statements states);
 
@@ -168,7 +168,7 @@ pS_statements MK_pS_statements(Att att,pS_statement state,pS_statements next);
 pS_statement MK_pS_statement_field(Att att,pS_field field);
 pS_statement MK_pS_statement_exp(Att att,pS_exp exp);
 pS_statement MK_pS_statement_block(Att att,pS_statement_block block);
-pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement_block trueblock,pS_statement_block falseblock;);
+pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement_block trueblock,pS_statement_block falseblock);
 pS_statement MK_pS_statement_while(Att att,pS_exp exp ,pS_statement_block block);
 pS_statement MK_pS_statement_for(Att att,pS_exp exp1  ,pS_exp exp2 ,pS_exp exp3 ,pS_statement_block block);
 pS_statement MK_pS_statement_return(Att att);
@@ -183,7 +183,7 @@ pS_exp MK_pS_exp_arry(Att att,pS_exp exp,int arry[5]);
 pS_exp MK_pS_exp_object(Att att,pS_exp exp1,pS_exp exp2);
 pS_exp MK_pS_exp_sym(Att att,pS_symbol sym);
 pS_exp MK_pS_exp_char(Att att,char value);
-pS_exp MK_pS_exp_str(Att att,int stringid);
+pS_exp MK_pS_exp_str(Att att,char *value);
 pS_exp MK_pS_exp_int(Att att,int  value);
 pS_exp MK_pS_exp_float(Att att,float  value);
 pS_exp MK_pS_exp_null(Att att);

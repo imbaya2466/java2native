@@ -1,18 +1,20 @@
 
 
-//Óï·¨·ÖÎöyacc³ÌĞò¡£
-//Ò»¸ö·ÖÎöÕ»ºÍÒ»¸öÄÚÈİÕ»¡£·ÖÎöÕ»ÖĞ±£´æ×ÅÖÕ½á·ûºÍ·ÇÖÕ½á·û£¬ ²¢ÇÒ´ú±íµ±Ç°ÆÊÎö×´Ì¬¡£ÄÚÈİÕ»ÊÇÒ»¸ö YYSTYPE ÔªËØµÄÊı×é£¬¶ÔÓÚ·ÖÎöÕ»ÖĞµÄÃ¿Ò»¸öÔªËØ¶¼±£´æ×ÅÒ»¸ö¶ÔÓ¦µÄÖµ¡£
-//lex returnµÄÀàĞÍ½øÈë·ÖÎöÕ»--lex·µ»ØÖÕ½á·ûÒ»²½²½Óï·¨·ÖÎö¡£yylval½øÈëÄÚÈİÕ»¡£$$·ÃÎÊµÄÊÇÄÚÈİÕ»,ÆäÀàĞÍÎªYYSTYPE¡£ÕıÊÇÊôĞÔÎÄ·¨µÄÊôĞÔ£¨ĞèÒª¿´Ò»ÏÂµÚ6ÕÂÔÙ¶¨Òå£©
-//·ÖÎöÕ»¾ÍÊÇ±àÒëÔ­ÀíÖĞLRÓÃµÄ·ûºÅÕ»£¬×ö³öÓï·¨¶¯×÷Ò²ÊÇÒÀ¾İÕâ¸öÕ»¡£×´Ì¬Õ»ÓÉyacc×Ô¶¯Î¬»¤
+//è¯­æ³•åˆ†æyaccç¨‹åºã€‚
+//ä¸€ä¸ªåˆ†ææ ˆå’Œä¸€ä¸ªå†…å®¹æ ˆã€‚åˆ†ææ ˆä¸­ä¿å­˜ç€ç»ˆç»“ç¬¦å’Œéç»ˆç»“ç¬¦ï¼Œ å¹¶ä¸”ä»£è¡¨å½“å‰å‰–æçŠ¶æ€ã€‚å†…å®¹æ ˆæ˜¯ä¸€ä¸ª YYSTYPE å…ƒç´ çš„æ•°ç»„ï¼Œå¯¹äºåˆ†ææ ˆä¸­çš„æ¯ä¸€ä¸ªå…ƒç´ éƒ½ä¿å­˜ç€ä¸€ä¸ªå¯¹åº”çš„å€¼ã€‚
+//lex returnçš„ç±»å‹è¿›å…¥åˆ†ææ ˆ--lexè¿”å›ç»ˆç»“ç¬¦ä¸€æ­¥æ­¥è¯­æ³•åˆ†æã€‚yylvalè¿›å…¥å†…å®¹æ ˆã€‚$$è®¿é—®çš„æ˜¯å†…å®¹æ ˆ,å…¶ç±»å‹ä¸ºYYSTYPEã€‚æ­£æ˜¯å±æ€§æ–‡æ³•çš„å±æ€§ï¼ˆéœ€è¦çœ‹ä¸€ä¸‹ç¬¬6ç« å†å®šä¹‰ï¼‰
+//åˆ†ææ ˆå°±æ˜¯ç¼–è¯‘åŸç†ä¸­LRç”¨çš„ç¬¦å·æ ˆï¼Œåšå‡ºè¯­æ³•åŠ¨ä½œä¹Ÿæ˜¯ä¾æ®è¿™ä¸ªæ ˆã€‚çŠ¶æ€æ ˆç”±yaccè‡ªåŠ¨ç»´æŠ¤
 %{
 	
     #include <stdio.h>
     #include <string.h>
 	#include "tool/tree.h"	
-	//Óï·¨Ê÷¹¹ÔìÓÃºê  #Îª×Ö·û´®»¯
+	#include "AST.h"
+	#include "main.h"
+	//è¯­æ³•æ ‘æ„é€ ç”¨å®  #ä¸ºå­—ç¬¦ä¸²åŒ–
 	#define MNNA(i,x) MakeNodeNoAtt(i,ls,x,#x)
 	
-	//externÊÇÖ¸¶¨Òå(·ÖÅä¿Õ¼ä)ÔÚÆäËüµØ·½£¬º¯ÊıÉùÃ÷Óë¶¨ÒåÊÇ·Ö¿ªµÄÍ¨¹ıÉùÃ÷Ê¹ÓÃÒò´Ë¶¼²»ÓÃ¼Óextren£¬±äÁ¿ÎªÉùÃ÷²¢¶¨ÒåÒò´ËÒª¼Ó¡£
+	//externæ˜¯æŒ‡å®šä¹‰(åˆ†é…ç©ºé—´)åœ¨å…¶å®ƒåœ°æ–¹ï¼Œå‡½æ•°å£°æ˜ä¸å®šä¹‰æ˜¯åˆ†å¼€çš„é€šè¿‡å£°æ˜ä½¿ç”¨å› æ­¤éƒ½ä¸ç”¨åŠ extrenï¼Œå˜é‡ä¸ºå£°æ˜å¹¶å®šä¹‰å› æ­¤è¦åŠ ã€‚
 	int yylex(void);
 	extern FILE * yyin;
 	extern char * yytext;
@@ -32,32 +34,32 @@
 	
 %}
 //--------------------------------------------------------------------------------------
-//¶¨ÒåYYSTYPEÄÚÈİµÄÊôĞÔ
-//Ã¿¸öYYSTYPE´ú±íÒ»¸ö½Úµã
+//å®šä¹‰YYSTYPEå†…å®¹çš„å±æ€§
+//æ¯ä¸ªYYSTYPEä»£è¡¨ä¸€ä¸ªèŠ‚ç‚¹
 %union{
 	pNode pnode;
 }
 
 
 
-//¶¨Òå¿ªÊ¼·ûºÅ
+//å®šä¹‰å¼€å§‹ç¬¦å·
 %start compilation_unit
 
 
-//¶¨ÒåtokenÖÕ½á·û,ÕâÀï¶¨ÒåµÄ¾ÍÊÇ¶şÔªÊ½<ÖÖ±àÂë£¬ÄÚÂëÖµ>µÄÖÖ±àÂë£¬lexÖĞ·µ»Ø¸ÃÀàĞÍ£¬ÆäÔÚyaccÖĞ×îºóµÄ±íÊ¾ÊÇºê¶¨Òå±àÂë
-//ÒòÎª´ó¶àÃû×Ö±È½ÏÃô¸ĞÒò´Ë²ÉÓÃ_¿ªÍ·  Ê¡ÂÔÁË@
+//å®šä¹‰tokenç»ˆç»“ç¬¦,è¿™é‡Œå®šä¹‰çš„å°±æ˜¯äºŒå…ƒå¼<ç§ç¼–ç ï¼Œå†…ç å€¼>çš„ç§ç¼–ç ï¼Œlexä¸­è¿”å›è¯¥ç±»å‹ï¼Œå…¶åœ¨yaccä¸­æœ€åçš„è¡¨ç¤ºæ˜¯å®å®šä¹‰ç¼–ç 
+//å› ä¸ºå¤§å¤šåå­—æ¯”è¾ƒæ•æ„Ÿå› æ­¤é‡‡ç”¨_å¼€å¤´  çœç•¥äº†@
 
-//ÀàÏà¹Ø
+//ç±»ç›¸å…³
 %token <pnode> _PRIVATE _PROTECTED _PUBLIC _ABSTRACT _EXTENDS _FINAL _IMPLEMENTS _NATIVE _NEW _STATIC _STRICTFP _TRANSIENT  _VOLATILE
-//³ÌĞò¿ØÖÆ
+//ç¨‹åºæ§åˆ¶
 %token <pnode> 	_BREAK _CONTINUE _RETURN _DO _WHILE _IF _ELSE _FOR _INSTANCEOF _SWITCH _CASE _DEFAULT _TRY _CATCH _FINALLY _THROW _THROWS _ASSERT _SYNCHRONIZED
-//°ü
+//åŒ…
 %token <pnode> 	_IMPORT _PACKAGE 
-//ÀàĞÍ String²»ÊÇ¹Ø¼ü×Ö£¬µ«javaÓĞÆäÓï·¨ÌÇÓÚÊÇÌá³ö
+//ç±»å‹ Stringä¸æ˜¯å…³é”®å­—ï¼Œä½†javaæœ‰å…¶è¯­æ³•ç³–äºæ˜¯æå‡º
 %token <pnode>  _BOOLEAN _BYTE _CHAR _DOUBLE _FLOAT _INT _LONG _SHORT _VOID _STRING _ENUM _CLASS _INTERFACE
-//ÌØÊâÖµ
+//ç‰¹æ®Šå€¼
 %token <pnode> 	_TRUE _FALSE _NUL _SUPER _THIS
-//ÔËËã·û ½ç·û 
+//è¿ç®—ç¬¦ ç•Œç¬¦ 
 //+ - * / % ++ --
 %token <pnode>	_ADD _SUB _MUL _DIV _MOD _ADD2 _SUB2
 //== != > < >= <=
@@ -68,22 +70,22 @@
 %token <pnode>	_BAND _BOR _BNOT
 //= += -= *= /= %= <<= >>= &= ^= |=
 %token <pnode>	_MOV _ADDMOV _SUBMOV _MULMOV _DIVMOV _MODMOV _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
-//½ç·û   {} [] ()  ;  ,  .
+//ç•Œç¬¦   {} [] ()  ;  ,  .
 %token <pnode>	_LBRACE _RBRACE _LBRACKET _RBRACKET _LPARENTHESE _RPARENTHESE _SEMICOLON _COMMA _POINT
-//ÆäËü  ?  :
+//å…¶å®ƒ  ?  :
 %token <pnode>  _DOUBT _COLON
-//±êÊ¶·û  ÄÚÂëÖµÖ¸Ïò·ûºÅ±í
+//æ ‡è¯†ç¬¦  å†…ç å€¼æŒ‡å‘ç¬¦å·è¡¨
 %token <pnode>  _SYMBOL
-//³£ÊıÀàĞÍ  ·Ö±ğ¹é±í   ²»ÅĞ¶ÏÊı×Ö´óĞ¡£¬È«²¿°´4Î»ÕûĞÎ´¦Àí  ¸¡µãÈ«²¿°´float´¦Àí
+//å¸¸æ•°ç±»å‹  åˆ†åˆ«å½’è¡¨   ä¸åˆ¤æ–­æ•°å­—å¤§å°ï¼Œå…¨éƒ¨æŒ‰4ä½æ•´å½¢å¤„ç†  æµ®ç‚¹å…¨éƒ¨æŒ‰floatå¤„ç†
 %token <pnode>  _CUSTCHAR  //' '
-%token <pnode>	_CUSTSTRING//×Ö·û´®
-%token <pnode>	_CUSTINT   //ÕûĞÎ
-%token <pnode>	_CUSTFLOAT //¸¡µãĞÍ
-//lex²»»á·µ»ØµÄ£¬ÓÃÓÚ¸ºÊıÓÅÏÈ¼¶Ö¸¶¨
+%token <pnode>	_CUSTSTRING//å­—ç¬¦ä¸²
+%token <pnode>	_CUSTINT   //æ•´å½¢
+%token <pnode>	_CUSTFLOAT //æµ®ç‚¹å‹
+//lexä¸ä¼šè¿”å›çš„ï¼Œç”¨äºè´Ÿæ•°ä¼˜å…ˆçº§æŒ‡å®š
 %token UMINUS
 
 
-//·ÇÖÕ½á·û¶¨Òå
+//éç»ˆç»“ç¬¦å®šä¹‰
 
 %type <pnode>  compilation_unit  
 %type <pnode>  import_statements 
@@ -120,6 +122,7 @@
 //%type <pnode>  string_expression  
 //%type <pnode>  casting_expression 
 %type <pnode>  creating_expression 
+%type <pnode>  bracketnums
 %type <pnode>  arglist 
 %type <pnode>  literal_expression 
 %type <pnode>  if_statement 
@@ -143,9 +146,9 @@
 
 
 
-//·ûºÅÓÅÏÈ¼¶¶¨Òå£¬´Ë´¦°ïÖú¶¯×÷±íµÄÉú³É  Ò»ÔªµÄ+-ÔÚÓï·¨·ÖÎöÊ±ÅĞ¶Ï  ÅÅĞòÎªµÍµ½¸ß
-//ÓÅÏÈ¼¶µÄ±íÊ¾¿ÉÒÔÓÃÓï·¨Ò²¿ÉÒÔÓÃÔÚÕâÀïÏÔÊ¾£¬ÕâÑù¿ÉÒÔÊ¡È¥ºÜ¶àÓï·¨ËµÃ÷
-//×¢Òâ£¬µ±bison·ÖÎöÓï·¨¹æÔòÊ±Óöµ½³åÍ»Ê±£¬»á²éÓÅÏÈ¼¶±íÀ´½â¾ö³åÍ»¡£
+//ç¬¦å·ä¼˜å…ˆçº§å®šä¹‰ï¼Œæ­¤å¤„å¸®åŠ©åŠ¨ä½œè¡¨çš„ç”Ÿæˆ  ä¸€å…ƒçš„+-åœ¨è¯­æ³•åˆ†ææ—¶åˆ¤æ–­  æ’åºä¸ºä½åˆ°é«˜
+//ä¼˜å…ˆçº§çš„è¡¨ç¤ºå¯ä»¥ç”¨è¯­æ³•ä¹Ÿå¯ä»¥ç”¨åœ¨è¿™é‡Œæ˜¾ç¤ºï¼Œè¿™æ ·å¯ä»¥çœå»å¾ˆå¤šè¯­æ³•è¯´æ˜
+//æ³¨æ„ï¼Œå½“bisonåˆ†æè¯­æ³•è§„åˆ™æ—¶é‡åˆ°å†²çªæ—¶ï¼Œä¼šæŸ¥ä¼˜å…ˆçº§è¡¨æ¥è§£å†³å†²çªã€‚
 %left 	_COMMA
 %right 	_MOV _ADDMOV _SUBMOV _MULMOV _DIVMOV _MODMOV _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
 %left	_BOR
@@ -165,9 +168,9 @@
 //--------------------------------------------------------------------------------------
 
 %%
-//bnfÎÄ·¨¶¨Òå Õâ²¿·ÖÖØ¸´´úÂë½Ï¶àÆäÊµºê¶¨ÒåÊ¡ÊÂ£¬µ«ÊÇÎªÁË·½±ãµ÷ÊÔÓï·¨Ê÷ºÃ¿´»¹ÊÇÏÈÕâÑù£¬×îºó³É¹¦ºó¸ÄÓÃºê£¡£¡£¡£¡ÖØ¸´Á¿Ì«´óÁË
-//ĞèÁË½âLR·ÖÎö±íµÄ¹¹Ôì  ÏÈ²ú³öÕûÌåµÄÓï·¨Ê÷£¬ÔÙ·ÖÎö³öº¯Êı²¿·ÖµÄ³éÏóÓï·¨Ê÷£¬ÎªÁË×öº¯ÊıµÄnativeÆäËü²¿·Ö¿ÉÒÔ¶¼²»¿¼ÂÇ
-//ÒÔ½ø¹éÔ¼³åÍ»Ä¬ÈÏÒÔ½ø£¬¹éÔ¼¹éÔ¼³åÍ»°´ÏÈ³öÏÖµÄ   ¸Ä±äÄ¬ÈÏ·½Ê½Îª°´ÓÅÏÈ¼¶¸ß(Í¬ÓÅÏÈ¼¶¿´·½Ïò)µÄÏÈ¹éÔ¼
+//bnfæ–‡æ³•å®šä¹‰ è¿™éƒ¨åˆ†é‡å¤ä»£ç è¾ƒå¤šå…¶å®å®å®šä¹‰çœäº‹ï¼Œä½†æ˜¯ä¸ºäº†æ–¹ä¾¿è°ƒè¯•è¯­æ³•æ ‘å¥½çœ‹è¿˜æ˜¯å…ˆè¿™æ ·ï¼Œæœ€åæˆåŠŸåæ”¹ç”¨å®ï¼ï¼ï¼ï¼é‡å¤é‡å¤ªå¤§äº†
+//éœ€äº†è§£LRåˆ†æè¡¨çš„æ„é€   å…ˆäº§å‡ºæ•´ä½“çš„è¯­æ³•æ ‘ï¼Œå†åˆ†æå‡ºå‡½æ•°éƒ¨åˆ†çš„æŠ½è±¡è¯­æ³•æ ‘ï¼Œä¸ºäº†åšå‡½æ•°çš„nativeå…¶å®ƒéƒ¨åˆ†å¯ä»¥éƒ½ä¸è€ƒè™‘
+//ä»¥è¿›å½’çº¦å†²çªé»˜è®¤ä»¥è¿›ï¼Œå½’çº¦å½’çº¦å†²çªæŒ‰å…ˆå‡ºç°çš„   æ”¹å˜é»˜è®¤æ–¹å¼ä¸ºæŒ‰ä¼˜å…ˆçº§é«˜(åŒä¼˜å…ˆçº§çœ‹æ–¹å‘)çš„å…ˆå½’çº¦
 //0: { pNode ls=NULL;  $<pnode>$=MNNA(0,compilation_unit);}
 //1: { pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,compilation_unit);}
 //2: { pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,compilation_unit);}
@@ -181,42 +184,42 @@
 //10: { pNode ls[10]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7,$<pnode>8,$<pnode>9,$<pnode>10};  $<pnode>$=MNNA(10,compilation_unit);}
 
 
-// °ü  µ¼Èë  ÀàĞÍÉùÃ÷ | µ¼Èë ÀàĞÍÉùÃ÷
-//native´úÂë×¢²áÆäÊµ²»ĞèÒªÀàÃû°üÃû...Áô×öºóÓÃ°É
+// åŒ…  å¯¼å…¥  ç±»å‹å£°æ˜ | å¯¼å…¥ ç±»å‹å£°æ˜
+//nativeä»£ç æ³¨å†Œå…¶å®ä¸éœ€è¦ç±»ååŒ…å...ç•™åšåç”¨å§
 compilation_unit 	
 			: package_statement import_statements type_declarations  
 				{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  root=MNNA(3,compilation_unit);}
 			| import_statements type_declarations 
 				{ pNode ls[2]={$<pnode>1,$<pnode>2};  root=MNNA(2,compilation_unit);}
 			;
-//µ¼ÈëÉùÃ÷0-n
+//å¯¼å…¥å£°æ˜0-n
 import_statements
 			: import_statements import_statement
 				{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,import_statements);}
 			| 
 				{ pNode *ls=NULL;  $<pnode>$=MNNA(0,import_statements);}
 			;
-//ÀàĞÍÉùÃ÷0-n
+//ç±»å‹å£°æ˜0-n
 type_declarations
 			: type_declarations type_declaration
 				{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,type_declarations);}
 			|
 				{ pNode *ls=NULL;  $<pnode>$=MNNA(0,type_declarations);}
 			;
-//°ü: package °üÃû ;
+//åŒ…: package åŒ…å ;
 package_statement 
 			: _PACKAGE class_name _SEMICOLON
 				{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,package_statement);}
 			;
 
-//µ¼ÈëÉùÃ÷ : import °üÃû . * ; | import ÀàÃû ; | import ½Ó¿ÚÃû ;			
+//å¯¼å…¥å£°æ˜ : import åŒ…å . * ; | import ç±»å ; | import æ¥å£å ;			
 import_statement
 			: _IMPORT class_name _POINT _MUL _SEMICOLON
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,import_statement);}
 			| _IMPORT class_name _SEMICOLON
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,import_statement);}
 			;
-//ÀàÃû : ±êÊ¶·û | °üÃû.±êÊ¶·û
+//ç±»å : æ ‡è¯†ç¬¦ | åŒ…å.æ ‡è¯†ç¬¦
 class_name 		
 			: _SYMBOL
 			{ pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,class_name);}
@@ -226,16 +229,16 @@ class_name
 
 			
 			
-//-----------------------------------------ÒÔÉÏÎªÎÄ¼şÍ·½âÎö²¿·Ö			
+//-----------------------------------------ä»¥ä¸Šä¸ºæ–‡ä»¶å¤´è§£æéƒ¨åˆ†			
 			
-//ÀàĞÍÉùÃ÷¶¨Òå  
+//ç±»å‹å£°æ˜å®šä¹‰  
 type_declaration
 			: class_declaration
 			{ pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,type_declaration);}
 			| interface_declaration
 			{ pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,type_declaration);}
 			;
-//ÀàÉùÃ÷: 	{modifier}	class ±êÊ¶·û [extends ÀàÃû] [implements ½Ó¿ÚÃû] {ÁìÓò}
+//ç±»å£°æ˜: 	{modifier}	class æ ‡è¯†ç¬¦ [extends ç±»å] [implements æ¥å£å] {é¢†åŸŸ}
 class_declaration
 			: modifiers _CLASS _SYMBOL _EXTENDS class_name _IMPLEMENTS implements _LBRACE field_declarations _RBRACE
 			{ pNode ls[10]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7,$<pnode>8,$<pnode>9,$<pnode>10};  $<pnode>$=MNNA(10,class_declaration);}
@@ -244,7 +247,7 @@ class_declaration
 			| modifiers _CLASS _SYMBOL  _LBRACE field_declarations _RBRACE
 			{ pNode ls[6]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6};  $<pnode>$=MNNA(6,class_declaration);}
 			;
-//Ç°×º0-¶à¸ö
+//å‰ç¼€0-å¤šä¸ª
 modifiers
 			: modifiers modifier
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,modifiers);}
@@ -271,21 +274,21 @@ modifier
 			| _SYNCHRONIZED
 			{ pNode ls[1]= {$<pnode>1};  $<pnode>$=MNNA(1,modifier);}
 			;
-//½Ó¿Ú¶à¸ö
+//æ¥å£å¤šä¸ª
 implements	
 			:  implements _COMMA class_name
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,implements);}
 			| class_name
 			{ pNode ls[1]= {$<pnode>1};  $<pnode>$=MNNA(1,implements);}
 			;
-//ÁìÓòÉùÃ÷¶à¸ö			
+//é¢†åŸŸå£°æ˜å¤šä¸ª			
 field_declarations
 			: field_declarations field_declaration
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,field_declarations);}
 			|
 			 { pNode *ls=NULL;  $<pnode>$=MNNA(0,field_declarations);}
 			;
-//ÁìÓò: 	·½·¨ |¹¹Ôìº¯Êı
+//é¢†åŸŸ: 	æ–¹æ³• |æ„é€ å‡½æ•°
 field_declaration		
 			: method_declaration
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,field_declaration);}
@@ -298,8 +301,8 @@ field_declaration
 			| _SEMICOLON
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,field_declaration);}
 			;
-//·½·¨ÉùÃ÷		ËäÈ»java¿ÉÒÔ int a()[] {}Ğ´·µ»ØÊı×é...µ«ÊÇ»ù±¾Ã»ÈËÕâÃ´ÓÃ¾Í°´Õı³£Ğ´·¨	
-// Ç°×º ÀàĞÍ ±êÊ¶·û ( [²ÎÊı] )  ;»òÕß ¶¨Òå¿é
+//æ–¹æ³•å£°æ˜		è™½ç„¶javaå¯ä»¥ int a()[] {}å†™è¿”å›æ•°ç»„...ä½†æ˜¯åŸºæœ¬æ²¡äººè¿™ä¹ˆç”¨å°±æŒ‰æ­£å¸¸å†™æ³•	
+// å‰ç¼€ ç±»å‹ æ ‡è¯†ç¬¦ ( [å‚æ•°] )  ;æˆ–è€… å®šä¹‰å—
 method_declaration			
 			: modifiers type _SYMBOL _LPARENTHESE parameter_list _RPARENTHESE statement_block 
 			{ pNode ls[7]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7};  $<pnode>$=MNNA(7,method_declaration);}
@@ -310,19 +313,19 @@ method_declaration
 			| modifiers type _SYMBOL _LPARENTHESE  _RPARENTHESE _SEMICOLON 
 			{ pNode ls[6]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6};  $<pnode>$=MNNA(6,method_declaration);}
 			;
-//ÀàĞÍ º¬Êı×é			
+//ç±»å‹ å«æ•°ç»„			
 type
 			: type_specifier brackets
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,type);}
 			;
-//[]¶à¸ö
+//[]å¤šä¸ª  javaçš„æ•°ç»„å£°æ˜ä¸º arrayRefVar[] = new dataType[arraySize];
 brackets   
 			: brackets _LBRACKET _RBRACKET
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,brackets);}
 			| 
 			 { pNode *ls=NULL;  $<pnode>$=MNNA(0,brackets);}
 			;
-//ÀàĞÍ
+//ç±»å‹
 type_specifier
 			: _BOOLEAN 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,type_specifier);}
@@ -347,7 +350,7 @@ type_specifier
 			| class_name 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,type_specifier);}
 			;
-//²ÎÊıÁĞ±í	:²ÎÊı 	{,²ÎÊı}	
+//å‚æ•°åˆ—è¡¨	:å‚æ•° 	{,å‚æ•°}	
 parameter_list
 			: parameter
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,parameter_list);}
@@ -355,24 +358,24 @@ parameter_list
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,parameter_list);}
 			;
 
-//²ÎÊı		: ÀàĞÍ ±êÊ¶·û  | ÀàĞÍ ±êÊ¶·û []	
+//å‚æ•°		: ç±»å‹ æ ‡è¯†ç¬¦  | ç±»å‹ æ ‡è¯†ç¬¦ []	
 parameter
 			: type _SYMBOL brackets
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,parameter);}
 			;
-//ÉùÃ÷¿é   :  { ÉùÃ÷¶à¸ö }			
+//å£°æ˜å—   :  { å£°æ˜å¤šä¸ª }			
 statement_block
 			: _LBRACE statements _RBRACE
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,statement_block);}
 			;
-//ÉùÃ÷ 0-n			
+//å£°æ˜ 0-n			
 statements	: statements statement
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,statements);}
 			|
 			 { pNode *ls=NULL;  $<pnode>$=MNNA(0,statements);}
 			;
-//ÉùÃ÷	Õâ¸ö´ÊÔÚÕâÀï½Ğ³ÂÊöºÃµã	
-//	±äÁ¿ÉùÃ÷|±í´ïÊ½|ÉùÃ÷¿é|if¾ä|do¾ä|while¾ä|for¾ä|try¾ä|switch¾ä|synchronized¿é|return|throw|±ê¼Ç|break|continue|;
+//å£°æ˜	è¿™ä¸ªè¯åœ¨è¿™é‡Œå«é™ˆè¿°å¥½ç‚¹	
+//	å˜é‡å£°æ˜|è¡¨è¾¾å¼|å£°æ˜å—|ifå¥|doå¥|whileå¥|forå¥|tryå¥|switchå¥|synchronizedå—|return|throw|æ ‡è®°|break|continue|;
 statement
 			: variable_declaration 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,statement);}
@@ -413,26 +416,26 @@ statement
 			| _SEMICOLON
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,statement);}
 			;
-//±äÁ¿ÉùÃ÷	: Ç°×º ÖÖÀà ±äÁ¿Ê½1-n	;	
+//å˜é‡å£°æ˜	: å‰ç¼€ ç§ç±» å˜é‡å¼1-n	;	
 variable_declaration
 			: modifiers type variable_declarators _SEMICOLON
 			{ pNode ls[4]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4};  $<pnode>$=MNNA(4,variable_declaration);}
 			;
-//±äÁ¿Ê½ 1-nÒÔ,·Ö¸î			
+//å˜é‡å¼ 1-nä»¥,åˆ†å‰²			
 variable_declarators
 			: variable_declarator 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,variable_declarators);}
 			| variable_declarators _COMMA variable_declarator
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,variable_declarators);}
 			;
-//±äÁ¿Ê½	·ûºÅ []0-n | ·ûºÅ []0-n = ±äÁ¿³õÊ¼»¯Æ÷
+//å˜é‡å¼	ç¬¦å· []0-n | ç¬¦å· []0-n = å˜é‡åˆå§‹åŒ–å™¨
 variable_declarator
 			: _SYMBOL brackets _MOV variable_initializer
 			{ pNode ls[4]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4};  $<pnode>$=MNNA(4,variable_declarator);}
 			| _SYMBOL brackets
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,variable_declarator);}
 			;
-//±äÁ¿³õÊ¼»¯Æ÷
+//å˜é‡åˆå§‹åŒ–å™¨
 variable_initializer
 			: expression 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,variable_initializer);}
@@ -443,16 +446,16 @@ variable_initializer
 			| _LBRACE variable_initializers  _RBRACE
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,variable_initializer);}
 			;
-//±äÁ¿³õÊ¼»¯Æ÷ 1-n ,·Ö¸î
+//å˜é‡åˆå§‹åŒ–å™¨ 1-n ,åˆ†å‰²
 variable_initializers
 			: variable_initializer
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,variable_initializers);}
 			| variable_initializers _COMMA variable_initializer
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,variable_initializers);}
 			;
-//±í´ïÊ½ :Êı×Ö±í´ïÊ½ |ÅĞ¶Ï±í´ïÊ½| Âß¼­±í´ïÊ½|Î»±í´ïÊ½|×ª»¯Ê½|newÊ½|³£Á¿Ê½| null super this ±êÊ¶·û (±í´ïÊ½)
-// 	º¯Êıµ÷ÓÃ | Êı×é | ¶ÔÏóÊ¹ÓÃ |,|ÈıÔªÊ½    Ç°ÃæµÄÊ²Ã´Ê²Ã´Ê½Ö»ÊÇÎªÁËÏ¸·Ö±í´ïÊ½¶øĞ´µÄ£¬Ò²¿ÉÒÔĞ´ÔÚ±í´ïÊ½Àï²»¹ı»áÏÔµÃÌ«³¤
-// Ä¿Ç°½¨ÒéÊÇ°´·µ»ØÀàĞÍ·Ö×éÇÒ²»¿ÉÒÔ²Ù×÷ÖØ¸´¡£¾ßÌåµÄÀàĞÍÍÆ¶ÏÊÇÔÚÓïÒå·ÖÎöÊ±
+//è¡¨è¾¾å¼ :æ•°å­—è¡¨è¾¾å¼ |åˆ¤æ–­è¡¨è¾¾å¼| é€»è¾‘è¡¨è¾¾å¼|ä½è¡¨è¾¾å¼|è½¬åŒ–å¼|newå¼|å¸¸é‡å¼| null super this æ ‡è¯†ç¬¦ (è¡¨è¾¾å¼)
+// 	å‡½æ•°è°ƒç”¨ | æ•°ç»„ | å¯¹è±¡ä½¿ç”¨ |,|ä¸‰å…ƒå¼    å‰é¢çš„ä»€ä¹ˆä»€ä¹ˆå¼åªæ˜¯ä¸ºäº†ç»†åˆ†è¡¨è¾¾å¼è€Œå†™çš„ï¼Œä¹Ÿå¯ä»¥å†™åœ¨è¡¨è¾¾å¼é‡Œä¸è¿‡ä¼šæ˜¾å¾—å¤ªé•¿
+// ç›®å‰å»ºè®®æ˜¯æŒ‰è¿”å›ç±»å‹åˆ†ç»„ä¸”ä¸å¯ä»¥æ“ä½œé‡å¤ã€‚å…·ä½“çš„ç±»å‹æ¨æ–­æ˜¯åœ¨è¯­ä¹‰åˆ†ææ—¶
 expression 
 			: numeric_expression 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
@@ -464,7 +467,7 @@ expression
 //			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
 			| bit_expression 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
-//			| casting_expression ÀàĞÍ×ª»¯ÍÆµ½ÓïÒå·ÖÎöÊ±×ö
+//			| casting_expression ç±»å‹è½¬åŒ–æ¨åˆ°è¯­ä¹‰åˆ†ææ—¶åš
 //			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
 			| creating_expression 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,expression);}
@@ -495,7 +498,7 @@ expression
 			| expression _DOUBT expression _COLON expression
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,expression);}
 			;
-//Êı×Ö±í´ïÊ½	Ò»Ôª-ÔÚ´Ëµ¥¶ÀÖ¸¶¨ÓÅÏÈ¼¶
+//æ•°å­—è¡¨è¾¾å¼	ä¸€å…ƒ-åœ¨æ­¤å•ç‹¬æŒ‡å®šä¼˜å…ˆçº§
 numeric_expression
 			: _SUB expression %prec UMINUS
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,numeric_expression);}
@@ -531,7 +534,7 @@ numeric_expression
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,numeric_expression);}
 			;
 			
-//ÅĞ¶Ï±í´ïÊ½	_CMP _NCMP _MORE _LESS _MCMP _LCMP		
+//åˆ¤æ–­è¡¨è¾¾å¼	_CMP _NCMP _MORE _LESS _MCMP _LCMP		
 testing_expression
 			: expression _CMP expression
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,testing_expression);}
@@ -546,8 +549,8 @@ testing_expression
 			| expression _LCMP expression
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,testing_expression);}
 			;
-//Âß¼­±í´ïÊ½	Ò»°ãµÄÎ»²Ù×÷·ûÒ²¿ÉÒÔ×÷ÓÃÓÚÂß¼­²Ù×÷  ÎÄµµÖĞ¶Ô´ËÃèÊö²»ÊÇºÜºÃ
-//ÕâÀïÎÒ½«³£¼û×÷ÓÃÓÚÂß¼­²Ù×÷µÄÊ¶±ğ³ö  ÆäËüµÄÔÚÎ»²Ù×÷Ê±ÅĞ¶Ï
+//é€»è¾‘è¡¨è¾¾å¼	ä¸€èˆ¬çš„ä½æ“ä½œç¬¦ä¹Ÿå¯ä»¥ä½œç”¨äºé€»è¾‘æ“ä½œ  æ–‡æ¡£ä¸­å¯¹æ­¤æè¿°ä¸æ˜¯å¾ˆå¥½
+//è¿™é‡Œæˆ‘å°†å¸¸è§ä½œç”¨äºé€»è¾‘æ“ä½œçš„è¯†åˆ«å‡º  å…¶å®ƒçš„åœ¨ä½æ“ä½œæ—¶åˆ¤æ–­
 logical_expression		
 			: _BNOT expression
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,logical_expression);}
@@ -560,7 +563,7 @@ logical_expression
 			| _FALSE
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,logical_expression);}
 			;
-//Î»±í´ïÊ½   & | ^ ~ << >> >>>
+//ä½è¡¨è¾¾å¼   & | ^ ~ << >> >>>
 // _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
 bit_expression
 			: _NOT expression 
@@ -589,7 +592,7 @@ bit_expression
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,bit_expression);}
 			;
 
-//×Ö´®±í´ïÊ½ ¹éÓÚÊı×Ö±í´ïÊ½ÖĞ£¬·ñÔò»á²úÉú³åÍ»
+//å­—ä¸²è¡¨è¾¾å¼ å½’äºæ•°å­—è¡¨è¾¾å¼ä¸­ï¼Œå¦åˆ™ä¼šäº§ç”Ÿå†²çª
 /*  
 string_expression
 			: expression _ADD expression
@@ -599,31 +602,35 @@ string_expression
 			;
 */
 /*
-//ÀàĞÍ×ª»¯			//ÕâÀï´æÔÚÒ»¸ö¹éÔ¼´íÎó...ÒòÎªÎŞ·¨Çø·Öµ¥¸öµÄclassnameºÍ±êÊ¶·û
+//ç±»å‹è½¬åŒ–			//è¿™é‡Œå­˜åœ¨ä¸€ä¸ªå½’çº¦é”™è¯¯...å› ä¸ºæ— æ³•åŒºåˆ†å•ä¸ªçš„classnameå’Œæ ‡è¯†ç¬¦
 casting_expression
 			: _LPARENTHESE type _RPARENTHESE expression 
 			{ pNode ls[4]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4};  $<pnode>$=MNNA(4,casting_expression);}
 			;
 */
-//new ±í´ïÊ½
+//new è¡¨è¾¾å¼  javaæ•°ç»„å¤§å°çš„ç¡®å®šæ˜¯åœ¨è¿™é‡Œ....
 creating_expression	
 			: _NEW class_name _LPARENTHESE _RPARENTHESE
 			{ pNode ls[4]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4};  $<pnode>$=MNNA(4,creating_expression);}
 			| _NEW class_name _LPARENTHESE arglist _RPARENTHESE
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,creating_expression);}
-			| _NEW type_specifier _LBRACKET expression _RBRACKET brackets
-			{ pNode ls[6]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6};  $<pnode>$=MNNA(6,creating_expression);}
-			| _NEW type_specifier brackets
+			| _NEW type_specifier bracketnums
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,creating_expression);}
 			;
-//²ÎÊı1-n¸ö
+bracketnums
+			: bracketnums _LBRACKET expression _RBRACKET
+			{ pNode ls[4]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4};  $<pnode>$=MNNA(4,bracketnums);}
+			|
+			 { pNode *ls=NULL;  $<pnode>$=MNNA(0,bracketnums);}
+			;
+//å‚æ•°1-nä¸ª
 arglist
 			: expression
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,arglist);}
 			| arglist _COMMA expression
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,arglist);}
 			;
-//³£Á¿±í´ïÊ½  ×Ö·û ×Ö·û´® ÕûÊı ¸¡µãÊı
+//å¸¸é‡è¡¨è¾¾å¼  å­—ç¬¦ å­—ç¬¦ä¸² æ•´æ•° æµ®ç‚¹æ•°
 literal_expression
 			: _CUSTCHAR
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,literal_expression);}
@@ -634,24 +641,24 @@ literal_expression
 			| _CUSTFLOAT
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,literal_expression);}
 			;
-//if¾ä  ÕâÀï¾ÍÕâÃ´Ğ´£¬ÒòÎªstatement¿ÉÒÔÖ±½ÓÎªif_statement£¬Òò´Ëelseºó¿ÉÖ±½ÓÊ¶±ğ³öifĞÎ³Éelse if
+//ifå¥  è¿™é‡Œå°±è¿™ä¹ˆå†™ï¼Œå› ä¸ºstatementå¯ä»¥ç›´æ¥ä¸ºif_statementï¼Œå› æ­¤elseåå¯ç›´æ¥è¯†åˆ«å‡ºifå½¢æˆelse if
 if_statement
 			: _IF _LPARENTHESE expression _RPARENTHESE statement 
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,if_statement);}
 			| _IF _LPARENTHESE expression _RPARENTHESE statement _ELSE statement
 			{ pNode ls[7]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7};  $<pnode>$=MNNA(7,if_statement);}
 			;
-//do while ¾ä
+//do while å¥
 do_statement
 			: _DO statement _WHILE _LPARENTHESE expression _RPARENTHESE _SEMICOLON
 			{ pNode ls[7]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7};  $<pnode>$=MNNA(7,do_statement);}
 			;
-//while¾ä
+//whileå¥
 while_statement
 			: _WHILE _LPARENTHESE expression _RPARENTHESE statement
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,while_statement);}
 			;
-//forÓï¾ä  µü´úÆ÷¾Í²»ÊµÏÖÁË...
+//forè¯­å¥  è¿­ä»£å™¨å°±ä¸å®ç°äº†...
 for_statement
 			: _FOR _LPARENTHESE expression01 _SEMICOLON expression01 _SEMICOLON expression01 _RPARENTHESE statement
 			{ pNode ls[9]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7,$<pnode>8,$<pnode>9};  $<pnode>$=MNNA(9,for_statement);}
@@ -664,7 +671,7 @@ expression01
 			|
 			 { pNode *ls=NULL;  $<pnode>$=MNNA(0,expression01);}
 			;
-//tryÓï¾ä
+//tryè¯­å¥
 try_statement
 			: _TRY statement catchs _FINALLY statement
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,try_statement);}
@@ -678,7 +685,7 @@ catchs
 			|
 			 { pNode *ls=NULL;  $<pnode>$=MNNA(0,catchs);}
 			;
-//switchÓï¾ä
+//switchè¯­å¥
 switch_statement
 			: _SWITCH _LPARENTHESE expression _RPARENTHESE _LBRACE cases _RBRACE
 			{ pNode ls[7]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7};  $<pnode>$=MNNA(7,switch_statement);}
@@ -693,19 +700,19 @@ cases
 			| 
 			 { pNode *ls=NULL;  $<pnode>$=MNNA(0,cases);}
 			;
-//¹¹Ôìº¯Êı
+//æ„é€ å‡½æ•°
 constructor_declaration
 			: modifiers _SYMBOL _LPARENTHESE parameter_list _RPARENTHESE statement_block 
 			{ pNode ls[6]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6};  $<pnode>$=MNNA(6,constructor_declaration);}
 			| modifiers _SYMBOL _LPARENTHESE _RPARENTHESE statement_block 
 			{ pNode ls[5]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5};  $<pnode>$=MNNA(5,constructor_declaration);}
 			;
-//¾²Ì¬³õÊ¼»¯Æ÷
+//é™æ€åˆå§‹åŒ–å™¨
 static_initializer
 			: _STATIC statement_block 
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,static_initializer);}
 			;
-//½Ó¿ÚÉùÃ÷  ÕâÀïÃ»Ğ´´í£¬¾ÍÓÃextends
+//æ¥å£å£°æ˜  è¿™é‡Œæ²¡å†™é”™ï¼Œå°±ç”¨extends
 interface_declaration
 			: modifiers _INTERFACE _SYMBOL _EXTENDS implements _LBRACE field_declarations _RBRACE
 			{ pNode ls[8]={$<pnode>1,$<pnode>2,$<pnode>3,$<pnode>4,$<pnode>5,$<pnode>6,$<pnode>7,$<pnode>8};  $<pnode>$=MNNA(8,interface_declaration);}

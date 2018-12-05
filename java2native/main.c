@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "tool/tree.h"	
+#include "front/AST.h"	
+#include "main.h"
+//提出函数的抽象树
+pS_method_declaration functionASTs[10];
+int funnum=0;
+
 
 int yyparse (void);
 extern FILE * yyin;
@@ -19,15 +25,15 @@ int main(int argc, char** argv)
 	   printf("filename!\n");
 	   return 0;
    }
-   
-   
-   
-   
-   
+   //第一遍遍历，建立完整语法树
    yyparse();
-  
-  
-  showtree(root,0);
+  // showtreeback(root,0);
+   //第二遍遍历语法树，提出我感兴趣的抽象函数
+   makeFunAST(root);
+
+
+
+
   /*
   int a;
   int sum=0;

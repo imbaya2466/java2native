@@ -2,11 +2,11 @@
     #include <string.h>
 	#include <stdlib.h>
 	#include <stdio.h>
-	#include "tool/tree.h"//ÒòÎªÏÂ²¿·ÖÒÀÀµ´Ë£¬Òò´ËÖÃÓÚÇ°
-	#include "java.tab.h"//ÕâÀïµÄyylvalÀàĞÍ¶¨ÒåºÜ²»ÎÈ¶¨...ÔÚjava.yÖĞÎ´¶¨ÒåÊ±ÕâÀï¾Í¿ÉÄÜÏÈ¶¨Òå³ÉintÁË¡£Òò´ËÖ±½Ó¶¨ÒåÎªunion
+	#include "tool/tree.h"//å› ä¸ºä¸‹éƒ¨åˆ†ä¾èµ–æ­¤ï¼Œå› æ­¤ç½®äºå‰
+	#include "java.tab.h"//è¿™é‡Œçš„yylvalç±»å‹å®šä¹‰å¾ˆä¸ç¨³å®š...åœ¨java.yä¸­æœªå®šä¹‰æ—¶è¿™é‡Œå°±å¯èƒ½å…ˆå®šä¹‰æˆintäº†ã€‚å› æ­¤ç›´æ¥å®šä¹‰ä¸ºunion
 	
 	
-    int line = 1;//lexÆäÊµÓĞ×Ô¼ºµÄĞĞºÅ¡£ĞèÒªÊ±¸ÄÓÃ
+    int line = 1;//lexå…¶å®æœ‰è‡ªå·±çš„è¡Œå·ã€‚éœ€è¦æ—¶æ”¹ç”¨
 
 	
 
@@ -25,10 +25,10 @@
 	
 %}
 
-/*ÕıÔòÓÅÏÈ¼¶£º()[] >  *+?  ¸öÊı >  ×Ö·ûÁ¬½Ó  >  |
-×ªÒåÓĞÁ©ÖÖ·½Ê½£º"xxx"»òÕß\x  ""ÄÚµÄÄÚÈİ×÷Îª×Ö·ûÆ¥Åä*/
-/*Êı×ÖµÄÕı¸º²»ÄÜÔÚÕâÀïÆ¥Åä£¬×î³¤Æ¥ÅäÔ­Ôò»áÊ¹ 3-2Æ¥ÅäÎª 3  -2   Ò»Ôª»¹ÊÇ¶şÔªµÄ·ÖÎöÔÚÓï·¨·ÖÎö*/
-/*Ç¶Ì×µÄ×¢ÊÍjavaÓï·¨ÖĞÒ²ÊÇ²»ÔÊĞíµÄ,¿öÇÒÇ¶Ì×ÔÚÕâÀï»áÒòÎª×î³¤Æ¥Åä¶øÆ¥Åäµ½Í·,Òò´Ë´¦ÀíĞĞÊıÎÊÌâÆäËüÃ»ÊÂ*/
+/*æ­£åˆ™ä¼˜å…ˆçº§ï¼š()[] >  *+?  ä¸ªæ•° >  å­—ç¬¦è¿æ¥  >  |
+è½¬ä¹‰æœ‰ä¿©ç§æ–¹å¼ï¼š"xxx"æˆ–è€…\x  ""å†…çš„å†…å®¹ä½œä¸ºå­—ç¬¦åŒ¹é…*/
+/*æ•°å­—çš„æ­£è´Ÿä¸èƒ½åœ¨è¿™é‡ŒåŒ¹é…ï¼Œæœ€é•¿åŒ¹é…åŸåˆ™ä¼šä½¿ 3-2åŒ¹é…ä¸º 3  -2   ä¸€å…ƒè¿˜æ˜¯äºŒå…ƒçš„åˆ†æåœ¨è¯­æ³•åˆ†æ*/
+/*åµŒå¥—çš„æ³¨é‡Šjavaè¯­æ³•ä¸­ä¹Ÿæ˜¯ä¸å…è®¸çš„,å†µä¸”åµŒå¥—åœ¨è¿™é‡Œä¼šå› ä¸ºæœ€é•¿åŒ¹é…è€ŒåŒ¹é…åˆ°å¤´,å› æ­¤å¤„ç†è¡Œæ•°é—®é¢˜å…¶å®ƒæ²¡äº‹*/
 letter                      [a-zA-Z]
 digit                       [0-9]
 anychar                     {letter}|{digit}|"_"
@@ -180,6 +180,7 @@ string						\".*\"
 pNode doyylval(int type){
 	
 	pNode ls=MakeNodeNoAttSub(type,strdup(yytext));
+	ls->attributes.line=line;
 	return ls;
 	
 }
@@ -189,39 +190,48 @@ pNode savesymbol()
 {
 	
 	symbolnum++;
-	return MakeNodeNoAttSub(_SYMBOL,strdup(yytext));
+	pNode ls=MakeNodeNoAttSub(_SYMBOL,strdup(yytext));
+	ls->attributes.line=line;
+	return ls;
 }
 
 pNode savechars()
 {
 	
 	charnum++;
-	return MakeNodeNoAttSub(_CUSTCHAR,strdup(yytext));
-	
+	pNode ls= MakeNodeNoAttSub(_CUSTCHAR,strdup(yytext));
+	ls->attributes.line=line;
+	return ls;	
 }
 pNode savestrings()
 {
 
 	stringnum++;
-	return MakeNodeNoAttSub(_CUSTSTRING,strdup(yytext));
+	pNode ls= MakeNodeNoAttSub(_CUSTSTRING,strdup(yytext));
+	ls->attributes.line=line;
+	return ls;
 }
 
 pNode saveIntegers()
 {
 	
 	intnum++;
-	return MakeNodeNoAttSub(_CUSTINT,strdup(yytext));
+	pNode ls= MakeNodeNoAttSub(_CUSTINT,strdup(yytext));
+	ls->attributes.line=line;
+	return ls;
 }
 pNode savefloats()
 {
 
 	floatnum++;
-	return MakeNodeNoAttSub(_CUSTFLOAT,strdup(yytext));
+	pNode ls=  MakeNodeNoAttSub(_CUSTFLOAT,strdup(yytext));
+	ls->attributes.line=line;
+	return ls;
 }
 
-//·µ»Ø1Í£Ö¹lex½âÎö£¬ÕâÀïÖ»½âÎöÒ»¸öÎÄ¼ş£¬Õë¶Ôclass
+//è¿”å›1åœæ­¢lexè§£æï¼Œè¿™é‡Œåªè§£æä¸€ä¸ªæ–‡ä»¶ï¼Œé’ˆå¯¹class
 int yywrap() {
-    printf("Over-------------\n");
+    printf("lex-Over-------------\n");
     return 1;
 }
 

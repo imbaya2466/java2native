@@ -27,13 +27,13 @@ pS_method_declaration MK_pS_method_declaration(Att att,pS_symbol name,pS_fieldLi
 	
 	return p;
 }
-pS_symbol MK_pS_symbol(Att att,int symtab)
+pS_symbol MK_pS_symbol(Att att,char *symbol)
 {
 	pS_symbol p = ckmalloc(sizeof(*p));
 	p->kind=S_sym;
-	p->att=att;//attÖĞÓĞ·ûºÅÃû×Ö
-	p->u.symtab=symtab;//·ûºÅ±íË÷Òı
-	
+	p->att=att;
+	p->u.symbol=symbol;//ç¬¦å·å
+	p->att.name=strdup("symbol");
 	return p;
 }
 
@@ -60,8 +60,8 @@ pS_field MK_pS_field(Att att,pS_type type,pS_symbol name)
 	
 	return p;
 }
-//Õâ¸ö±È½ÏÌØÊâ£¬È«ÊÇ±êÊ¶ÀàĞÍ£¬Òò´Ë´«enum,type_classµÄ×Ö´®ÄÚÈİ·ÅÔÚÊôĞÔÀï
-pS_type MK_pS_type(Att att,enum enStype type,int brackets[5])
+//è¿™ä¸ªæ¯”è¾ƒç‰¹æ®Šï¼Œå…¨æ˜¯æ ‡è¯†ç±»å‹ï¼Œå› æ­¤ä¼ enum,type_classçš„å­—ä¸²å†…å®¹æ”¾åœ¨å±æ€§é‡Œ
+pS_type MK_pS_type(Att att,enum enStype type,int *brackets)
 {
 	pS_type p = ckmalloc(sizeof(*p));
 	p->kind=type;
@@ -95,7 +95,7 @@ pS_statements MK_pS_statements(Att att,pS_statement state,pS_statements next)
 }
 
 
-//Óï¾ä
+//è¯­å¥
 pS_statement MK_pS_statement_field(Att att,pS_field field)
 {
 	pS_statement p = ckmalloc(sizeof(*p));
@@ -190,7 +190,7 @@ pS_statement MK_pS_statement_continue(Att att)
 	return p;
 }
  
-//±í´ïÊ½
+//è¡¨è¾¾å¼
 pS_exp MK_pS_exp_op2(Att att,pS_exp exp1,S_op2 op,pS_exp exp2)
 {
 	pS_exp p = ckmalloc(sizeof(*p));
@@ -278,12 +278,12 @@ pS_exp MK_pS_exp_char(Att att,char value)
 	
 	return p;
 }
-pS_exp MK_pS_exp_str(Att att,int stringid)
+pS_exp MK_pS_exp_str(Att att,char *value)
 {
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_string;
 	p->att=att;
-	p->u.expstr.stringid=stringid;
+	p->u.expstr.value=value;
 	p->att.name=strdup("exp_str");
 	
 	return p;

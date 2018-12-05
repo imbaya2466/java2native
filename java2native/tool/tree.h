@@ -1,11 +1,11 @@
 #ifndef TREE_H
 #define TREE_H
 
-#define NODENUM_MAX 10
+#define NODENUM_MAX 15
 
 //属性结构体大量用于赋值拷贝，不要有指针
 typedef struct _Attributes{
-	
+	int line;
 }Attributes;
 
 
@@ -19,14 +19,6 @@ typedef struct _Node{
 	
 }Node;
 typedef Node* pNode;
-
-
-pNode MakeNode(int nodenum,pNode node[],int type,Attributes attributes,char *leafstring);
-pNode MakeNodeNoAtt(int nodenum,pNode node[],int type,char *leafstring);
-pNode MakeNodeNoAttSub(int type,char *leafstring);
-pNode MakeNodeNoAttSubString(int type);
-void showtree(pNode node,int dp);
-void shownode(pNode node);
 
 
 typedef enum id_
@@ -67,6 +59,7 @@ typedef enum id_
 ,  string_expression  
 ,  casting_expression 
 ,  creating_expression 
+,  bracketnums
 ,  arglist 
 ,  literal_expression 
 ,  if_statement 
@@ -83,6 +76,18 @@ typedef enum id_
 ,  static_initializer 
 ,  interface_declaration 
 }id;
+
+
+pNode MakeNode(int nodenum,pNode node[],int type,Attributes attributes,char *leafstring);
+pNode MakeNodeNoAtt(int nodenum,pNode node[],int type,char *leafstring);
+pNode MakeNodeNoAttSub(int type,char *leafstring);
+pNode MakeNodeNoAttSubString(int type);
+void showtree(pNode node,int dp);
+void showtreeback(pNode node,int dp);
+void shownode(pNode node);
+
+//提出感兴趣的AST
+void makeFunAST(pNode root);
 
 
 

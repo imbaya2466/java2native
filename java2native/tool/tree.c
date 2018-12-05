@@ -1,43 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tree.h"
+#include "main.h"
 
 
-/*
 
-struct _Node{
-	int nodenum;//子节点数量
-	struct _Node *node[NODENUM_MAX];//子节点
-	int type;//结点类型值
-	Attributes attributes;//属性
-	
-	char *leafstring;//用于保存终结符的字串，构建树时用于显示，构建符号表时用于分配空间填写其内容
-	
-};
-typedef struct _Node * pNode;
-typedef struct _Node Node;
 
-*/
 
-//######注意一下，n叉树现在还没有一个满意的处理方案，有可能会白白浪费了语法分析的结果。目前能想到比较有效的遍历方式就是后序遍历。。。
-//目前先以n叉形式存储，用于输出查看。中间代码生成看完后再想办法决定树还是语法分析来生成三地址代码！！！！再实在不行还有多叉树转二叉树
-//先不要过多的处理这个n叉........想清楚再用！！！！！！！！！！！！！！！
 pNode makenode(int nodenum,pNode node[],int type,Attributes attributes,char *leafstring){
 	if(nodenum>NODENUM_MAX)
 		return NULL;
 	
 	
-	pNode new=(pNode)malloc(sizeof(Node));
-	new->nodenum=nodenum;
+	pNode pnew=(pNode)malloc(sizeof(Node));
+	pnew->nodenum=nodenum;
 	int i=0;
 	for(i=0;i<nodenum;i++)
 	{
-		new->node[i]=node[i];
+		pnew->node[i]=node[i];
 	}
-	new->type=type;
-	new->attributes=attributes;
-	new->leafstring=leafstring;
-	return new;
+	pnew->type=type;
+	pnew->attributes=attributes;
+	pnew->leafstring=leafstring;
+	return pnew;
 	
 }
 
@@ -85,18 +70,117 @@ void showtree(pNode node ,int dp)
 void shownode(pNode node)
 {
 //	printf ("add:%p  val:%d  str:%s  sub:(%d):",node ,node->type,node->leafstring,node->nodenum);
-	printf ("str:%s ",node->leafstring);
+	printf ("%s",node->leafstring);
+
+	printf("\n");
+}
+
+void showtreeback(pNode node,int dp)
+{
 	int i=0;
+	if(node==NULL)
+		return;
+
+	
+	int nextdp=++dp;
 	for(i=0;i<node->nodenum;i++)
 	{
-//		printf(" %p",node->node[i]);
+		showtreeback(node->node[i],nextdp);
 	}
-	printf("\n");
+	
+	for(i=0;i<dp;i++)
+		printf("  ");
+	
+	shownode(node);
+}
+
+
+pNode funnodes[20];
+//递归找出函数节点
+void findFunNode(pNode node )
+{
+	int i=0;
+	if(node==NULL)
+		return;
+
+	if(node->type==method_declaration&&node->node[node->nodenum-1]->type==statement_block)
+	{
+		funnodes[funnum]=node;
+		funnum++;
+	}
+
+
+	if(node->nodenum==0)
+		return;
+	
+	for(i=0;i<node->nodenum;i++)
+	{
+		
+		findFunNode(node->node[i]);
+	}
+	
+	
+}
+
+//构造AST
+pS_method_declaration lspAST;
+void Node_AST(pNode node)
+{
+	int i=0;
+	if(node==NULL)
+		return ;
+
+	
+	for(i=0;i<node->nodenum;i++)
+	{
+		Node_AST(node->node[i]);
+	}
+	
+	switch(node->type)
+	{
+		case method_declaration :
+		{
+			//lspAST=制造fun结点
+			break;
+		}
+		default :
+		{
+			return;
+		}
+	}
+	
+}
+
+
+void changeNodeToAST(pNode funnode,pS_method_declaration* ppfunAST)
+{
+	lspAST=NULL;	
+	Node_AST(funnode);
+	if(lspAST==NULL)
+	{
+		printf("error:change Node to AST error\n");
+		exit(1);
+	}
+	*ppfunAST=lspAST;
 }
 
 
 
+//为root创建AST
+void makeFunAST(pNode root)
+{
+	int i=0;
+	findFunNode(root);
+	for(i=0;i<funnum;i++)
+	{
+		showtreeback(funnodes[i],0);
+		changeNodeToAST(funnodes[i],&functionASTs[i]);
+	}
 
+
+
+
+}
 
 
 
