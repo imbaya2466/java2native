@@ -31,7 +31,7 @@ typedef struct S_args_ *pS_args;
 typedef enum S_op2_ S_op2;
 typedef enum S_op1_ S_op1;
 
-
+//AST属性
 struct Att_{
 	int line;
 	char *name;
@@ -54,7 +54,7 @@ struct S_symbol_{
 	}u;
 };
 
-//参数列表
+//参数列表  当最后一个参数时next为null
 struct S_fieldList_{
 	enum {S_fiedlist}kind;
 	Att att;
@@ -76,8 +76,8 @@ struct S_type_{
 	enum enStype{type_boolean,type_byte,type_char,type_float,type_double,type_int,type_long,type_short,type_void,type_String,type_class}kind;
 	Att att;//type_class的字串内容放在属性里,因为类型不属于符号表，符号表只存变量与函数
 	union{
-		//这里放特有信息[]的前套数与每个层级..5层以下。表示方式按下标0-5层
-		int brackets[5];
+		//java类型只需要知道数组几层就行了，只有在new时才能确定具体每层大小，是运行时确定的
+		int brackets;
 	}u;
 };
 //语句块用于区分作用域
@@ -101,7 +101,7 @@ struct S_statement_{
 	enum {sta_field,sta_exp,sta_block,sta_if,sta_while,sta_for,sta_return,sta_break,sta_continue}kind;
 	Att att;
 	union{
-		struct {pS_field field;}stafield;  //连续申请被化为多个state..初始化暂不支持
+		struct {pS_field field;}stafield;  //连续申请被化为多个state..初始化可以化为多一条exp语句
 		struct {pS_exp exp;}staexp;
 		struct {pS_statement_block block;}stablock;
 		struct {pS_exp exp ;pS_statement_block trueblock;pS_statement_block falseblock; }staif;//本质上else if等还是在flase时判断下一句的block内容。所有域的区分都丢给block。block可用外的
@@ -127,9 +127,9 @@ struct S_exp_{
 	union{
 		struct {pS_exp exp1;S_op2 op;pS_exp exp2;}expop2;
 		struct {pS_exp exp1;S_op1 op;}expop1;
-		struct {pS_type type;pS_args args ;}expnew;
+		struct {pS_type type;pS_args args ;}expnew;//new数组时数组信息由args提供，因为exp可以表示数组维度。同时new的含义本身就为type为类型，args为信息。吻合
 		struct {pS_exp exp;pS_args args;}expcall;
-		struct {pS_exp exp;int arry[5];}exparry;
+		struct {pS_exp exp;int arry;}exparry;//arry这里访问需要数组坐标，多维度通过嵌套表示
 		struct {pS_exp exp1;pS_exp exp2;}expobject;
 		struct {pS_symbol sym;}expsym;
 		struct {char value;}expchar;
@@ -159,7 +159,7 @@ pS_fieldList MK_pS_fieldList(Att att,pS_field field,pS_fieldList next);
 
 pS_field MK_pS_field(Att att,pS_type type,pS_symbol name);
 //这个比较特殊，全是标识类型，因此传enum且注意自定义类型名置于att名中
-pS_type MK_pS_type(Att att,enum enStype type,int *brackets);
+pS_type MK_pS_type(Att att,enum enStype type,int brackets);
 
 pS_statement_block MK_pS_statementblock(Att att,pS_statements states);
 
@@ -179,7 +179,7 @@ pS_exp MK_pS_exp_op2(Att att,pS_exp exp1,S_op2 op,pS_exp exp2);
 pS_exp MK_pS_exp_op1(Att att,pS_exp exp1,S_op1 op);
 pS_exp MK_pS_exp_new(Att att,pS_type type,pS_args args);
 pS_exp MK_pS_exp_call(Att att,pS_exp exp,pS_args args);
-pS_exp MK_pS_exp_arry(Att att,pS_exp exp,int arry[5]);
+pS_exp MK_pS_exp_arry(Att att,pS_exp exp,int arry);
 pS_exp MK_pS_exp_object(Att att,pS_exp exp1,pS_exp exp2);
 pS_exp MK_pS_exp_sym(Att att,pS_symbol sym);
 pS_exp MK_pS_exp_char(Att att,char value);
@@ -193,6 +193,10 @@ pS_exp MK_pS_exp_true(Att att);
 pS_exp MK_pS_exp_false(Att att);
 
 pS_args MK_pS_args(Att att,pS_exp exp,pS_args next);
+
+
+//show函数
+void show_pS_type(pS_type ptype);
 
 
 #endif

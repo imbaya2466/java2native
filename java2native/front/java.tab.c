@@ -70,10 +70,10 @@
 	#include "tool/tree.h"	
 	#include "AST.h"
 	#include "main.h"
-	//语法树构造用宏  #为字符串化
+	// 语法树构造用宏  #为字符串化
 	#define MNNA(i,x) MakeNodeNoAtt(i,ls,x,#x)
 	
-	//extern是指定义(分配空间)在其它地方，函数声明与定义是分开的通过声明使用因此都不用加extren，变量为声明并定义因此要加。
+	// extern是指定义(分配空间)在其它地方，函数声明与定义是分开的通过声明使用因此都不用加extren，变量为声明并定义因此要加。
 	int yylex(void);
 	extern FILE * yyin;
 	extern char * yytext;

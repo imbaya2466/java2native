@@ -1,3 +1,8 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.associations": {
+        "tree.h": "c",
+        "stdio.h": "c",
+        "java.tab.h": "c"
+    }
 }

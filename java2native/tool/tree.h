@@ -1,11 +1,17 @@
 #ifndef TREE_H
 #define TREE_H
+// 语法树的导出接口--------------------------------------------------------------------
+
+#include "front/AST.h"
 
 #define NODENUM_MAX 15
+#define MAX_FUNNUM 20
+
 
 //属性结构体大量用于赋值拷贝，不要有指针
 typedef struct _Attributes{
 	int line;
+	void *ASTnode;//该属性指向语法树转AST后语法树节点中对应的AST节点
 }Attributes;
 
 
@@ -20,7 +26,7 @@ typedef struct _Node{
 }Node;
 typedef Node* pNode;
 
-
+//注意终结符的定义从258开始，非终结符不要和其重叠
 typedef enum id_
 {
    compilation_unit  
@@ -78,6 +84,8 @@ typedef enum id_
 }id;
 
 
+
+
 pNode MakeNode(int nodenum,pNode node[],int type,Attributes attributes,char *leafstring);
 pNode MakeNodeNoAtt(int nodenum,pNode node[],int type,char *leafstring);
 pNode MakeNodeNoAttSub(int type,char *leafstring);
@@ -86,9 +94,11 @@ void showtree(pNode node,int dp);
 void showtreeback(pNode node,int dp);
 void shownode(pNode node);
 
-//提出感兴趣的AST
+//提出感兴趣的fun-AST---核心导出接口
 void makeFunAST(pNode root);
-
+//处理时导出的ASTfun
+extern pS_method_declaration functionASTs[MAX_FUNNUM];
+extern int funnum;
 
 
 

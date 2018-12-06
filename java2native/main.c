@@ -3,9 +3,6 @@
 #include "tool/tree.h"	
 #include "front/AST.h"	
 #include "main.h"
-//提出函数的抽象树
-pS_method_declaration functionASTs[10];
-int funnum=0;
 
 
 int yyparse (void);
@@ -27,8 +24,9 @@ int main(int argc, char** argv)
    }
    //第一遍遍历，建立完整语法树
    yyparse();
-  // showtreeback(root,0);
+   //showtree(root,0);
    //第二遍遍历语法树，提出我感兴趣的抽象函数
+   //注意保证产生AST的部分和处理AST的部分完全解耦合。AST的定义与辅助文件不要依赖任何其它模块
    makeFunAST(root);
 
 

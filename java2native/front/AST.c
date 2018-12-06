@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+//保证AST的独立性，保证AST的部分不依赖于其它模块。使生成AST与处理AST的部分低耦合
 
 void * ckmalloc(int size)
 {
@@ -12,6 +13,17 @@ void * ckmalloc(int size)
 	return p;
 }
 
+//用于节约空间的AST节点类型字串....node节点类型非终已经存于常量区了，终结每个都拷贝-这是必须的。因为yytext并不保存。所以内存字串部分已经优化的可以了
+char *S_str_psmd="method_declaration";
+char *S_str_pssym="symbol";
+char *S_str_psfl="fieldList";
+char *S_str_psfie="field";
+char *S_str_pstype="type";
+char *S_str_pssb="statement_block";
+char *S_str_psstates="statements";
+char *S_str_psstate="statement";
+char *S_str_psexp="exp";
+char *S_str_psarg="args";
 
 
 pS_method_declaration MK_pS_method_declaration(Att att,pS_symbol name,pS_fieldList fies,pS_type retype,pS_statement_block body)
@@ -23,7 +35,7 @@ pS_method_declaration MK_pS_method_declaration(Att att,pS_symbol name,pS_fieldLi
 	p->u.decfun.fies=fies;
 	p->u.decfun.retype=retype;
 	p->u.decfun.body=body;
-	p->att.name=strdup("method_declaration");
+	p->att.name=S_str_psmd;
 	
 	return p;
 }
@@ -33,7 +45,7 @@ pS_symbol MK_pS_symbol(Att att,char *symbol)
 	p->kind=S_sym;
 	p->att=att;
 	p->u.symbol=symbol;//符号名
-	p->att.name=strdup("symbol");
+	p->att.name=S_str_pssym;
 	return p;
 }
 
@@ -44,7 +56,7 @@ pS_fieldList MK_pS_fieldList(Att att,pS_field field,pS_fieldList next)
 	p->att=att;
 	p->u.fieldlist.field=field;
 	p->u.fieldlist.next=next;
-	p->att.name=strdup("fieldList");
+	p->att.name=S_str_psfl;
 	
 	return p;
 }
@@ -56,17 +68,17 @@ pS_field MK_pS_field(Att att,pS_type type,pS_symbol name)
 	p->att=att;
 	p->u.field.type=type;
 	p->u.field.name=name;
-	p->att.name=strdup("field");
+	p->att.name=S_str_psfie;
 	
 	return p;
 }
-//这个比较特殊，全是标识类型，因此传enum,type_class的字串内容放在属性里
-pS_type MK_pS_type(Att att,enum enStype type,int *brackets)
+//这个比较特殊，全是标识类型，因此传enum,type_class的字串内容放在属性里。且java的数组只用存层数即可，具体大小由new运行时确定
+pS_type MK_pS_type(Att att,enum enStype type,int brackets)
 {
 	pS_type p = ckmalloc(sizeof(*p));
 	p->kind=type;
 	p->att=att;
-	memcpy(p->u.brackets, brackets,5*sizeof(int));
+	p->u.brackets=brackets;
 	
 	return p;
 }
@@ -77,7 +89,7 @@ pS_statement_block MK_pS_statementblock(Att att,pS_statements states)
 	p->kind=S_statement_block;
 	p->att=att;
 	p->u.states.states=states;
-	p->att.name=strdup("statement_block");
+	p->att.name=S_str_pssb;
 	
 	return p;
 }
@@ -89,7 +101,7 @@ pS_statements MK_pS_statements(Att att,pS_statement state,pS_statements next)
 	p->att=att;
 	p->u.states.state=state;
 	p->u.states.next=next;
-	p->att.name=strdup("statements");
+	p->att.name=S_str_psstates;
 	
 	return p;
 }
@@ -102,7 +114,7 @@ pS_statement MK_pS_statement_field(Att att,pS_field field)
 	p->kind=sta_field;
 	p->att=att;
 	p->u.stafield.field=field;
-	p->att.name=strdup("statement_field");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -112,7 +124,7 @@ pS_statement MK_pS_statement_exp(Att att,pS_exp exp)
 	p->kind=sta_exp;
 	p->att=att;
 	p->u.staexp.exp=exp;
-	p->att.name=strdup("statement_exp");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -122,7 +134,7 @@ pS_statement MK_pS_statement_block(Att att,pS_statement_block block)
 	p->kind=sta_block;
 	p->att=att;
 	p->u.stablock.block=block;
-	p->att.name=strdup("statement_bloc");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -134,7 +146,7 @@ pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement_block trueblock
 	p->u.staif.exp=exp;
 	p->u.staif.trueblock=trueblock;
 	p->u.staif.falseblock=falseblock;
-	p->att.name=strdup("statement_if");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -145,7 +157,7 @@ pS_statement MK_pS_statement_while(Att att,pS_exp exp ,pS_statement_block block)
 	p->att=att;
 	p->u.stawhile.exp=exp;
 	p->u.stawhile.block=block;
-	p->att.name=strdup("statement_while");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -158,7 +170,7 @@ pS_statement MK_pS_statement_for(Att att,pS_exp exp1  ,pS_exp exp2 ,pS_exp exp3 
 	p->u.stafor.exp2=exp2;
 	p->u.stafor.exp3=exp3;
 	p->u.stafor.block=block;
-	p->att.name=strdup("statement_for");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -167,7 +179,7 @@ pS_statement MK_pS_statement_return(Att att)
 	pS_statement p = ckmalloc(sizeof(*p));
 	p->kind=sta_return;
 	p->att=att;
-	p->att.name=strdup("return");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -176,7 +188,7 @@ pS_statement MK_pS_statement_break(Att att)
 	pS_statement p = ckmalloc(sizeof(*p));
 	p->kind=sta_break;
 	p->att=att;
-	p->att.name=strdup("break");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -185,7 +197,7 @@ pS_statement MK_pS_statement_continue(Att att)
 	pS_statement p = ckmalloc(sizeof(*p));
 	p->kind=sta_continue;
 	p->att=att;
-	p->att.name=strdup("continue");
+	p->att.name=S_str_psstate;
 	
 	return p;
 }
@@ -199,7 +211,7 @@ pS_exp MK_pS_exp_op2(Att att,pS_exp exp1,S_op2 op,pS_exp exp2)
 	p->u.expop2.exp1=exp1;
 	p->u.expop2.op=op;
 	p->u.expop2.exp2=exp2;
-	p->att.name=strdup("exp_op2");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -210,7 +222,7 @@ pS_exp MK_pS_exp_op1(Att att,pS_exp exp1,S_op1 op)
 	p->att=att;
 	p->u.expop1.exp1=exp1;
 	p->u.expop1.op=op;
-	p->att.name=strdup("exp_op1");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -221,7 +233,7 @@ pS_exp MK_pS_exp_new(Att att,pS_type type,pS_args args)
 	p->att=att;
 	p->u.expnew.type=type;
 	p->u.expnew.args=args;
-	p->att.name=strdup("exp_new");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -232,18 +244,18 @@ pS_exp MK_pS_exp_call(Att att,pS_exp exp,pS_args args)
 	p->att=att;
 	p->u.expcall.exp=exp;
 	p->u.expcall.args=args;
-	p->att.name=strdup("exp_call");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
-pS_exp MK_pS_exp_arry(Att att,pS_exp exp,int arry[5])
+pS_exp MK_pS_exp_arry(Att att,pS_exp exp,int arry)
 {
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_arry;
 	p->att=att;
 	p->u.exparry.exp=exp;
-	memcpy(p->u.exparry.arry, arry,5*sizeof(int));
-	p->att.name=strdup("exp_arry");
+	p->u.exparry.arry=arry;
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -254,7 +266,7 @@ pS_exp MK_pS_exp_object(Att att,pS_exp exp1,pS_exp exp2)
 	p->att=att;
 	p->u.expobject.exp1=exp1;
 	p->u.expobject.exp2=exp2;
-	p->att.name=strdup("exp_object");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -264,7 +276,7 @@ pS_exp MK_pS_exp_sym(Att att,pS_symbol sym)
 	p->kind=exp_sym;
 	p->att=att;
 	p->u.expsym.sym=sym;
-	p->att.name=strdup("exp_sym");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -274,7 +286,7 @@ pS_exp MK_pS_exp_char(Att att,char value)
 	p->kind=exp_char;
 	p->att=att;
 	p->u.expchar.value=value;
-	p->att.name=strdup("exp_char");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -284,7 +296,7 @@ pS_exp MK_pS_exp_str(Att att,char *value)
 	p->kind=exp_string;
 	p->att=att;
 	p->u.expstr.value=value;
-	p->att.name=strdup("exp_str");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -294,7 +306,7 @@ pS_exp MK_pS_exp_int(Att att,int  value)
 	p->kind=exp_int;
 	p->att=att;
 	p->u.expint.value=value;
-	p->att.name=strdup("exp_int");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -304,7 +316,7 @@ pS_exp MK_pS_exp_float(Att att,float  value)
 	p->kind=exp_float;
 	p->att=att;
 	p->u.expfloat.value=value;
-	p->att.name=strdup("exp_float");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -313,7 +325,7 @@ pS_exp MK_pS_exp_null(Att att)
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_null;
 	p->att=att;
-	p->att.name=strdup("exp_null");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -322,7 +334,7 @@ pS_exp MK_pS_exp_super(Att att)
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_super;
 	p->att=att;
-	p->att.name=strdup("exp_super");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -331,7 +343,7 @@ pS_exp MK_pS_exp_this(Att att)
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_this;
 	p->att=att;
-	p->att.name=strdup("exp_this");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -340,7 +352,7 @@ pS_exp MK_pS_exp_true(Att att)
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_true;
 	p->att=att;
-	p->att.name=strdup("exp_true");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -349,7 +361,7 @@ pS_exp MK_pS_exp_false(Att att)
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_false;
 	p->att=att;
-	p->att.name=strdup("exp_false");
+	p->att.name=S_str_psexp;
 	
 	return p;
 }
@@ -361,7 +373,17 @@ pS_args MK_pS_args(Att att,pS_exp exp,pS_args next)
 	p->att=att;
 	p->u.fieldlist.exp=exp;
 	p->u.fieldlist.next=next;
-	p->att.name=strdup("S_args");
+	p->att.name=S_str_psarg;
 	
 	return p;
+}
+
+
+
+
+
+//-------------show-------------------
+void show_pS_type(pS_type ptype)
+{
+	printf("type(%d):line-%d name-%s brackets-%d",ptype->kind,ptype->att.line,ptype->att.name,ptype->u.brackets);
 }
