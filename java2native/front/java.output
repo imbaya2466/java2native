@@ -180,7 +180,7 @@ Grammar
    80 variable_declaration: modifiers type variable_declarators _SEMICOLON
 
    81 variable_declarators: variable_declarator
-   82                     | variable_declarators _COMMA variable_declarator
+   82                     | variable_declarator _COMMA variable_declarators
 
    83 variable_declarator: _SYMBOL brackets _MOV variable_initializer
    84                    | _SYMBOL brackets
@@ -1446,15 +1446,16 @@ State 88
 State 89
 
    80 variable_declaration: modifiers type variable_declarators . _SEMICOLON
-   82 variable_declarators: variable_declarators . _COMMA variable_declarator
 
     _SEMICOLON  shift, and go to state 147
-    _COMMA      shift, and go to state 148
 
 
 State 90
 
    81 variable_declarators: variable_declarator .
+   82                     | variable_declarator . _COMMA variable_declarators
+
+    _COMMA  shift, and go to state 148
 
     $default  reduce using rule 81 (variable_declarators)
 
@@ -2328,11 +2329,12 @@ State 147
 
 State 148
 
-   82 variable_declarators: variable_declarators _COMMA . variable_declarator
+   82 variable_declarators: variable_declarator _COMMA . variable_declarators
 
     _SYMBOL  shift, and go to state 222
 
-    variable_declarator  go to state 223
+    variable_declarators  go to state 223
+    variable_declarator   go to state 90
 
 
 State 149
@@ -4427,7 +4429,7 @@ State 222
 
 State 223
 
-   82 variable_declarators: variable_declarators _COMMA variable_declarator .
+   82 variable_declarators: variable_declarator _COMMA variable_declarators .
 
     $default  reduce using rule 82 (variable_declarators)
 

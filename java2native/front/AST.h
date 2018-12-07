@@ -101,12 +101,12 @@ struct S_statement_{
 	enum {sta_field,sta_exp,sta_block,sta_if,sta_while,sta_for,sta_return,sta_break,sta_continue}kind;
 	Att att;
 	union{
-		struct {pS_field field;}stafield;  //连续申请被化为多个state..初始化可以化为多一条exp语句
+		struct {pS_field field;pS_exp exp;pS_statements next;}stafield;  //连续申请被化为多个state..初始化可以化为多一条exp语句
 		struct {pS_exp exp;}staexp;
 		struct {pS_statement_block block;}stablock;
-		struct {pS_exp exp ;pS_statement_block trueblock;pS_statement_block falseblock; }staif;//本质上else if等还是在flase时判断下一句的block内容。所有域的区分都丢给block。block可用外的
-		struct {pS_exp exp ;pS_statement_block block;}stawhile;
-		struct {pS_exp exp1  ;pS_exp exp2 ;pS_exp exp3 ;pS_statement_block block;}stafor;
+		struct {pS_exp exp ;pS_statement trueblock;pS_statement falseblock; }staif;//本质上else if等还是在flase时判断下一句的block内容。所有域的区分都丢给block。block可用外的
+		struct {pS_exp exp ;pS_statement block;}stawhile;
+		struct {pS_exp exp1  ;pS_exp exp2 ;pS_exp exp3 ;pS_statement block;}stafor;//暂不支持exp1中声明。
 		//其他三个为enum可表示的标识符
 	}u;
 };
@@ -114,8 +114,8 @@ struct S_statement_{
 enum S_op2_{
 	//+     -        *     /       %    ==    !=      >         <      >=       <=     &       |     ^      <<    >>      >>>     &&    ||
 	S_ADD ,S_SUB ,S_MUL ,S_DIV ,S_MOD ,S_CMP ,S_NCMP ,S_MORE ,S_LESS ,S_MCMP ,S_LCMP ,S_AND ,S_OR ,S_XOR ,S_SHL ,S_SHR ,S_SAR ,S_BAND ,S_BOR
-	// =     +=         -=         +=         /=        %=        <<=     >>=        &=        ^=        |=
-	,S_MOV ,S_ADDMOV ,S_SUBMOV ,S_MULMOV ,S_DIVMOV ,S_MODMOV ,S_SHLMOV ,S_SHRMOV ,S_ANDMOV ,S_XORMOV ,S_ORMOV
+	// =     +=         -=         +=         /=        %=        <<=     >>=        &=        ^=        |=     ,
+	,S_MOV ,S_ADDMOV ,S_SUBMOV ,S_MULMOV ,S_DIVMOV ,S_MODMOV ,S_SHLMOV ,S_SHRMOV ,S_ANDMOV ,S_XORMOV ,S_ORMOV ,S_COMMA
 };
 enum S_op1_{
 	//++      --      ~     -        !
@@ -135,7 +135,7 @@ struct S_exp_{
 		struct {char value;}expchar;
 		struct {char  *value;}expstr;//常量表在构造AST时统计，构造AST后统一分配
 		struct {int  value;}expint;
-		struct {float  value;}expfloat;
+		struct {double  value;}expfloat;
 		//null super this true flase enum足以
 	}u;
 };
@@ -165,12 +165,12 @@ pS_statement_block MK_pS_statementblock(Att att,pS_statements states);
 
 pS_statements MK_pS_statements(Att att,pS_statement state,pS_statements next);
 
-pS_statement MK_pS_statement_field(Att att,pS_field field);
+pS_statement MK_pS_statement_field(Att att,pS_field field,pS_exp exp,pS_statements next);
 pS_statement MK_pS_statement_exp(Att att,pS_exp exp);
 pS_statement MK_pS_statement_block(Att att,pS_statement_block block);
-pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement_block trueblock,pS_statement_block falseblock);
-pS_statement MK_pS_statement_while(Att att,pS_exp exp ,pS_statement_block block);
-pS_statement MK_pS_statement_for(Att att,pS_exp exp1  ,pS_exp exp2 ,pS_exp exp3 ,pS_statement_block block);
+pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement trueblock,pS_statement falseblock);
+pS_statement MK_pS_statement_while(Att att,pS_exp exp ,pS_statement block);
+pS_statement MK_pS_statement_for(Att att,pS_exp exp1  ,pS_exp exp2 ,pS_exp exp3 ,pS_statement block);
 pS_statement MK_pS_statement_return(Att att);
 pS_statement MK_pS_statement_break(Att att);
 pS_statement MK_pS_statement_continue(Att att);
@@ -185,7 +185,7 @@ pS_exp MK_pS_exp_sym(Att att,pS_symbol sym);
 pS_exp MK_pS_exp_char(Att att,char value);
 pS_exp MK_pS_exp_str(Att att,char *value);
 pS_exp MK_pS_exp_int(Att att,int  value);
-pS_exp MK_pS_exp_float(Att att,float  value);
+pS_exp MK_pS_exp_float(Att att,double value);
 pS_exp MK_pS_exp_null(Att att);
 pS_exp MK_pS_exp_super(Att att);
 pS_exp MK_pS_exp_this(Att att);
@@ -195,8 +195,19 @@ pS_exp MK_pS_exp_false(Att att);
 pS_args MK_pS_args(Att att,pS_exp exp,pS_args next);
 
 
-//show函数
-void show_pS_type(pS_type ptype);
+//show函数-因为每个节点都不一样因此拆分函数分别处理
+
+void show_pS_method_declaration(pS_method_declaration p,int dp);
+void show_pS_symbol(pS_symbol p,int dp);
+void show_pS_fieldList(pS_fieldList p,int dp);
+void show_pS_field(pS_field p,int dp);
+void show_pS_type(pS_type p,int dp);
+void show_pS_statement_block(pS_statement_block p,int dp);
+void show_pS_statements(pS_statements p,int dp);
+void show_pS_statement(pS_statement p,int dp);
+void show_pS_exp(pS_exp p,int dp);
+void show_pS_args(pS_args p,int dp);
+
 
 
 #endif

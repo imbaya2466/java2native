@@ -108,12 +108,14 @@ pS_statements MK_pS_statements(Att att,pS_statement state,pS_statements next)
 
 
 //语句
-pS_statement MK_pS_statement_field(Att att,pS_field field)
+pS_statement MK_pS_statement_field(Att att,pS_field field,pS_exp exp,pS_statements next)
 {
 	pS_statement p = ckmalloc(sizeof(*p));
 	p->kind=sta_field;
 	p->att=att;
 	p->u.stafield.field=field;
+	p->u.stafield.exp=exp;
+	p->u.stafield.next=next;
 	p->att.name=S_str_psstate;
 	
 	return p;
@@ -138,7 +140,7 @@ pS_statement MK_pS_statement_block(Att att,pS_statement_block block)
 	
 	return p;
 }
-pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement_block trueblock,pS_statement_block falseblock)
+pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement trueblock,pS_statement falseblock)
 {
 	pS_statement p = ckmalloc(sizeof(*p));
 	p->kind=sta_if;
@@ -150,7 +152,7 @@ pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement_block trueblock
 	
 	return p;
 }
-pS_statement MK_pS_statement_while(Att att,pS_exp exp ,pS_statement_block block)
+pS_statement MK_pS_statement_while(Att att,pS_exp exp ,pS_statement block)
 {
 	pS_statement p = ckmalloc(sizeof(*p));
 	p->kind=sta_while;
@@ -161,7 +163,7 @@ pS_statement MK_pS_statement_while(Att att,pS_exp exp ,pS_statement_block block)
 	
 	return p;
 }
-pS_statement MK_pS_statement_for(Att att,pS_exp exp1  ,pS_exp exp2 ,pS_exp exp3 ,pS_statement_block block)
+pS_statement MK_pS_statement_for(Att att,pS_exp exp1  ,pS_exp exp2 ,pS_exp exp3 ,pS_statement block)
 {
 	pS_statement p = ckmalloc(sizeof(*p));
 	p->kind=sta_for;
@@ -310,7 +312,7 @@ pS_exp MK_pS_exp_int(Att att,int  value)
 	
 	return p;
 }
-pS_exp MK_pS_exp_float(Att att,float  value)
+pS_exp MK_pS_exp_float(Att att,double  value)
 {
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_float;
@@ -383,7 +385,192 @@ pS_args MK_pS_args(Att att,pS_exp exp,pS_args next)
 
 
 //-------------show-------------------
-void show_pS_type(pS_type ptype)
+
+void show_pS_method_declaration(pS_method_declaration p,int dp)
 {
-	printf("type(%d):line-%d name-%s brackets-%d",ptype->kind,ptype->att.line,ptype->att.name,ptype->u.brackets);
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	printf("%d-%s \n",p->att.line,p->att.name);
+
+
+	int nextdp=++dp;
+	//子节点处理
+	show_pS_symbol(p->u.decfun.name,nextdp);
+	show_pS_fieldList(p->u.decfun.fies,nextdp);
+	show_pS_type(p->u.decfun.retype,nextdp);
+	show_pS_statement_block(p->u.decfun.body,nextdp);
+
+
+
+
+	//后序本节点处理
+}
+void show_pS_symbol(pS_symbol p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	printf("%d-%s: sym-%s \n",p->att.line,p->att.name,p->u.symbol);
+
+
+	//无子节点-前中后都一样
+}
+void show_pS_fieldList(pS_fieldList p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	printf("%d-%s \n",p->att.line,p->att.name);
+
+
+	int nextdp=++dp;
+	//子节点处理
+	show_pS_field(p->u.fieldlist.field,nextdp);
+	show_pS_fieldList(p->u.fieldlist.next,nextdp);
+
+	//后序本节点处理
+}
+void show_pS_field(pS_field p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	printf("%d-%s \n",p->att.line,p->att.name);
+
+
+	int nextdp=++dp;
+	//子节点处理
+	show_pS_type(p->u.field.type,nextdp);
+	show_pS_symbol(p->u.field.name,nextdp);
+
+	//后序本节点处理
+}
+void show_pS_type(pS_type p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+	//前序本节点处理
+	printf("%d-type(%d): name-%s brackets-%d\n",p->att.line,p->kind,p->att.name,p->u.brackets);
+
+	//无子节点
+}
+void show_pS_statement_block(pS_statement_block p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	
+
+
+	int nextdp=++dp;
+	//子节点处理
+
+
+
+
+	//后序本节点处理
+}
+void show_pS_statements(pS_statements p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	
+
+
+	int nextdp=++dp;
+	//子节点处理
+
+
+
+
+	//后序本节点处理
+}
+void show_pS_statement(pS_statement p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	
+
+
+	int nextdp=++dp;
+	//子节点处理
+
+
+
+
+	//后序本节点处理
+}
+void show_pS_exp(pS_exp p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	
+
+
+	int nextdp=++dp;
+	//子节点处理
+
+
+
+
+	//后序本节点处理
+}
+void show_pS_args(pS_args p,int dp)
+{
+	int i=0;
+	if(p==NULL)
+		return;
+	for(i=0;i<dp;i++)
+		printf("  ");
+
+	//前序本节点处理
+	
+
+
+	int nextdp=++dp;
+	//子节点处理
+
+
+
+
+	//后序本节点处理
 }

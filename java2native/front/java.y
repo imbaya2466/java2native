@@ -162,7 +162,7 @@
 %left	_ADD _SUB
 %left	_MUL _DIV _MOD 
 %right	_ADD2 _SUB2 _BNOT _NOT  UMINUS
-%left	_POINT _RBRACE _LBRACKET _RBRACKET _LPARENTHESE
+%left	_POINT _LBRACKET _RBRACKET _LPARENTHESE _RPARENTHESE
 
 
 // --------------------------------------------------------------------------------------
@@ -425,7 +425,7 @@ variable_declaration
 variable_declarators
 			: variable_declarator 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,variable_declarators);}
-			| variable_declarators _COMMA variable_declarator
+			| variable_declarator _COMMA variable_declarators
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,variable_declarators);}
 			;
 // 变量式	符号 []0-n | 符号 []0-n = 变量初始化器
