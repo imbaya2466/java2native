@@ -127,9 +127,9 @@ struct S_exp_{
 	union{
 		struct {pS_exp exp1;S_op2 op;pS_exp exp2;}expop2;
 		struct {pS_exp exp1;S_op1 op;}expop1;
-		struct {pS_type type;pS_args args ;}expnew;//new数组时数组信息由args提供，因为exp可以表示数组维度。同时new的含义本身就为type为类型，args为信息。吻合
+		struct {pS_type type;pS_args args ;}expnew;//new数组时数组信息由args提供，exp表示数组每层数,args为exp链。同时new的含义本身就为type为类型，args为信息。吻合没问题
 		struct {pS_exp exp;pS_args args;}expcall;
-		struct {pS_exp exp;int arry;}exparry;//arry这里访问需要数组坐标，多维度通过嵌套表示
+		struct {pS_exp exp;pS_exp arry;}exparry;//arry这里表示数组当前维度下标，多维度通过exp嵌套表示
 		struct {pS_exp exp1;pS_exp exp2;}expobject;
 		struct {pS_symbol sym;}expsym;
 		struct {char value;}expchar;
@@ -179,7 +179,7 @@ pS_exp MK_pS_exp_op2(Att att,pS_exp exp1,S_op2 op,pS_exp exp2);
 pS_exp MK_pS_exp_op1(Att att,pS_exp exp1,S_op1 op);
 pS_exp MK_pS_exp_new(Att att,pS_type type,pS_args args);
 pS_exp MK_pS_exp_call(Att att,pS_exp exp,pS_args args);
-pS_exp MK_pS_exp_arry(Att att,pS_exp exp,int arry);
+pS_exp MK_pS_exp_arry(Att att,pS_exp exp,pS_exp arry);
 pS_exp MK_pS_exp_object(Att att,pS_exp exp1,pS_exp exp2);
 pS_exp MK_pS_exp_sym(Att att,pS_symbol sym);
 pS_exp MK_pS_exp_char(Att att,char value);

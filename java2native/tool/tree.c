@@ -721,17 +721,30 @@ void Node_AST(pNode node)
 						}
 						case _LBRACKET://数组exp
 						{
+							pS_exp exp;
+							pS_exp arry;
+							exp=(pS_exp)node->node[0]->attributes.ASTnode;
+							arry=(pS_exp)node->node[2]->attributes.ASTnode;
 
+							node->attributes.ASTnode=(void*)MK_pS_exp_arry(att,exp,arry);
 							break;
 						}
 						case _POINT://对象exp
 						{
 
+							exp1=(pS_exp)node->node[0]->attributes.ASTnode;
+							exp2=(pS_exp)node->node[2]->attributes.ASTnode;
+
+							node->attributes.ASTnode=(void*)MK_pS_exp_object(att,exp1,exp2);
 							break;
 						}
 						case _COMMA://逗号exp
 						{
-
+							op=NodeenumToASTenum(_COMMA);
+							exp1=(pS_exp)node->node[0]->attributes.ASTnode;
+							exp2=(pS_exp)node->node[2]->attributes.ASTnode;
+							
+							node->attributes.ASTnode=(void*)MK_pS_exp_op2(att,exp1,op,exp2);
 							break;
 						}
 						default:
@@ -750,10 +763,41 @@ void Node_AST(pNode node)
 		}
 		case creating_expression:  //new-exp
 		{
+			Att att;
+			pS_type type;
+			pS_args args;
+			att.line=node->attributes.line;
+			if(node->node[1]->type==class_name)
+			{
+				//非数组
+				att.name=makeClassNameFromNode(node->node[1]);
+				type=MK_pS_type(att,type_class,0);
+				if(node->nodenum==4)
+				{
+					args=NULL;
+				}
+				else
+				{
+					args=(pS_args)node->node[3]->attributes.ASTnode;
+				}
+			}
+			else
+			{
+				//数组
+				int type_ls;
+				int brackets;
+				type_ls=NodeenumToASTenum(node->node[1]->node[0]->type);
+				att.name=node->node[1]->node[0]->leafstring;
+				if(type_ls==type_class){att.name=makeClassNameFromNode(node->node[1]->node[0]);}
+				brackets=howDeepInNodeBrackets(node->node[2],0);
+				type=MK_pS_type(att,type_ls,brackets);
+				args=node->node[2]->attributes.ASTnode;
+			}
 
+			node->attributes.ASTnode=(void*)MK_pS_exp_new(att,type,args);
 			break;
 		}
-		case arglist ://生成pS_args AST
+		case arglist ://生成pS_args AST用于函数调用的参数表
 		{
 			Att att;
 			pS_exp exp;
@@ -773,7 +817,26 @@ void Node_AST(pNode node)
 			node->attributes.ASTnode=(void*)MK_pS_args(att,exp,next);
 			break;
 		}
-	
+		case bracketnums://生成pS_args AST用于数组的参数表
+		{
+			Att att;
+			pS_exp exp;
+			pS_args next;
+			att.line=node->attributes.line;
+			if(node->nodenum==0)
+			{
+				node->attributes.ASTnode=NULL;
+			}
+			else
+			{
+				exp=(pS_exp)node->node[2]->attributes.ASTnode;
+				next=(pS_args)node->node[0]->attributes.ASTnode;
+				node->attributes.ASTnode=(void*)MK_pS_args(att,exp,next);
+			}
+
+			
+			break;
+		}
 		default :
 		{
 			return;

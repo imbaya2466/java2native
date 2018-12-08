@@ -250,7 +250,7 @@ pS_exp MK_pS_exp_call(Att att,pS_exp exp,pS_args args)
 	
 	return p;
 }
-pS_exp MK_pS_exp_arry(Att att,pS_exp exp,int arry)
+pS_exp MK_pS_exp_arry(Att att,pS_exp exp,pS_exp arry)
 {
 	pS_exp p = ckmalloc(sizeof(*p));
 	p->kind=exp_arry;
