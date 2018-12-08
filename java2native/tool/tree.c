@@ -368,7 +368,7 @@ void Node_AST(pNode node)
 			sym=(pS_symbol)node->node[1]->attributes.ASTnode;
 			int addbrackets=howDeepInNodeBrackets(node->node[2],0);
 			type->u.brackets+=addbrackets; //总数组维度为俩个写法之和
-			att.line=node->attributes.line;
+			att.line=type->att.line;
 
 			node->attributes.ASTnode=(void*)MK_pS_field(att,type,sym);
 			break;
@@ -396,6 +396,7 @@ void Node_AST(pNode node)
 			}
 			else
 			{
+				att.line=node->node[1]->attributes.line;
 				state=(pS_statement)node->node[1]->attributes.ASTnode;
 				next=(pS_statements)node->node[0]->attributes.ASTnode;
 			}
@@ -483,6 +484,7 @@ void Node_AST(pNode node)
 			}
 			next=NULL;
 			//next=MakeVariable_declarations(field->u.field.type,node->[2]);处理多条语句声明
+			//目前多个声明时被识别为exp了
 			node->attributes.ASTnode=(void*)MK_pS_statement_field(att,field,exp,next);
 			break;
 		}
@@ -499,13 +501,12 @@ void Node_AST(pNode node)
 			//处理falseblock
 			if(node->nodenum==5)
 			{
-				falseblock==NULL;
+				falseblock=NULL;
 			}
 			else
 			{
 				falseblock=(pS_statement)node->node[6]->attributes.ASTnode;
 			}
-
 			node->attributes.ASTnode=(void*)MK_pS_statement_if(att,exp,trueblock,falseblock);
 			break;
 		}
@@ -531,6 +532,7 @@ void Node_AST(pNode node)
 			att.line=node->attributes.line;
 			if(node->nodenum==8)
 			{
+				//不支持for头声明变量
 				node->attributes.ASTnode=NULL;
 				break;
 			}
@@ -568,7 +570,7 @@ void Node_AST(pNode node)
 						else
 						{							
 							op=NodeenumToASTenum(firstsonNode->node[0]->type);
-							op=op==S_SUB?S_SUB1:op;
+							op=op==S_SUB?S_SUB1:op;//处理负数，注意负号是可以加在表达式前的，因此不可以在语法分析时算出，应作为输出
 							exp1=(pS_exp)firstsonNode->node[1]->attributes.ASTnode;
 						}
 						node->attributes.ASTnode=(void*)MK_pS_exp_op1(att,exp1,op);
@@ -891,12 +893,16 @@ void makeFunAST(pNode root)
 	findFunNode(root);
 	for(i=0;i<funnum;i++)
 	{
-		showtreeback(funnodes[i],0);
+//		showtree(funnodes[i],0);
 		functionASTs[i]=changeNodeToAST(funnodes[i]);
 	}
 
 	printf("AST:---------------------\n");
-	show_pS_method_declaration(functionASTs[0],0);
+	for(i=0;i<funnum;i++)
+	{
+		show_pS_method_declaration(functionASTs[i],0);
+	}
+	
 
 
 

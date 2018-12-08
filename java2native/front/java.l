@@ -106,7 +106,7 @@ string						\".*\"
 "class"				{yylval.pnode = doyylval(_CLASS);  return _CLASS;}
 "interface"			{yylval.pnode = doyylval(_INTERFACE);  return _INTERFACE;}
 
-"ture"				{yylval.pnode = doyylval(_TRUE);  return _TRUE;}
+"true"				{yylval.pnode = doyylval(_TRUE);  return _TRUE;}
 "false"				{yylval.pnode = doyylval(_FALSE);  return _FALSE;}
 "null"				{yylval.pnode = doyylval(_NUL);  return _NUL;}
 "super"				{yylval.pnode = doyylval(_SUPER);  return _SUPER;}

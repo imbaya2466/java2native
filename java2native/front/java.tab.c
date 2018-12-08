@@ -567,25 +567,25 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   190,   190,   192,   197,   200,   204,   207,   211,   217,
-     219,   224,   226,   236,   238,   243,   245,   247,   252,   255,
-     258,   260,   262,   264,   266,   268,   270,   272,   274,   279,
-     281,   286,   289,   293,   295,   297,   299,   301,   307,   309,
-     311,   313,   318,   323,   326,   330,   332,   334,   336,   338,
-     340,   342,   344,   346,   348,   350,   355,   357,   363,   368,
-     372,   375,   380,   382,   384,   386,   388,   390,   392,   394,
-     396,   398,   400,   402,   404,   406,   408,   410,   412,   414,
-     416,   421,   426,   428,   433,   435,   440,   442,   444,   446,
-     451,   453,   460,   462,   464,   468,   472,   474,   476,   478,
-     480,   482,   484,   486,   488,   490,   492,   494,   496,   498,
-     503,   505,   507,   509,   511,   513,   515,   517,   519,   521,
-     523,   525,   527,   529,   531,   533,   539,   541,   543,   545,
-     547,   549,   555,   557,   559,   561,   563,   569,   571,   573,
-     575,   577,   579,   581,   583,   585,   587,   589,   591,   613,
-     615,   617,   621,   624,   628,   630,   635,   637,   639,   641,
-     646,   648,   653,   658,   663,   665,   669,   672,   676,   678,
-     683,   686,   690,   694,   696,   698,   701,   705,   707,   712,
-     717,   719
+       0,   194,   194,   196,   201,   204,   208,   211,   215,   221,
+     223,   228,   230,   240,   242,   247,   249,   251,   256,   259,
+     262,   264,   266,   268,   270,   272,   274,   276,   278,   283,
+     285,   290,   293,   297,   299,   301,   303,   305,   311,   313,
+     315,   317,   322,   327,   330,   334,   336,   338,   340,   342,
+     344,   346,   348,   350,   352,   354,   359,   361,   367,   372,
+     376,   379,   384,   386,   388,   390,   392,   394,   396,   398,
+     400,   402,   404,   406,   408,   410,   412,   414,   416,   418,
+     420,   425,   430,   432,   437,   439,   444,   446,   448,   450,
+     455,   457,   464,   466,   468,   472,   476,   478,   480,   482,
+     484,   486,   488,   490,   492,   494,   496,   498,   500,   502,
+     507,   509,   511,   513,   515,   517,   519,   521,   523,   525,
+     527,   529,   531,   533,   535,   537,   543,   545,   547,   549,
+     551,   553,   559,   561,   563,   565,   567,   573,   575,   577,
+     579,   581,   583,   585,   587,   589,   591,   593,   595,   617,
+     619,   621,   625,   628,   632,   634,   639,   641,   643,   645,
+     650,   652,   657,   662,   667,   669,   673,   676,   680,   682,
+     687,   690,   694,   698,   700,   702,   705,   709,   711,   716,
+     721,   723
 };
 #endif
 
@@ -1893,1081 +1893,1081 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 191 "front/java.y" /* yacc.c:1646  */
+#line 195 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  root=MNNA(3,compilation_unit);}
 #line 1899 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 193 "front/java.y" /* yacc.c:1646  */
+#line 197 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  root=MNNA(2,compilation_unit);}
 #line 1905 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 198 "front/java.y" /* yacc.c:1646  */
+#line 202 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,import_statements);}
 #line 1911 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 200 "front/java.y" /* yacc.c:1646  */
+#line 204 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,import_statements);}
 #line 1917 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 205 "front/java.y" /* yacc.c:1646  */
+#line 209 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,type_declarations);}
 #line 1923 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 207 "front/java.y" /* yacc.c:1646  */
+#line 211 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,type_declarations);}
 #line 1929 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 212 "front/java.y" /* yacc.c:1646  */
+#line 216 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,package_statement);}
 #line 1935 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 218 "front/java.y" /* yacc.c:1646  */
+#line 222 "front/java.y" /* yacc.c:1646  */
     { pNode ls[5]={(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(5,import_statement);}
 #line 1941 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 220 "front/java.y" /* yacc.c:1646  */
+#line 224 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,import_statement);}
 #line 1947 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 225 "front/java.y" /* yacc.c:1646  */
+#line 229 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]={(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,class_name);}
 #line 1953 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 227 "front/java.y" /* yacc.c:1646  */
+#line 231 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,class_name);}
 #line 1959 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 237 "front/java.y" /* yacc.c:1646  */
+#line 241 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]={(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_declaration);}
 #line 1965 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 239 "front/java.y" /* yacc.c:1646  */
+#line 243 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]={(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_declaration);}
 #line 1971 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 244 "front/java.y" /* yacc.c:1646  */
+#line 248 "front/java.y" /* yacc.c:1646  */
     { pNode ls[10]={(yyvsp[-9].pnode),(yyvsp[-8].pnode),(yyvsp[-7].pnode),(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(10,class_declaration);}
 #line 1977 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 246 "front/java.y" /* yacc.c:1646  */
+#line 250 "front/java.y" /* yacc.c:1646  */
     { pNode ls[8]={(yyvsp[-7].pnode),(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(8,class_declaration);}
 #line 1983 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 248 "front/java.y" /* yacc.c:1646  */
+#line 252 "front/java.y" /* yacc.c:1646  */
     { pNode ls[6]={(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(6,class_declaration);}
 #line 1989 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 253 "front/java.y" /* yacc.c:1646  */
+#line 257 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,modifiers);}
 #line 1995 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 255 "front/java.y" /* yacc.c:1646  */
+#line 259 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,modifiers);}
 #line 2001 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 259 "front/java.y" /* yacc.c:1646  */
+#line 263 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2007 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 261 "front/java.y" /* yacc.c:1646  */
+#line 265 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2013 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 263 "front/java.y" /* yacc.c:1646  */
+#line 267 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2019 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 265 "front/java.y" /* yacc.c:1646  */
+#line 269 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2025 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 267 "front/java.y" /* yacc.c:1646  */
+#line 271 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2031 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 269 "front/java.y" /* yacc.c:1646  */
+#line 273 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2037 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 271 "front/java.y" /* yacc.c:1646  */
+#line 275 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2043 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 273 "front/java.y" /* yacc.c:1646  */
+#line 277 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2049 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 275 "front/java.y" /* yacc.c:1646  */
+#line 279 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,modifier);}
 #line 2055 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 280 "front/java.y" /* yacc.c:1646  */
+#line 284 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,implements);}
 #line 2061 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 282 "front/java.y" /* yacc.c:1646  */
+#line 286 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]= {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,implements);}
 #line 2067 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 287 "front/java.y" /* yacc.c:1646  */
+#line 291 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,field_declarations);}
 #line 2073 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 289 "front/java.y" /* yacc.c:1646  */
+#line 293 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,field_declarations);}
 #line 2079 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 294 "front/java.y" /* yacc.c:1646  */
+#line 298 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,field_declaration);}
 #line 2085 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 296 "front/java.y" /* yacc.c:1646  */
+#line 300 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,field_declaration);}
 #line 2091 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 298 "front/java.y" /* yacc.c:1646  */
+#line 302 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,field_declaration);}
 #line 2097 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 300 "front/java.y" /* yacc.c:1646  */
+#line 304 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,field_declaration);}
 #line 2103 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 302 "front/java.y" /* yacc.c:1646  */
+#line 306 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,field_declaration);}
 #line 2109 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 308 "front/java.y" /* yacc.c:1646  */
+#line 312 "front/java.y" /* yacc.c:1646  */
     { pNode ls[7]={(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(7,method_declaration);}
 #line 2115 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 310 "front/java.y" /* yacc.c:1646  */
+#line 314 "front/java.y" /* yacc.c:1646  */
     { pNode ls[6]={(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(6,method_declaration);}
 #line 2121 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 312 "front/java.y" /* yacc.c:1646  */
+#line 316 "front/java.y" /* yacc.c:1646  */
     { pNode ls[7]={(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(7,method_declaration);}
 #line 2127 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 314 "front/java.y" /* yacc.c:1646  */
+#line 318 "front/java.y" /* yacc.c:1646  */
     { pNode ls[6]={(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(6,method_declaration);}
 #line 2133 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 319 "front/java.y" /* yacc.c:1646  */
+#line 323 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,type);}
 #line 2139 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 324 "front/java.y" /* yacc.c:1646  */
+#line 328 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,brackets);}
 #line 2145 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 326 "front/java.y" /* yacc.c:1646  */
+#line 330 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,brackets);}
 #line 2151 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 331 "front/java.y" /* yacc.c:1646  */
+#line 335 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2157 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 333 "front/java.y" /* yacc.c:1646  */
+#line 337 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2163 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 335 "front/java.y" /* yacc.c:1646  */
+#line 339 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2169 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 337 "front/java.y" /* yacc.c:1646  */
+#line 341 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2175 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 339 "front/java.y" /* yacc.c:1646  */
+#line 343 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2181 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 341 "front/java.y" /* yacc.c:1646  */
+#line 345 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2187 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 343 "front/java.y" /* yacc.c:1646  */
+#line 347 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2193 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 345 "front/java.y" /* yacc.c:1646  */
+#line 349 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2199 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 347 "front/java.y" /* yacc.c:1646  */
+#line 351 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2205 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 349 "front/java.y" /* yacc.c:1646  */
+#line 353 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2211 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 351 "front/java.y" /* yacc.c:1646  */
+#line 355 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,type_specifier);}
 #line 2217 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 356 "front/java.y" /* yacc.c:1646  */
+#line 360 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,parameter_list);}
 #line 2223 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 358 "front/java.y" /* yacc.c:1646  */
+#line 362 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,parameter_list);}
 #line 2229 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 364 "front/java.y" /* yacc.c:1646  */
+#line 368 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,parameter);}
 #line 2235 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 369 "front/java.y" /* yacc.c:1646  */
+#line 373 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,statement_block);}
 #line 2241 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 373 "front/java.y" /* yacc.c:1646  */
+#line 377 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,statements);}
 #line 2247 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 375 "front/java.y" /* yacc.c:1646  */
+#line 379 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,statements);}
 #line 2253 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 381 "front/java.y" /* yacc.c:1646  */
+#line 385 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2259 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 383 "front/java.y" /* yacc.c:1646  */
+#line 387 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,statement);}
 #line 2265 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 385 "front/java.y" /* yacc.c:1646  */
+#line 389 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2271 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 387 "front/java.y" /* yacc.c:1646  */
+#line 391 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2277 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 389 "front/java.y" /* yacc.c:1646  */
+#line 393 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2283 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 391 "front/java.y" /* yacc.c:1646  */
+#line 395 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2289 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 393 "front/java.y" /* yacc.c:1646  */
+#line 397 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2295 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 395 "front/java.y" /* yacc.c:1646  */
+#line 399 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2301 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 397 "front/java.y" /* yacc.c:1646  */
+#line 401 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2307 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 399 "front/java.y" /* yacc.c:1646  */
+#line 403 "front/java.y" /* yacc.c:1646  */
     { pNode ls[5]={(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(5,statement);}
 #line 2313 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 401 "front/java.y" /* yacc.c:1646  */
+#line 405 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,statement);}
 #line 2319 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 403 "front/java.y" /* yacc.c:1646  */
+#line 407 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,statement);}
 #line 2325 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 405 "front/java.y" /* yacc.c:1646  */
+#line 409 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,statement);}
 #line 2331 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 407 "front/java.y" /* yacc.c:1646  */
+#line 411 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,statement);}
 #line 2337 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 409 "front/java.y" /* yacc.c:1646  */
+#line 413 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,statement);}
 #line 2343 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 411 "front/java.y" /* yacc.c:1646  */
+#line 415 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,statement);}
 #line 2349 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 413 "front/java.y" /* yacc.c:1646  */
+#line 417 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,statement);}
 #line 2355 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 415 "front/java.y" /* yacc.c:1646  */
+#line 419 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,statement);}
 #line 2361 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 417 "front/java.y" /* yacc.c:1646  */
+#line 421 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,statement);}
 #line 2367 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 422 "front/java.y" /* yacc.c:1646  */
+#line 426 "front/java.y" /* yacc.c:1646  */
     { pNode ls[4]={(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(4,variable_declaration);}
 #line 2373 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 427 "front/java.y" /* yacc.c:1646  */
+#line 431 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,variable_declarators);}
 #line 2379 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 429 "front/java.y" /* yacc.c:1646  */
+#line 433 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,variable_declarators);}
 #line 2385 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 434 "front/java.y" /* yacc.c:1646  */
+#line 438 "front/java.y" /* yacc.c:1646  */
     { pNode ls[4]={(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(4,variable_declarator);}
 #line 2391 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 436 "front/java.y" /* yacc.c:1646  */
+#line 440 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,variable_declarator);}
 #line 2397 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 441 "front/java.y" /* yacc.c:1646  */
+#line 445 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,variable_initializer);}
 #line 2403 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 443 "front/java.y" /* yacc.c:1646  */
+#line 447 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,variable_initializer);}
 #line 2409 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 445 "front/java.y" /* yacc.c:1646  */
+#line 449 "front/java.y" /* yacc.c:1646  */
     { pNode ls[4]={(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(4,variable_initializer);}
 #line 2415 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 447 "front/java.y" /* yacc.c:1646  */
+#line 451 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,variable_initializer);}
 #line 2421 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 452 "front/java.y" /* yacc.c:1646  */
+#line 456 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,variable_initializers);}
 #line 2427 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 454 "front/java.y" /* yacc.c:1646  */
+#line 458 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,variable_initializers);}
 #line 2433 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 461 "front/java.y" /* yacc.c:1646  */
+#line 465 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2439 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 463 "front/java.y" /* yacc.c:1646  */
+#line 467 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2445 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 465 "front/java.y" /* yacc.c:1646  */
+#line 469 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2451 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 469 "front/java.y" /* yacc.c:1646  */
+#line 473 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2457 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 473 "front/java.y" /* yacc.c:1646  */
+#line 477 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2463 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 475 "front/java.y" /* yacc.c:1646  */
+#line 479 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2469 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 477 "front/java.y" /* yacc.c:1646  */
+#line 481 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2475 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 479 "front/java.y" /* yacc.c:1646  */
+#line 483 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2481 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 481 "front/java.y" /* yacc.c:1646  */
+#line 485 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2487 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 483 "front/java.y" /* yacc.c:1646  */
+#line 487 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression);}
 #line 2493 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 485 "front/java.y" /* yacc.c:1646  */
+#line 489 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,expression);}
 #line 2499 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 487 "front/java.y" /* yacc.c:1646  */
+#line 491 "front/java.y" /* yacc.c:1646  */
     { pNode ls[4]={(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(4,expression);}
 #line 2505 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 489 "front/java.y" /* yacc.c:1646  */
+#line 493 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,expression);}
 #line 2511 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 491 "front/java.y" /* yacc.c:1646  */
+#line 495 "front/java.y" /* yacc.c:1646  */
     { pNode ls[4]={(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(4,expression);}
 #line 2517 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 493 "front/java.y" /* yacc.c:1646  */
+#line 497 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,expression);}
 #line 2523 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 495 "front/java.y" /* yacc.c:1646  */
+#line 499 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,expression);}
 #line 2529 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 497 "front/java.y" /* yacc.c:1646  */
+#line 501 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,expression);}
 #line 2535 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 109:
-#line 499 "front/java.y" /* yacc.c:1646  */
+#line 503 "front/java.y" /* yacc.c:1646  */
     { pNode ls[5]={(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(5,expression);}
 #line 2541 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 504 "front/java.y" /* yacc.c:1646  */
+#line 508 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,numeric_expression);}
 #line 2547 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 506 "front/java.y" /* yacc.c:1646  */
+#line 510 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,numeric_expression);}
 #line 2553 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 508 "front/java.y" /* yacc.c:1646  */
+#line 512 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,numeric_expression);}
 #line 2559 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 510 "front/java.y" /* yacc.c:1646  */
+#line 514 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,numeric_expression);}
 #line 2565 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 512 "front/java.y" /* yacc.c:1646  */
+#line 516 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,numeric_expression);}
 #line 2571 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 514 "front/java.y" /* yacc.c:1646  */
+#line 518 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2577 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 116:
-#line 516 "front/java.y" /* yacc.c:1646  */
+#line 520 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2583 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 117:
-#line 518 "front/java.y" /* yacc.c:1646  */
+#line 522 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2589 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 520 "front/java.y" /* yacc.c:1646  */
+#line 524 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2595 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 522 "front/java.y" /* yacc.c:1646  */
+#line 526 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2601 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 524 "front/java.y" /* yacc.c:1646  */
+#line 528 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2607 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 526 "front/java.y" /* yacc.c:1646  */
+#line 530 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2613 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 122:
-#line 528 "front/java.y" /* yacc.c:1646  */
+#line 532 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2619 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 530 "front/java.y" /* yacc.c:1646  */
+#line 534 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2625 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 124:
-#line 532 "front/java.y" /* yacc.c:1646  */
+#line 536 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2631 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 534 "front/java.y" /* yacc.c:1646  */
+#line 538 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,numeric_expression);}
 #line 2637 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 126:
-#line 540 "front/java.y" /* yacc.c:1646  */
+#line 544 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,testing_expression);}
 #line 2643 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 127:
-#line 542 "front/java.y" /* yacc.c:1646  */
+#line 546 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,testing_expression);}
 #line 2649 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 128:
-#line 544 "front/java.y" /* yacc.c:1646  */
+#line 548 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,testing_expression);}
 #line 2655 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 129:
-#line 546 "front/java.y" /* yacc.c:1646  */
+#line 550 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,testing_expression);}
 #line 2661 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 130:
-#line 548 "front/java.y" /* yacc.c:1646  */
+#line 552 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,testing_expression);}
 #line 2667 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 131:
-#line 550 "front/java.y" /* yacc.c:1646  */
+#line 554 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,testing_expression);}
 #line 2673 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 556 "front/java.y" /* yacc.c:1646  */
+#line 560 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,logical_expression);}
 #line 2679 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 133:
-#line 558 "front/java.y" /* yacc.c:1646  */
+#line 562 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,logical_expression);}
 #line 2685 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 134:
-#line 560 "front/java.y" /* yacc.c:1646  */
+#line 564 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,logical_expression);}
 #line 2691 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 135:
-#line 562 "front/java.y" /* yacc.c:1646  */
+#line 566 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,logical_expression);}
 #line 2697 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 136:
-#line 564 "front/java.y" /* yacc.c:1646  */
+#line 568 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,logical_expression);}
 #line 2703 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 137:
-#line 570 "front/java.y" /* yacc.c:1646  */
+#line 574 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,bit_expression);}
 #line 2709 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 138:
-#line 572 "front/java.y" /* yacc.c:1646  */
+#line 576 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2715 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 139:
-#line 574 "front/java.y" /* yacc.c:1646  */
+#line 578 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2721 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 140:
-#line 576 "front/java.y" /* yacc.c:1646  */
+#line 580 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2727 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 141:
-#line 578 "front/java.y" /* yacc.c:1646  */
+#line 582 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2733 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 580 "front/java.y" /* yacc.c:1646  */
+#line 584 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2739 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 143:
-#line 582 "front/java.y" /* yacc.c:1646  */
+#line 586 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2745 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 584 "front/java.y" /* yacc.c:1646  */
+#line 588 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2751 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 145:
-#line 586 "front/java.y" /* yacc.c:1646  */
+#line 590 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2757 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 146:
-#line 588 "front/java.y" /* yacc.c:1646  */
+#line 592 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2763 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 147:
-#line 590 "front/java.y" /* yacc.c:1646  */
+#line 594 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2769 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 148:
-#line 592 "front/java.y" /* yacc.c:1646  */
+#line 596 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,bit_expression);}
 #line 2775 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 149:
-#line 614 "front/java.y" /* yacc.c:1646  */
+#line 618 "front/java.y" /* yacc.c:1646  */
     { pNode ls[4]={(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(4,creating_expression);}
 #line 2781 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 150:
-#line 616 "front/java.y" /* yacc.c:1646  */
+#line 620 "front/java.y" /* yacc.c:1646  */
     { pNode ls[5]={(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(5,creating_expression);}
 #line 2787 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 151:
-#line 618 "front/java.y" /* yacc.c:1646  */
+#line 622 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,creating_expression);}
 #line 2793 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 152:
-#line 622 "front/java.y" /* yacc.c:1646  */
+#line 626 "front/java.y" /* yacc.c:1646  */
     { pNode ls[4]={(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(4,bracketnums);}
 #line 2799 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 153:
-#line 624 "front/java.y" /* yacc.c:1646  */
+#line 628 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,bracketnums);}
 #line 2805 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 154:
-#line 629 "front/java.y" /* yacc.c:1646  */
+#line 633 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,arglist);}
 #line 2811 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 155:
-#line 631 "front/java.y" /* yacc.c:1646  */
+#line 635 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,arglist);}
 #line 2817 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 156:
-#line 636 "front/java.y" /* yacc.c:1646  */
+#line 640 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,literal_expression);}
 #line 2823 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 157:
-#line 638 "front/java.y" /* yacc.c:1646  */
+#line 642 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,literal_expression);}
 #line 2829 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 158:
-#line 640 "front/java.y" /* yacc.c:1646  */
+#line 644 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,literal_expression);}
 #line 2835 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 159:
-#line 642 "front/java.y" /* yacc.c:1646  */
+#line 646 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,literal_expression);}
 #line 2841 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 160:
-#line 647 "front/java.y" /* yacc.c:1646  */
+#line 651 "front/java.y" /* yacc.c:1646  */
     { pNode ls[5]={(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(5,if_statement);}
 #line 2847 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 161:
-#line 649 "front/java.y" /* yacc.c:1646  */
+#line 653 "front/java.y" /* yacc.c:1646  */
     { pNode ls[7]={(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(7,if_statement);}
 #line 2853 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 162:
-#line 654 "front/java.y" /* yacc.c:1646  */
+#line 658 "front/java.y" /* yacc.c:1646  */
     { pNode ls[7]={(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(7,do_statement);}
 #line 2859 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 163:
-#line 659 "front/java.y" /* yacc.c:1646  */
+#line 663 "front/java.y" /* yacc.c:1646  */
     { pNode ls[5]={(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(5,while_statement);}
 #line 2865 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 164:
-#line 664 "front/java.y" /* yacc.c:1646  */
+#line 668 "front/java.y" /* yacc.c:1646  */
     { pNode ls[9]={(yyvsp[-8].pnode),(yyvsp[-7].pnode),(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(9,for_statement);}
 #line 2871 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 165:
-#line 666 "front/java.y" /* yacc.c:1646  */
+#line 670 "front/java.y" /* yacc.c:1646  */
     { pNode ls[8]={(yyvsp[-7].pnode),(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(8,for_statement);}
 #line 2877 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 166:
-#line 670 "front/java.y" /* yacc.c:1646  */
+#line 674 "front/java.y" /* yacc.c:1646  */
     { pNode ls[1]=  {(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(1,expression01);}
 #line 2883 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 167:
-#line 672 "front/java.y" /* yacc.c:1646  */
+#line 676 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,expression01);}
 #line 2889 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 168:
-#line 677 "front/java.y" /* yacc.c:1646  */
+#line 681 "front/java.y" /* yacc.c:1646  */
     { pNode ls[5]={(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(5,try_statement);}
 #line 2895 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 169:
-#line 679 "front/java.y" /* yacc.c:1646  */
+#line 683 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,try_statement);}
 #line 2901 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 170:
-#line 684 "front/java.y" /* yacc.c:1646  */
+#line 688 "front/java.y" /* yacc.c:1646  */
     { pNode ls[6]={(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(6,catchs);}
 #line 2907 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 171:
-#line 686 "front/java.y" /* yacc.c:1646  */
+#line 690 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,catchs);}
 #line 2913 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 172:
-#line 691 "front/java.y" /* yacc.c:1646  */
+#line 695 "front/java.y" /* yacc.c:1646  */
     { pNode ls[7]={(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(7,switch_statement);}
 #line 2919 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 173:
-#line 695 "front/java.y" /* yacc.c:1646  */
+#line 699 "front/java.y" /* yacc.c:1646  */
     { pNode ls[4]={(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(4,cases);}
 #line 2925 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 174:
-#line 697 "front/java.y" /* yacc.c:1646  */
+#line 701 "front/java.y" /* yacc.c:1646  */
     { pNode ls[3]={(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(3,cases);}
 #line 2931 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 175:
-#line 699 "front/java.y" /* yacc.c:1646  */
+#line 703 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,cases);}
 #line 2937 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 176:
-#line 701 "front/java.y" /* yacc.c:1646  */
+#line 705 "front/java.y" /* yacc.c:1646  */
     { pNode *ls=NULL;  (yyval.pnode)=MNNA(0,cases);}
 #line 2943 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 177:
-#line 706 "front/java.y" /* yacc.c:1646  */
+#line 710 "front/java.y" /* yacc.c:1646  */
     { pNode ls[6]={(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(6,constructor_declaration);}
 #line 2949 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 178:
-#line 708 "front/java.y" /* yacc.c:1646  */
+#line 712 "front/java.y" /* yacc.c:1646  */
     { pNode ls[5]={(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(5,constructor_declaration);}
 #line 2955 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 179:
-#line 713 "front/java.y" /* yacc.c:1646  */
+#line 717 "front/java.y" /* yacc.c:1646  */
     { pNode ls[2]={(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(2,static_initializer);}
 #line 2961 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 180:
-#line 718 "front/java.y" /* yacc.c:1646  */
+#line 722 "front/java.y" /* yacc.c:1646  */
     { pNode ls[8]={(yyvsp[-7].pnode),(yyvsp[-6].pnode),(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(8,interface_declaration);}
 #line 2967 "front/java.tab.c" /* yacc.c:1646  */
     break;
 
   case 181:
-#line 720 "front/java.y" /* yacc.c:1646  */
+#line 724 "front/java.y" /* yacc.c:1646  */
     { pNode ls[6]={(yyvsp[-5].pnode),(yyvsp[-4].pnode),(yyvsp[-3].pnode),(yyvsp[-2].pnode),(yyvsp[-1].pnode),(yyvsp[0].pnode)};  (yyval.pnode)=MNNA(6,interface_declaration);}
 #line 2973 "front/java.tab.c" /* yacc.c:1646  */
     break;
@@ -3201,7 +3201,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 728 "front/java.y" /* yacc.c:1906  */
+#line 732 "front/java.y" /* yacc.c:1906  */
 
 
 int yyerror(char *s) {

@@ -149,6 +149,7 @@
 // 符号优先级定义，此处帮助动作表的生成  一元的+-在语法分析时判断  排序为低到高
 // 优先级的表示可以用语法也可以用在这里显示，这样可以省去很多语法说明
 // 注意，当bison分析语法规则时遇到冲突时，会查优先级表来解决冲突。
+
 %left 	_COMMA
 %right 	_MOV _ADDMOV _SUBMOV _MULMOV _DIVMOV _MODMOV _SHLMOV _SHRMOV _ANDMOV _XORMOV _ORMOV
 %left	_BOR
@@ -163,6 +164,9 @@
 %left	_MUL _DIV _MOD 
 %right	_ADD2 _SUB2 _BNOT _NOT  UMINUS
 %left	_POINT _LBRACKET _RBRACKET _LPARENTHESE _RPARENTHESE
+
+
+
 
 
 // --------------------------------------------------------------------------------------
@@ -221,7 +225,7 @@ import_statement
 			;
 // 类名 : 标识符 | 包名.标识符
 class_name 		
-			: _SYMBOL
+			: _SYMBOL  
 			{ pNode ls[1]={$<pnode>1};  $<pnode>$=MNNA(1,class_name);}
 			| class_name _POINT _SYMBOL
 			{ pNode ls[3]={$<pnode>1,$<pnode>2,$<pnode>3};  $<pnode>$=MNNA(3,class_name);}
@@ -347,7 +351,7 @@ type_specifier
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,type_specifier);}
 			| _STRING
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,type_specifier);}
-			| class_name 
+			| class_name   
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,type_specifier);}
 			;
 // 参数列表	:参数 	{,参数}	
@@ -379,7 +383,7 @@ statements	: statements statement
 statement
 			: variable_declaration 
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,statement);}
-			| expression _SEMICOLON
+			| expression _SEMICOLON 
 			{ pNode ls[2]={$<pnode>1,$<pnode>2};  $<pnode>$=MNNA(2,statement);}
 			| statement_block
 			{ pNode ls[1]=  {$<pnode>1};  $<pnode>$=MNNA(1,statement);}
