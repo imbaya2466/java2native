@@ -176,11 +176,12 @@ pS_statement MK_pS_statement_for(Att att,pS_exp exp1  ,pS_exp exp2 ,pS_exp exp3 
 	
 	return p;
 }
-pS_statement MK_pS_statement_return(Att att)
+pS_statement MK_pS_statement_return(Att att,pS_exp exp)
 {
 	pS_statement p = ckmalloc(sizeof(*p));
 	p->kind=sta_return;
 	p->att=att;
+	p->u.staret.exp=exp;
 	p->att.name=S_str_psstate;
 	
 	return p;
@@ -596,6 +597,7 @@ void show_pS_statement(pS_statement p,int dp)
 			//前序本节点处理
 			printf("%d-%s(sta_return) \n",p->att.line,p->att.name);	
 			//子节点处理
+			show_pS_exp(p->u.staret.exp,nextdp);
 			//后序本节点处理
 			break;
 		}

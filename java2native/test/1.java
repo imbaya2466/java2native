@@ -44,7 +44,7 @@ class C extends A implements D {
 		}
 	}
 //测试表达式
-	public void dsad(int[] dsd[])
+	public int dsad(int[] dsd[])
 	{
 //		dasdsa  das;失败了...
 
@@ -63,6 +63,7 @@ class C extends A implements D {
 
 		sdfs.dsada(dsad,3123);
 		d=dsa[12][5445];
+		return 3;
 	}
 
 }

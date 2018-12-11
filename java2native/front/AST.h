@@ -107,7 +107,8 @@ struct S_statement_{
 		struct {pS_exp exp ;pS_statement trueblock;pS_statement falseblock; }staif;//本质上else if等还是在flase时判断下一句的block内容。所有域的区分都丢给block。block可用外的
 		struct {pS_exp exp ;pS_statement block;}stawhile;
 		struct {pS_exp exp1  ;pS_exp exp2 ;pS_exp exp3 ;pS_statement block;}stafor;//暂不支持exp1中声明。
-		//其他三个为enum可表示的标识符
+		struct {pS_exp exp;}staret;
+		//其他俩个为enum可表示的标识符
 	}u;
 };
 //表达式 注意属性中带类型  常数除了string都留在抽象树中
@@ -171,7 +172,7 @@ pS_statement MK_pS_statement_block(Att att,pS_statement_block block);
 pS_statement MK_pS_statement_if(Att att,pS_exp exp ,pS_statement trueblock,pS_statement falseblock);
 pS_statement MK_pS_statement_while(Att att,pS_exp exp ,pS_statement block);
 pS_statement MK_pS_statement_for(Att att,pS_exp exp1  ,pS_exp exp2 ,pS_exp exp3 ,pS_statement block);
-pS_statement MK_pS_statement_return(Att att);
+pS_statement MK_pS_statement_return(Att att,pS_exp exp);
 pS_statement MK_pS_statement_break(Att att);
 pS_statement MK_pS_statement_continue(Att att);
  

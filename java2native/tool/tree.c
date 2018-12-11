@@ -444,7 +444,16 @@ void Node_AST(pNode node)
 				}
 				case _RETURN:
 				{
-					node->attributes.ASTnode=(void*)MK_pS_statement_return(att);
+					if(node->nodenum==3)
+					{
+						pS_exp lsret=(pS_exp)node->node[1]->attributes.ASTnode;
+						node->attributes.ASTnode=(void*)MK_pS_statement_return(att,lsret);
+					}
+					else
+					{
+						node->attributes.ASTnode=(void*)MK_pS_statement_return(att,NULL);
+					}
+					
 					break;
 				}
 				case _BREAK:
